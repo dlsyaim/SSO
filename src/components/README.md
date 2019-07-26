@@ -9,4 +9,7 @@
 1. getEditorContent，string类型，返回符文编辑器内容
 
 ## 区域选择弹出框
-###
+### @input
+1. visible,boolean类型，使用v-model双向绑定
+### @output
+1. getRegion,返回一个区域对象

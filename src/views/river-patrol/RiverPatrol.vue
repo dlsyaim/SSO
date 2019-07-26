@@ -1,20 +1,23 @@
 <template>
   <!--<p>巡河管理</p>-->
-<rich-text-editor :tag-id="'12'" @getEditorContent="getEditorContent"></rich-text-editor>
+<div>
+  <a-button @click="visible=true">选择区域</a-button>
+  <region-tree-modal v-model="visible"></region-tree-modal>
+</div>
 </template>
 
 <script>
 
-  import RichTextEditor from "../../components/RichTextEditor";
+  import RegionTreeModal from "../../components/RegionTreeModal";
   export default {
-    components: {RichTextEditor},
+    components: {RegionTreeModal},
     data() {
-      return {}
+      return {
+        visible:true
+      }
     },
     methods:{
-      getEditorContent(e){
 
-      }
     }
   }
 </script>

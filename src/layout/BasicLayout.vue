@@ -35,7 +35,7 @@
   </a-layout>
 </template>
 <script>
-  import {menuList} from "../config";
+  import {menuList} from "../config/config";
   import CurrentUser from "./CurrentUser";
   import InfoNotice from "./InfoNotice";
 

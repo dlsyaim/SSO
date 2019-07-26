@@ -23,5 +23,11 @@
 </script>
 
 <style>
-
+  /*ztree设置*/
+  .ztree span{
+    font-size: 14px;
+  }
+  .ztree li[treenode]{
+    padding: 1px 0;
+  }
 </style>
