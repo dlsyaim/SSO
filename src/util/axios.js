@@ -1,9 +1,9 @@
 import axios from 'axios';
 import Vue from 'vue';
 
-axios.defaults.validateStatus=()=>true;
+axios.defaults.validateStatus = () => true;
 
-const accessToken = sessionStorage.getItem('Access-Token')?sessionStorage.getItem('Access-Token'):'';
+const accessToken = sessionStorage.getItem('Access-Token') ? sessionStorage.getItem('Access-Token') : '';
 
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {
@@ -11,13 +11,13 @@ export const get = (url, params) => {
       method: 'get',
       url: url,
       headers: {
-        'Authorization': accessToken
+        'Access-Token': accessToken
       },
       params: params
     }).then(res => {
-      if (res.status === 1) {
+      if (res.status === 200) {
         resolve(res.data);
-      } else{
+      } else {
         handleBusinessError(res.data);
         resolve(res.data);
       }
@@ -34,13 +34,13 @@ export const post = (url, data) => {
       method: 'post',
       url: url,
       headers: {
-        "Authorization": accessToken
+        "Access-Token": accessToken
       },
       data: data
     }).then(res => {
-      if (res.status === 1) {
+      if (res.status === 200) {
         resolve(res.data);
-      } else{
+      } else {
         handleBusinessError(res.data);
         resolve(res.data);
       }
@@ -57,13 +57,13 @@ export const put = (url, data) => {
       method: 'put',
       url: url,
       headers: {
-        "Authorization": accessToken
+        "Access-Token": accessToken
       },
       data: data
     }).then(res => {
-      if (res.status === 1) {
+      if (res.status === 200 && res.data.code === 1) {
         resolve(res.data);
-      } else{
+      } else {
         handleBusinessError(res.data);
         resolve(res.data);
       }
@@ -80,12 +80,12 @@ export const deleteRequest = (url) => {
       method: 'delete',
       url: url,
       headers: {
-        "Authorization": accessToken
+        "Access-Token": accessToken
       }
     }).then(res => {
-      if (res.status === 1) {
+      if (res.status === 200) {
         resolve(res.data);
-      } else{
+      } else {
         handleBusinessError(res.data);
         resolve(res.data);
       }
@@ -101,7 +101,7 @@ export const deleteRequest = (url) => {
  * 处理http请求错误
  * @param err
  */
-handleHttpError=(err)=>{
+const handleHttpError = (err) => {
   Vue.prototype.$message.error('服务器出错');
 };
 
@@ -109,6 +109,6 @@ handleHttpError=(err)=>{
  * 处理业务逻辑错误
  * @param err
  */
-handleBusinessError=(err)=>{
+const handleBusinessError = (err) => {
   Vue.prototype.$message.error(err.msg);
 };
