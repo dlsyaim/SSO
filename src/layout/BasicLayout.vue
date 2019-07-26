@@ -20,7 +20,9 @@
             <a-popover :title="null" placement="rightTop" v-else>
               <template slot="content">
                 <ul id="subMenu">
-                <li class="sub-menu-item" v-for="subMenu in subMenuList" :key="subMenu.id"  :style="{backgroundColor:(selectedMenuId===subMenu.id?'#f2f2f2':'')}">{{subMenu.name}}</li>
+                  <li class="sub-menu-item" v-for="subMenu in subMenuList" :key="subMenu.id"
+                      :style="{backgroundColor:(selectedMenuId===subMenu.id?'#f2f2f2':'')}">{{subMenu.name}}
+                  </li>
                 </ul>
               </template>
               <li :data-id="menu.id" :key="menu.id" class="menu-item">{{menu.name}}</li>
@@ -29,7 +31,9 @@
         </ul>
       </a-layout-sider>
       <a-layout-content>
-        <router-view></router-view>
+        <transition name="page-toggle">
+          <router-view></router-view>
+        </transition>
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -49,15 +53,15 @@
         showSubmenu: false
       }
     },
-    computed:{
-      selectedMenuId(){
+    computed: {
+      selectedMenuId() {
         return -1;
       }
     },
     methods: {
       handleMouseHover(e) {
         const id = e.target.dataset.id;
-        if(id){
+        if (id) {
           this.subMenuList = this.menuList.find(item => item.id.toString() === id).children;
         }
       }
@@ -113,14 +117,14 @@
     background-color: #2B52A8;
   }
 
-  #subMenu{
+  #subMenu {
     padding: 0;
     list-style: none;
     cursor: pointer;
     transition: all .3s ease-in-out;
   }
 
-  .sub-menu-item{
+  .sub-menu-item {
     font-size: 16px;
     display: flex;
     width: 200px;
@@ -129,7 +133,7 @@
     height: 50px;
   }
 
-  .sub-menu-item:hover{
+  .sub-menu-item:hover {
     background-color: #f2f2f2;
   }
 
@@ -147,6 +151,20 @@
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
     border-radius: 0;
     background: rgba(0, 0, 0, 0.1);
+  }
+
+
+  /*页面切换动画*/
+  .page-toggle-enter-active {
+    transition: all .2s ease-in .25s;
+  }
+
+  .page-toggle-leave-active {
+    transition: all .2s ease-out 0s;
+  }
+
+  .page-toggle-enter, .page-toggle-leave-to {
+    opacity: 0;
   }
 </style>
 

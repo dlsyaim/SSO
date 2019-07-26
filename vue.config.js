@@ -4,8 +4,8 @@ module.exports = {
     loaderOptions: {
       less: {
         modifyVars: {
-          // 表格单元格内边距
-          'table-padding-vertical': '10px',
+          // 表格内边距
+          'table-padding-vertical': '4px',
           'table-padding-horizontal': '12px',
           // 字体颜色
           'text-color': 'rgba(0, 0, 0, .8)',

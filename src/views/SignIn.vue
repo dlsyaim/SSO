@@ -77,7 +77,6 @@
         post('http://39.106.76.142/uip/login/login',params).then(res=>{
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substring(1,res.data.tokenInfo.token.length);
-          console.log(token);
           sessionStorage.setItem('Access-Token',token);
           this.$router.push('/problem/wait-deal');
         });

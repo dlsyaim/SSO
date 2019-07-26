@@ -6,6 +6,7 @@
 
 <script>
   import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+
   export default {
     data() {
       return {
@@ -24,19 +25,27 @@
 
 <style>
   /*ztree设置*/
-  .ztree span{
+  .ztree span {
     font-size: 14px;
   }
-  .ztree li[treenode]{
+
+  .ztree li[treenode] {
     padding: 1px 0;
   }
+
   /*卡片容器内边距*/
-  .card-container{
+  .card-container {
     padding: 18px;
     height: 100%;
   }
+
   /*默认的下拉选择器宽度*/
-  .default-select-width{
+  .default-select-width {
     width: 240px;
   }
+
+  #layout .ant-table-thead > tr > th, #layout .ant-table-tbody > tr > td {
+    padding: 8px 12px;
+  }
+
 </style>
