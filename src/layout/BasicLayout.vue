@@ -4,7 +4,8 @@
       <div style="display: flex;align-items: center">
         <a-icon style="font-size: 24px;margin-right: 20px;cursor: pointer"
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed=!collapsed"/>
-        <h1 style="margin: 0;white-space: nowrap;color: #fff;">西青区河长制信息管理系统</h1>
+        <img src="../assets/logo.png" width="54"/>
+        <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;">西青区河长制信息管理系统</h1>
       </div>
       <div style="display:flex;justify-content: center;align-items: center">
         <InfoNotice style="margin-right: 14px;cursor: pointer"></InfoNotice>
