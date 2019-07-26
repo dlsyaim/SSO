@@ -25,6 +25,7 @@
     },
     data() {
       return {
+        isTreeInit:false,
         treeSetting: {
           async: {
             enable: true,
@@ -38,9 +39,6 @@
           }
         }
       }
-    },
-    mounted() {
-      this.initTree()
     },
     computed: {
       show: {
@@ -57,6 +55,7 @@
         get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=120103000000`).then(res => {
           if (res.resCode === 1) {
             $.fn.zTree.init($('#regionTree'), this.treeSetting, res.data);
+            this.isTreeInit=true;
           }
         })
       },
@@ -72,6 +71,13 @@
         const selectedNodes=$.fn.zTree.getZTreeObj('regionTree').getSelectedNodes();
         this.$emit('getRegion',selectedNodes[0]);
         this.$emit('change', false)
+      }
+    },
+    watch:{
+      visible(newVal,oldVal){
+        if(!this.isTreeInit&&newVal){
+          this.initTree();
+        }
       }
     }
   }
