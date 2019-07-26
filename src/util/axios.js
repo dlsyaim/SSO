@@ -16,10 +16,12 @@ export const get = (url, params) => {
       params: params
     }).then(res => {
       if (res.status === 200) {
-        resolve(res.data);
-      } else {
-        handleBusinessError(res.data);
-        resolve(res.data);
+        if(res.data.resCode===1){
+          resolve(res.data);
+        } else {
+          handleBusinessError(res.data);
+          resolve(res.data);
+        }
       }
     }).catch(err => {
       handleHttpError(err);
@@ -28,7 +30,7 @@ export const get = (url, params) => {
   });
 };
 
-export const post = (url, data) => {
+export const post = (url,params, data) => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'post',
@@ -36,13 +38,16 @@ export const post = (url, data) => {
       headers: {
         "Access-Token": accessToken
       },
+      params:params,
       data: data
     }).then(res => {
       if (res.status === 200) {
-        resolve(res.data);
-      } else {
-        handleBusinessError(res.data);
-        resolve(res.data);
+        if(res.data.resCode===1){
+          resolve(res.data);
+        } else {
+          handleBusinessError(res.data);
+          resolve(res.data);
+        }
       }
     }).catch(err => {
       handleHttpError(err);
@@ -61,11 +66,13 @@ export const put = (url, data) => {
       },
       data: data
     }).then(res => {
-      if (res.status === 200 && res.data.code === 1) {
-        resolve(res.data);
-      } else {
-        handleBusinessError(res.data);
-        resolve(res.data);
+      if (res.status === 200) {
+        if(res.data.resCode===1){
+          resolve(res.data);
+        } else {
+          handleBusinessError(res.data);
+          resolve(res.data);
+        }
       }
     }).catch(err => {
       handleHttpError(err);
@@ -84,10 +91,12 @@ export const deleteRequest = (url) => {
       }
     }).then(res => {
       if (res.status === 200) {
-        resolve(res.data);
-      } else {
-        handleBusinessError(res.data);
-        resolve(res.data);
+        if(res.data.resCode===1){
+          resolve(res.data);
+        } else {
+          handleBusinessError(res.data);
+          resolve(res.data);
+        }
       }
     }).catch(err => {
       handleHttpError(err);
@@ -110,5 +119,5 @@ const handleHttpError = (err) => {
  * @param err
  */
 const handleBusinessError = (err) => {
-  Vue.prototype.$message.error(err.msg);
+  Vue.prototype.$message.error(err.resMsg);
 };

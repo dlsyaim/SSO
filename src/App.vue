@@ -30,4 +30,13 @@
   .ztree li[treenode]{
     padding: 1px 0;
   }
+  /*卡片容器内边距*/
+  .card-container{
+    padding: 18px;
+    height: 100%;
+  }
+  /*默认的下拉选择器宽度*/
+  .default-select-width{
+    width: 240px;
+  }
 </style>
