@@ -71,9 +71,10 @@
       v-model="showDetail"
       @ok="showDetail=false"
       width="900px"
+      destroyOnClose
     >
       <a-spin :spinning="loadingDetail">
-        <div style="min-height: 300px;transition: all .3s ease-in-out">
+        <div style="height: 600px;overflow-y: auto">
           <div v-html="detail.detail"></div>
           <img v-if="detail.showImage" :src="detail.imageUrl"/>
           <pdf v-if="detail.showPDF" :src="detail.pdfUrl"></pdf>
