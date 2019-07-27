@@ -14,8 +14,12 @@ export default new Router({
       path: '/',
       component: BasicLayout,
       children: [
-        {path:'',redirect:'/sign-in'},
         {path:'sign-in',component:SignIn},
+        {path:'',redirect:'/home'},
+        {
+          path: 'home',
+          component: () => import(/* webpackChunkName: "home" */'./views/home/Home')
+        },
         {
           path: 'river-patrol',
           component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/RiverPatrol')

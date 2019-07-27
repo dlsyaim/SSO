@@ -26,7 +26,7 @@
         imageCodeStyle:{
           background:'url('+'http://39.106.76.142/uip/randImage/imageCode?imageCodeId='+this.uuid + ') no-repeat'
         },
-        username: 'hxqhzb1',
+        username: 'admin',
         password: 123456,
         imageCode: '',
         uuid: '',
@@ -78,7 +78,7 @@
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substring(1,res.data.tokenInfo.token.length);
           sessionStorage.setItem('Access-Token',token);
-          this.$router.push('/event/wait-deal');
+          this.$router.push('/home');
         });
       }
     },
