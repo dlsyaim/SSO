@@ -16,7 +16,7 @@
 <script>
   import {timer} from 'rxjs'
   import {mapTo} from 'rxjs/operators'
-  import {FILE_URL_PReFIX, UPLOAD_URL} from "../config/config";
+  import {FILE_URL_PREFIX, UPLOAD_URL} from "../config/config";
   import {uploadFile} from "../util/upload";
 
   const E = require('wangeditor');
@@ -61,7 +61,7 @@
           this.isUploadingPicture=false;
           if(res){
             this.$message.success('图片上传成功');
-            insert(FILE_URL_PReFIX+res.data[0]);
+            insert(FILE_URL_PREFIX+res.data[0]);
           }
         });
       };
