@@ -4,7 +4,7 @@
       <div style="display: flex;align-items: center">
         <a-icon style="font-size: 24px;margin-right: 20px;cursor: pointer"
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed=!collapsed"/>
-        <img src="../assets/logo.png" width="54"/>
+        <img src="../assets/logo.png" width="50"/>
         <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;">西青区河长制信息管理系统</h1>
       </div>
       <div style="display:flex;justify-content: center;align-items: center">
@@ -156,11 +156,11 @@
 
   /*页面切换动画*/
   .page-toggle-enter-active {
-    transition: all .2s ease-in .25s;
+    transition: opacity .2s ease-in .25s;
   }
 
   .page-toggle-leave-active {
-    transition: all .2s ease-out 0s;
+    transition: opacity .2s ease-out 0s;
   }
 
   .page-toggle-enter, .page-toggle-leave-to {

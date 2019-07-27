@@ -44,6 +44,7 @@
     width: 240px;
   }
 
+  /*表格内边距*/
   #layout .ant-table-thead > tr > th, #layout .ant-table-tbody > tr > td {
     padding: 8px 12px;
   }

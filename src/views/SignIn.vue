@@ -78,7 +78,7 @@
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substring(1,res.data.tokenInfo.token.length);
           sessionStorage.setItem('Access-Token',token);
-          this.$router.push('/problem/wait-deal');
+          this.$router.push('/event/wait-deal');
         });
       }
     },

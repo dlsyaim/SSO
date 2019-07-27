@@ -21,6 +21,7 @@ export const tablePaginationConfig = {
   total:0,
   showSizeChanger: true,
   showQuickJumper: true,
+  showTotal:total => `共 ${total} 条`
 };
 
 /**

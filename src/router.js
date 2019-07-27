@@ -21,8 +21,12 @@ export default new Router({
           component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/RiverPatrol')
         },
         {
-          path: 'problem/wait-deal',
-          component: () => import(/* webpackChunkName: "problem" */'./views/problem/WaitDeal')
+          path: 'event/wait-deal',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/WaitDeal')
+        },
+        {
+          path: 'event/not-handled-on-time',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/NotHandledOnTime')
         },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]
