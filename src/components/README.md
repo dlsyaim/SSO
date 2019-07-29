@@ -1,5 +1,5 @@
 # 组件使用说明
-注：@input表示传递props，使用v-bind，@output表示发出一个自定义事件，使用v-on接收
+注：@input表示传递props，@output表示发出一个自定义事件，使用v-on接收
 
 ## 富文本编辑器 RichTextEditor
 ### @input
@@ -13,3 +13,8 @@
 1. visible,boolean类型，使用v-model双向绑定
 ### @output
 1. getRegion,返回一个区域对象
+
+## PDF
+### @input
+1. src,string类型，表示pdf文件路径
+2. height,string类型，选传，默认'600px'

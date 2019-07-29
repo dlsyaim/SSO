@@ -77,7 +77,7 @@
         <div style="height: 600px;overflow-y: auto">
           <div v-html="detail.detail"></div>
           <img v-if="detail.showImage" :src="detail.imageUrl"/>
-          <pdf v-if="detail.showPDF" :src="detail.pdfUrl"></pdf>
+          <PDF v-if="detail.showPDF" :src="detail.pdfUrl"></PDF>
         </div>
       </a-spin>
 
@@ -89,9 +89,9 @@
   import {get} from "../../util/axios";
   import {GET_PUBLISH_DETAIL, GET_PUBLISH_LIST} from "../../api/home";
   import {FILE_URL_PREFIX} from "../../config/config";
-  import pdf from 'vue-pdf';
+  import PDF from "../../components/PDF";
   export default {
-    components:{pdf},
+    components:{PDF},
     data() {
       return {
         list1: [],
