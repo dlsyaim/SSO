@@ -7,3 +7,7 @@ export const GET_PUBLISH_LIST=BASE_URL+'/bulletin/v1/bulletin/selectByFirst'; //
 export const GET_PUBLISH_DETAIL=BASE_URL+'/bulletin/v1/bulletin/detail';//获取发布信息详情
 
 export const GET_MONTH_RANK=BASE_URL+'/statistic/v1/statistic/regionStatistic';//获取区域考核排名
+
+export const GET_WATER_QUALITY=BASE_URL+'/quality/v1/WaterQualityGrade/selectWaterQualityPercent'; //获取水质质量
+
+export const GET_PROBLEM_SUMMARY_LIST=BASE_URL+'/resumption/v1/resumption/listWithMoreProblemReach'; //获取问题汇总列表

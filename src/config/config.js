@@ -29,7 +29,7 @@ export const tablePaginationConfig = {
  * @type {*[]}
  */
 export const menuList = [
-  {id: '1', funcUrl: 'home', icon: 'file', name: '综合首页', children: []},
+  {id: '1', funcUrl: '/home', icon: 'file', name: '综合首页', children: []},
   {
     id: '2',
     funcUrl: 'statistic',
@@ -45,19 +45,16 @@ export const menuList = [
       {id: '27', funcUrl: '/statistic/video-monitoring', icon: 'file', name: '视频监控预警分析统计',children:[]},
       {id: '28', funcUrl: '/statistic/execution', icon: 'file', name: '一河（湖）一策任务完成情况统计',children:[]},
       {id: '29', funcUrl: '/statistic/data-update', icon: 'file', name: '一河（湖）一档数据更新统计',children:[]},
-      {id: '29', funcUrl: '/statistic/river-amount', icon: 'file', name: '河流数量统计',children:[]},
-      {id: '29', funcUrl: '/statistic/river-chief-count', icon: 'file', name: '河长人数统计',children:[]},
+      {id: '2a', funcUrl: '/statistic/river-amount', icon: 'file', name: '河流数量统计',children:[]},
+      {id: '2b', funcUrl: '/statistic/river-chief-count', icon: 'file', name: '河长人数统计',children:[]},
     ]
   },
-  {id: 3, funcUrl: 'river-patrol', icon: 'file', name: '信息查询', children: []},
-  {id: 4, funcUrl: 'river-patrol', icon: 'file', name: '分析统计', children: []},
-  {id: 5, funcUrl: 'river-patrol', icon: 'file', name: '信息填报', children: []},
-  {id: 6, funcUrl: 'river-patrol', icon: 'file', name: '信息管理', children: []},
-  {id: 7, funcUrl: 'river-patrol', icon: 'file', name: '河湖档案', children: []},
-  {id: 8, funcUrl: 'river-patrol', icon: 'file', name: '抽查督导', children: []},
-  {id: 9, funcUrl: 'river-patrol', icon: 'file', name: '系统管理', children: []},
-  {id: 'a', funcUrl: 'river-patrol', icon: 'file', name: '移动平台', children: []},
-  {id: 'b', funcUrl: 'river-patrol', icon: 'file', name: '信息服务', children: []},
-  {id: 'c', funcUrl: 'river-patrol', icon: 'file', name: '工作台账', children: []},
-  {id: 'd', funcUrl: 'river-patrol', icon: 'file', name: '展示发布', children: []}
+  {id: '3', funcUrl: 'river-patrol', icon: 'file', name: '信息查询', children: []},
+  {id: '4', funcUrl: 'river-patrol', icon: 'file', name: '信息发布', children: []},
+  {id: '5', funcUrl: 'river-patrol', icon: 'file', name: '河长巡河', children: []},
+  {id: '6', funcUrl: 'river-patrol', icon: 'file', name: '监督督导', children: []},
+  {id: '7', funcUrl: 'river-patrol', icon: 'file', name: '公众投诉', children: []},
+  {id: '8', funcUrl: 'river-patrol', icon: 'file', name: '信息报送', children: []},
+  {id: '9', funcUrl: 'river-patrol', icon: 'file', name: '事件处理', children: []},
+  {id: 'a', funcUrl: 'river-patrol', icon: 'file', name: '河长制考核', children: []}
 ];
