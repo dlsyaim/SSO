@@ -82,10 +82,10 @@
         </p>
       </slot>
       <a-spin :spinning="loadingDetail">
-        <div style="overflow-y: auto" :style="{height:isMax?'810px':'600px'}">
+        <div :style="{height:isMax?'auto':'600px',overflowY:isMax?'hidden':'auto'}">
           <div v-html="detail.detail"></div>
           <img v-if="detail.showImage" :src="detail.imageUrl"/>
-          <PDF :height="isMax?'800px':'600px'" v-if="detail.showPDF" :src="detail.pdfUrl"></PDF>
+          <PDF :height="isMax?'880px':'600px'" v-if="detail.showPDF" :src="detail.pdfUrl"></PDF>
         </div>
       </a-spin>
 

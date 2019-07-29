@@ -14,13 +14,13 @@
     </a-layout-header>
     <a-layout style="height: 100%" v-if="menuList.length!==0">
       <a-layout-sider collapsible v-model="collapsed" :trigger="null" class="layout-sider" collapsedWidth="0">
-        <ul id="menu" @mouseover="handleMouseHover">
+        <ul id="menu" @mouseover="handleMouseHover" @click="handleMenuClick">
           <template v-for="menu in menuList">
-            <li v-if="menu.children.length===0" :key="menu.id" class="menu-item">{{menu.name}}</li>
-            <a-popover :title="null" placement="rightTop" v-else>
+            <li v-if="menu.children.length===0" :key="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
+            <a-popover :title="null" placement="rightTop" :key="menu.id" v-else>
               <template slot="content">
-                <ul id="subMenu">
-                  <li class="sub-menu-item" v-for="subMenu in subMenuList" :key="subMenu.id"
+                <ul id="subMenu" @click="handleMenuClick">
+                  <li class="sub-menu-item" v-for="subMenu in subMenuList" :key="subMenu.id" :data-target="subMenu.funcUrl"
                       :style="{backgroundColor:(selectedMenuId===subMenu.id?'#f2f2f2':'')}">{{subMenu.name}}
                   </li>
                 </ul>
@@ -63,6 +63,12 @@
         const id = e.target.dataset.id;
         if (id) {
           this.subMenuList = this.menuList.find(item => item.id.toString() === id).children;
+        }
+      },
+      handleMenuClick(e){
+        const target=e.target.dataset.target;
+        if(target){
+          this.$router.push(target);
         }
       }
     }
@@ -127,9 +133,9 @@
   .sub-menu-item {
     font-size: 16px;
     display: flex;
-    width: 200px;
+    width: 260px;
     align-items: center;
-    justify-content: center;
+    padding: 0 4px;
     height: 50px;
   }
 

@@ -5,3 +5,5 @@ export const GET_RIVER_PATROL_COUNT=BASE_URL+'/patrolMgr/chairmanOnline/v1/count
 export const GET_PUBLISH_LIST=BASE_URL+'/bulletin/v1/bulletin/selectByFirst'; //获取发布信息列表
 
 export const GET_PUBLISH_DETAIL=BASE_URL+'/bulletin/v1/bulletin/detail';//获取发布信息详情
+
+export const GET_MONTH_RANK=BASE_URL+'/statistic/v1/statistic/regionStatistic';//获取区域考核排名

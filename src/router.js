@@ -14,23 +14,62 @@ export default new Router({
       path: '/',
       component: BasicLayout,
       children: [
-        {path:'sign-in',component:SignIn},
-        {path:'',redirect:'/home'},
+        {path: 'sign-in', component: SignIn},
+        /**
+         * 综合首页
+         */
+        {path: '', redirect: '/home'},
+        {path: 'home', component: () => import(/* webpackChunkName: "home" */'./views/home/Home')},
+        /**
+         * 综合统计分析
+         */
         {
-          path: 'home',
-          component: () => import(/* webpackChunkName: "home" */'./views/home/Home')
+          path: 'statistic/river-patrol',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverPatrol')
         },
         {
-          path: 'river-patrol',
-          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/RiverPatrol')
+          path: 'statistic/event',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/Event')
         },
         {
-          path: 'event/wait-deal',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/WaitDeal')
+          path: 'statistic/supervise',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/Supervise')
         },
         {
-          path: 'event/not-handled-on-time',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/NotHandledOnTime')
+          path: 'statistic/annual-inspection',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/AnnualInspection')
+        },
+        {
+          path: 'statistic/water-quality',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/WaterQuality')
+        },
+        {
+          path: 'statistic/automatic-monitoring-station',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/AutomaticMonitoringStation')
+        },
+        {
+          path: 'statistic/unmanned-aerial',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/UnmannedAerial')
+        },
+        {
+          path: 'statistic/video-monitoring',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/VideoMonitoring')
+        },
+        {
+          path: 'statistic/execution',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/Execution')
+        },
+        {
+          path: 'statistic/data-update',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/DataUpdate')
+        },
+        {
+          path: 'statistic/river-amount',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverAmount')
+        },
+        {
+          path: 'statistic/river-chief-count',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverChiefCount')
         },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]

@@ -6,7 +6,7 @@
     </div>
     <div style="width: 50%"></div>
     <div style="width: 25%;display: flex;flex-direction: column;justify-content: space-between">
-
+      <MonthlyRanking style="height: 300px;margin: 4px;border-radius: 4px"></MonthlyRanking>
     </div>
   </div>
 </template>
@@ -14,9 +14,10 @@
 <script>
   import Weather from "./Weather";
   import Publish from "./Publish";
+  import MonthlyRanking from "./MonthlyRanking";
 
   export default {
-    components: {Weather,Publish},
+    components: {Weather,Publish,MonthlyRanking},
     data() {
       return {}
     }

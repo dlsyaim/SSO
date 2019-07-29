@@ -54,7 +54,7 @@
         this.minute=minute;
         let second=now.getSeconds();
         if(second<10){
-          this.second='0'+second;
+          second='0'+second;
         }
         this.second=second
       })

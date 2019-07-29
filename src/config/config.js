@@ -29,28 +29,27 @@ export const tablePaginationConfig = {
  * @type {*[]}
  */
 export const menuList = [
-  {id: 1, funcUrl: 'river-patrol', icon: 'file', name: '巡河管理', children: []},
+  {id: '1', funcUrl: 'home', icon: 'file', name: '综合首页', children: []},
   {
-    id: 2,
-    funcUrl: 'problem',
-    icon: 'file', name: '问题管理',
+    id: '2',
+    funcUrl: 'statistic',
+    icon: 'file', name: '综合统计分析',
     children: [
-      {id: 20, funcUrl: 'wait-to-deal', icon: 'file', name: '待办问题',children:[]},
-      {id: 21, funcUrl: 'problem-tracking', icon: 'file', name: '问题跟踪',children:[]},
-      {id: 22, funcUrl: 'river-patrol', icon: 'file', name: '综合查询',children:[]},
-      {id: 23, funcUrl: 'river-patrol', icon: 'file', name: '日常抽查',children:[]},
-      {id: 24,
-        funcUrl: 'river-patrol',
-        icon: 'file',
-        name: '巡查问题列表',
-        children:[
-          {id:240,funcUrl:'234',name:'三级标题1'},
-          {id:241,funcUrl:'234',name:'三级标题2'}
-        ]
-      },
+      {id: '20', funcUrl: '/statistic/river-patrol', icon: 'file', name: '巡河统计',children:[]},
+      {id: '21', funcUrl: '/statistic/event', icon: 'file', name: '问题事件统计',children:[]},
+      {id: '22', funcUrl: '/statistic/supervise', icon: 'file', name: '区级督查督办统计',children:[]},
+      {id: '23', funcUrl: '/statistic/annual-inspection', icon: 'file', name: '年度考核统计',children:[]},
+      {id: '24', funcUrl: '/statistic/water-quality', icon: 'file', name: '水质变化与达标情况统计',children:[]},
+      {id: '25', funcUrl: '/statistic/automatic-monitoring-station', icon: 'file', name: '自动监测站统计与水质分析图',children:[]},
+      {id: '26', funcUrl: '/statistic/unmanned-aerial', icon: 'file', name: '无人机巡河预警分析统计',children:[]},
+      {id: '27', funcUrl: '/statistic/video-monitoring', icon: 'file', name: '视频监控预警分析统计',children:[]},
+      {id: '28', funcUrl: '/statistic/execution', icon: 'file', name: '一河（湖）一策任务完成情况统计',children:[]},
+      {id: '29', funcUrl: '/statistic/data-update', icon: 'file', name: '一河（湖）一档数据更新统计',children:[]},
+      {id: '29', funcUrl: '/statistic/river-amount', icon: 'file', name: '河流数量统计',children:[]},
+      {id: '29', funcUrl: '/statistic/river-chief-count', icon: 'file', name: '河长人数统计',children:[]},
     ]
   },
-  {id: 3, funcUrl: 'river-patrol', icon: 'file', name: '考核评估', children: []},
+  {id: 3, funcUrl: 'river-patrol', icon: 'file', name: '信息查询', children: []},
   {id: 4, funcUrl: 'river-patrol', icon: 'file', name: '分析统计', children: []},
   {id: 5, funcUrl: 'river-patrol', icon: 'file', name: '信息填报', children: []},
   {id: 6, funcUrl: 'river-patrol', icon: 'file', name: '信息管理', children: []},
