@@ -67,17 +67,25 @@
       </a-collapse-panel>
     </a-collapse>
     <a-modal
-      :title="detail.title"
       v-model="showDetail"
       @ok="showDetail=false"
-      width="900px"
+      :width="isMax?'100%':'900px'"
       destroyOnClose
+      centered
+      :footer="null"
     >
+      <slot name="title">
+        <p style="display: flex;justify-content: space-between;align-items: center;font-size: 16px;font-weight: 500;color: rgba(0,0,0,.85)">
+          <span>{{detail.title}}</span>
+          <a-icon v-if="isMax"  class="modal-header-icon" title="最小化" @click="isMax=false" type="minus" />
+          <a-icon v-else class="modal-header-icon" type="plus" @click="isMax=true" title="最大化" />
+        </p>
+      </slot>
       <a-spin :spinning="loadingDetail">
-        <div style="height: 600px;overflow-y: auto">
+        <div style="overflow-y: auto" :style="{height:isMax?'810px':'600px'}">
           <div v-html="detail.detail"></div>
           <img v-if="detail.showImage" :src="detail.imageUrl"/>
-          <PDF v-if="detail.showPDF" :src="detail.pdfUrl"></PDF>
+          <PDF :height="isMax?'800px':'600px'" v-if="detail.showPDF" :src="detail.pdfUrl"></PDF>
         </div>
       </a-spin>
 
@@ -104,7 +112,8 @@
         list8: [],
         showDetail: false,
         detail: {},
-        loadingDetail:false
+        loadingDetail:false,
+        isMax:false
       }
     },
     computed:{
@@ -237,5 +246,18 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+</style>
+<style>
+  .modal-header-icon{
+    transform: translateY(-15px);
+    margin-right: 30px;
+    padding: 10px;
+    color: rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    transition: color .2s ease-in-out;
+  }
+  .modal-header-icon:hover{
+    color: rgba(0, 0, 0, 0.8);;
   }
 </style>
