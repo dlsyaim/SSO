@@ -2,13 +2,13 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://39.106.76.142';
+export const BASE_URL='http://10.0.0.96';
 
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://60.28.163.75/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://10.0.0.95/inform/v1/informReport/upload';
 
 export const FILE_URL_PREFIX='http://47.93.191.69:8080';
 
@@ -23,6 +23,11 @@ export const tablePaginationConfig = {
   showQuickJumper: true,
   showTotal:total => `共 ${total} 条`
 };
+
+/**
+ * 地图密钥
+ */
+export const MAP_KEY='ff19838854ae3d41e75b90bb56f0aed6&SERVICE=WMTS&REQUEST=GetTile&VERSION';
 
 /**
  * 菜单列表

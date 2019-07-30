@@ -49,4 +49,8 @@
     padding: 8px 12px;
   }
 
+  /*不显示天地图左下角版权标识*/
+  .tdt-control-copyright{
+    display: none;
+  }
 </style>
