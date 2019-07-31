@@ -58,4 +58,9 @@
   .tdt-control-copyright{
     display: none;
   }
+
+  .table-operation{
+    color: #1890ff;
+    cursor: pointer;
+  }
 </style>
