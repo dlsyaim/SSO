@@ -56,8 +56,8 @@
     methods: {
       getList() {
         const params = {
-          beginDate: this.startTime ? moment(this.startTime).format('YYYY-mm-dd') : '',
-          endDate: this.endTime ? moment(this.endTime).format('YYYY-mm-dd') : ''
+          beginDate: this.startTime ? moment(this.startTime).format('YYYY-mm-DD') : '',
+          endDate: this.endTime ? moment(this.endTime).format('YYYY-mm-DD') : ''
         };
         this.loading = true;
         get(GET_SUPERVISE_STATISTIC_LIST, params).then(res => {
@@ -93,8 +93,8 @@
         }
       },
       exportFile() {
-        const beginDate = this.startTime ? moment(this.startTime).format('YYYY-mm-dd') : '';
-        const endDate = this.endTime ? moment(this.endTime).format('YYYY-mm-dd') : '';
+        const beginDate = this.startTime ? moment(this.startTime).format('YYYY-mm-DD') : '';
+        const endDate = this.endTime ? moment(this.endTime).format('YYYY-mm-DD') : '';
         window.location.href = `${BASE_URL}/analysis/v1/inspectionStatistics/exportData?beginDate=${beginDate}&endDate=${endDate}`;
       }
     }

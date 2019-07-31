@@ -22,6 +22,9 @@ export const get = (url, params) => {
           handleBusinessError(res.data);
           resolve(res.data);
         }
+      }else {
+        handleHttpError(res);
+        resolve(res.data);
       }
     }).catch(err => {
       handleHttpError(err);
@@ -48,6 +51,9 @@ export const post = (url,params, data) => {
           handleBusinessError(res.data);
           resolve(res.data);
         }
+      }else {
+        handleHttpError(res);
+        resolve(res.data);
       }
     }).catch(err => {
       handleHttpError(err);
@@ -73,6 +79,9 @@ export const put = (url, data) => {
           handleBusinessError(res.data);
           resolve(res.data);
         }
+      }else {
+        handleHttpError(res);
+        resolve(res.data);
       }
     }).catch(err => {
       handleHttpError(err);
@@ -97,6 +106,9 @@ export const deleteRequest = (url) => {
           handleBusinessError(res.data);
           resolve(res.data);
         }
+      }else {
+        handleHttpError(res);
+        resolve(res.data);
       }
     }).catch(err => {
       handleHttpError(err);
