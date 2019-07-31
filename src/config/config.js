@@ -2,7 +2,7 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://10.0.0.96';
+export const BASE_URL='http://39.106.76.142';
 
 /**
  * 上传文件接口

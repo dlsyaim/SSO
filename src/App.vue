@@ -49,6 +49,11 @@
     padding: 8px 12px;
   }
 
+  /*表头上边框*/
+  th{
+    border-top: 1px solid #e8e8e8;
+  }
+
   /*不显示天地图左下角版权标识*/
   .tdt-control-copyright{
     display: none;

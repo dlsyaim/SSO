@@ -25,7 +25,7 @@ export const get = (url, params) => {
       }
     }).catch(err => {
       handleHttpError(err);
-      resolve(err.data)
+      resolve(err);
     })
   });
 };
@@ -51,7 +51,7 @@ export const post = (url,params, data) => {
       }
     }).catch(err => {
       handleHttpError(err);
-      resolve(err.data)
+      resolve(err);
     })
   });
 };
@@ -76,7 +76,7 @@ export const put = (url, data) => {
       }
     }).catch(err => {
       handleHttpError(err);
-      resolve(err.data)
+      resolve(err);
     })
   });
 };
@@ -100,7 +100,7 @@ export const deleteRequest = (url) => {
       }
     }).catch(err => {
       handleHttpError(err);
-      resolve(err.data)
+      resolve(err);
     })
   });
 };
@@ -111,7 +111,11 @@ export const deleteRequest = (url) => {
  * @param err
  */
 const handleHttpError = (err) => {
-  Vue.prototype.$message.error('服务器出错');
+  if(err==='Network Error'){
+    Vue.prototype.$message.error('网络出错');
+  }else {
+    Vue.prototype.$message.error('服务器出错');
+  }
 };
 
 /**

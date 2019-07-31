@@ -18,6 +18,7 @@
 
 <script>
   import {post} from "../util/axios";
+  import {BASE_URL} from "../config/config";
 
   export default {
     data() {
@@ -61,7 +62,7 @@
         const uuid = this.getUUID();
         this.uuid = uuid;
         this.imageCodeStyle={
-          background:'url('+'http://39.106.76.142/uip/randImage/imageCode?imageCodeId='+uuid+'&date=' + new Date().getSeconds() + ') no-repeat'
+          background:'url('+BASE_URL+'/uip/randImage/imageCode?imageCodeId='+uuid+'&date=' + new Date().getSeconds() + ') no-repeat'
         }
       },
       refreshImageCode() {
@@ -74,7 +75,7 @@
           imageCode: this.imageCode,
           imageCodeId: this.uuid
         };
-        post('http://39.106.76.142/uip/login/login',params).then(res=>{
+        post(BASE_URL+'/uip/login/login',params).then(res=>{
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substring(1,res.data.tokenInfo.token.length);
           sessionStorage.setItem('Access-Token',token);
