@@ -71,6 +71,14 @@ export default new Router({
           path: 'statistic/river-chief-count',
           component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverChiefCount')
         },
+        {
+          path: 'information/river-chief-directory',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectory')
+        },
+        {
+          path: 'information/river-chief-directory/form',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectoryForm')
+        },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]
     }

@@ -33,11 +33,10 @@
         loading:true,
         list:[],
         columns:[
-          {title: '序号', dataIndex: 'index',fixed:'left',width:60},
-          {title: '行政区域', dataIndex: 'regionName',fixed:'left',width:120},
+          {title: '序号', dataIndex: 'index',width:60},
+          {title: '行政区域', dataIndex: 'regionName',width:120},
           {
             title: '合计',
-            fixed:'right',
             width:200,
             children:[
               {title:'已办结',dataIndex:'finishTotal'},
@@ -70,8 +69,8 @@
       },
       handleColumns(list){
         const columns=[
-          {title: '序号', dataIndex: 'index',fixed:'left',width:40},
-          {title: '行政区域', dataIndex: 'regionName',fixed:'left',width:90},
+          {title: '序号', dataIndex: 'index',width:40},
+          {title: '行政区域', dataIndex: 'regionName',width:90},
         ];
         list[0].list.forEach((item,index)=>{
           columns.push({

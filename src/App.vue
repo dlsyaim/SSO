@@ -63,4 +63,10 @@
     color: #1890ff;
     cursor: pointer;
   }
+
+  /*弹出框每一条详情的内边距*/
+  .modal-detail-item{
+    padding: 6px 0;
+    color: rgba(0,0,0,.85);
+  }
 </style>
