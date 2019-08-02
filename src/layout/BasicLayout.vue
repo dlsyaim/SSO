@@ -30,8 +30,8 @@
           </template>
         </ul>
       </a-layout-sider>
-      <a-layout-content>
-        <transition name="page-toggle">
+      <a-layout-content :style="{overflowY:shouldHiddenOverFlowContent?'hidden':'auto'}" id="layoutContent">
+        <transition name="page-toggle" @before-enter="beforeEnter" @after-leave="afterLeave">
           <router-view></router-view>
         </transition>
       </a-layout-content>
@@ -50,7 +50,8 @@
         collapsed: false,
         menuList: menuList,
         subMenuList: [],
-        showSubmenu: false
+        showSubmenu: false,
+        shouldHiddenOverFlowContent:false
       }
     },
     computed: {
@@ -70,6 +71,20 @@
         if(target){
           this.$router.push(target);
         }
+      },
+      // 进行页面切换时，新旧dom交替，交替前如果没有滚动条，交替过程中出现了滚动条，
+      // 就会出现页面抖动，影响体验，所以动画过程中，设置overflowY属性为hidden
+      beforeEnter(){
+        const target=document.querySelector('#layoutContent');
+        const clientHeight = target.clientHeight;
+        const scrollHeight = target.scrollHeight;
+        // 当页面切换前没有滚动条的时候，才设置overflowY属性为hidden
+        if(clientHeight===scrollHeight){
+          this.shouldHiddenOverFlowContent=true;
+        }
+      },
+      afterLeave(){
+        this.shouldHiddenOverFlowContent=false;
       }
     }
   }
@@ -162,11 +177,11 @@
 
   /*页面切换动画*/
   .page-toggle-enter-active {
-    transition: opacity .2s ease-in .25s;
+    transition: opacity .3s ease-in .25s;
   }
 
   .page-toggle-leave-active {
-    transition: opacity .2s ease-out 0s;
+    transition: opacity .3s ease-out 0s;
   }
 
   .page-toggle-enter, .page-toggle-leave-to {
