@@ -11,6 +11,7 @@
 ## 区域选择弹出框
 ### @input
 1. visible,boolean类型，使用v-model双向绑定
+2. showMask,boolean类型，可选择，表示是否展示蒙层
 ### @output
 1. getRegion,返回一个区域对象
 

@@ -2,6 +2,7 @@
   <a-modal
     title="选择区域"
     v-model="show"
+    :showMask="showMask"
     @ok="handleOk"
   >
     <a-input-search
@@ -32,6 +33,10 @@
       visible: {
         type: Boolean,
         required: true
+      },
+      showMask:{
+        type:Boolean,
+        default:true
       }
     },
     data() {
