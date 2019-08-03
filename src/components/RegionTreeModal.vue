@@ -2,7 +2,7 @@
   <a-modal
     title="选择区域"
     v-model="show"
-    :showMask="showMask"
+    :mask="showMask"
     @ok="handleOk"
   >
     <a-input-search

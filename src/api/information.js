@@ -11,3 +11,5 @@ export const GET_RIVER_CHIEF_TYPE=BASE_URL+'/watersource/v1/reach/chairmanType';
 export const GET_RIVER_CHIEF_ROLE_LIST=BASE_URL+'/watersource/v1/reachChairMan/roleList'; //获取角色类型
 
 export const GET_RIVER_CHIEF_GRADE=BASE_URL+'/watersource/v1/river/riverType';//获取河长级别
+
+export const GET_ONE_RIVER_ONE_POLICY_LIST=BASE_URL+'/watersource/v1/doc/list'; //获取一河一策列表

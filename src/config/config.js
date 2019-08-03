@@ -2,7 +2,7 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://10.0.0.96';
+export const BASE_URL='http://39.106.76.142';
 
 /**
  * 上传文件接口
@@ -24,6 +24,10 @@ export const tablePaginationConfig = {
   showTotal:total => `共 ${total} 条`
 };
 
+/**
+ * 河西区regionId
+ */
+export const REGION_ID=120103000000;
 /**
  * 地图密钥
  */
@@ -60,13 +64,42 @@ export const menuList = [
     icon: 'file',
     name: '信息查询', children: [
       {id: '30', funcUrl: '/information/river-chief-directory', icon: 'file', name: '河长名录'},
+      {id: '31', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
+      {id: '32', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
     ]
   },
   {id: '4', funcUrl: 'river-patrol', icon: 'file', name: '信息发布', children: []},
-  {id: '5', funcUrl: 'river-patrol', icon: 'file', name: '河长巡河', children: []},
+  {
+    id: '5',
+    icon: 'file',
+    name: '河长巡河',
+    children: [
+      {id: '50', funcUrl: '/river-patrol/standing-book', icon: 'file', name: '河长巡河台账'},
+    ]
+  },
   {id: '6', funcUrl: 'river-patrol', icon: 'file', name: '监督督导', children: []},
   {id: '7', funcUrl: 'river-patrol', icon: 'file', name: '公众投诉', children: []},
-  {id: '8', funcUrl: 'river-patrol', icon: 'file', name: '信息报送', children: []},
+  {
+    id: '8',
+    icon: 'file',
+    name: '信息报送',
+    children: [
+      {id:'80',funcUrl:'/submitted/information-submitted',name:'信息报送'}
+    ]
+  },
   {id: '9', funcUrl: 'river-patrol', icon: 'file', name: '事件处理', children: []},
   {id: 'a', funcUrl: 'river-patrol', icon: 'file', name: '河长制考核', children: []}
+];
+
+export const settingMenuList=[
+  {id: 'b',
+    icon: 'file',
+    name: '系统管理',
+    children: [
+      {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'}
+    ]
+  },
+  {id: 'c', funcUrl: 'river-patrol', icon: 'file', name: '考核设置', children: []},
+  {id: 'd', funcUrl: 'river-patrol', icon: 'file', name: '权限设置', children: []},
+  {id: 'e', funcUrl: 'river-patrol', icon: 'file', name: '数字字典管理', children: []}
 ];

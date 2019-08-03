@@ -4,63 +4,63 @@
       <a-form :form="form">
         <a-row>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="河长姓名">
+            <a-form-item v-bind="formLayout" label="河长姓名">
               <a-input placeholder="请输入河长姓名"
                        v-decorator="['name',{rules: [{ required: true, message: '请输入河长姓名!' }]}]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="用户姓名">
+            <a-form-item v-bind="formLayout" label="用户姓名">
               <a-input placeholder="请输入用户姓名"
                        v-decorator="['userName',{rules: [{ required: true, message: '请输入用户姓名!' }]}]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="所属区域">
+            <a-form-item v-bind="formLayout" label="所属区域">
               <a-input placeholder="请选择所属区域"
                        v-decorator="['regionName',{rules: [{ required: true, message: '请选择所属区域!' }]}]" readOnly @click="visible=true" style="cursor: pointer"></a-input>
               <RegionTreeModal v-model="visible" @getRegion="getRegion"></RegionTreeModal>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="联系电话">
+            <a-form-item v-bind="formLayout" label="联系电话">
               <a-input placeholder="请输入联系电话"
                        v-decorator="['cellphone',{rules: [{ required: true, message: '请输入联系电话!' }]}]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="河长职务">
+            <a-form-item v-bind="formLayout" label="河长职务">
               <a-select placeholder="请选择河长职务" v-decorator="['position']">
                 <a-select-option v-for="item in riverChiefType" :value="item.id" :key="item.id">{{item.typeName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="角色">
+            <a-form-item v-bind="formLayout" label="角色">
               <a-select placeholder="请选择角色"  mode="multiple" v-decorator="['role']">
                 <a-select-option v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="河长级别">
+            <a-form-item v-bind="formLayout" label="河长级别">
               <a-select placeholder="请选择河长级别" v-decorator="['grade']">
                 <a-select-option v-for="item in gradeList" :value="item.id" :key="item.id">{{item.typeName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="开通账号">
+            <a-form-item v-bind="formLayout" label="开通账号">
               <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['status', { valuePropName: 'checked' ,initialValue:false}]" />
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="是否考核">
+            <a-form-item v-bind="formLayout" label="是否考核">
               <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['isAssess', { valuePropName: 'checked' ,initialValue:false}]" />
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="责任河段">
+            <a-form-item v-bind="formLayout" label="责任河段">
               <a-input placeholder="请选择责任河段" v-decorator="['cellphone']" readOnly style="cursor: pointer" @click="showWaterBodyTreeModal(1)" @getWaterBody="getWaterBody"></a-input>
             </a-form-item>
           </a-col>
@@ -70,12 +70,12 @@
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="责任水库">
+            <a-form-item v-bind="formLayout" label="责任水库">
               <a-input placeholder="请选择责任水库" v-decorator="['cellphone']" readOnly style="cursor: pointer"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
-            <a-form-item :label-col="formLayout.labelCol" :wrapper-col="formLayout.wrapperCol" label="责任坑塘">
+            <a-form-item v-bind="formLayout" label="责任坑塘">
               <a-input placeholder="请选择责任坑塘" v-decorator="['cellphone']" readOnly style="cursor: pointer"></a-input>
             </a-form-item>
           </a-col>

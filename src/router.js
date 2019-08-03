@@ -71,6 +71,9 @@ export default new Router({
           path: 'statistic/river-chief-count',
           component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverChiefCount')
         },
+        /**
+         * 信息查询
+         */
         {
           path: 'information/river-chief-directory',
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectory')
@@ -78,6 +81,35 @@ export default new Router({
         {
           path: 'information/river-chief-directory/form',
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectoryForm')
+        },
+        {
+          path: 'information/one-river-one-policy',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
+        },
+        {
+          path: 'information/supervise-event',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/SuperviseEvent')
+        },
+        /**
+         * 河长巡河
+         */
+        {
+          path: 'river-patrol/standing-book',
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/StandingBook')
+        },
+        /**
+         * 信息报送
+         */
+        {
+          path: 'submitted/information-submitted',
+          component: () => import(/* webpackChunkName: "submitted" */'./views/submitted/InformationSubmitted')
+        },
+        /**
+         * 系统设置
+         */
+        {
+          path: 'setting/user-list',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserList')
         },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]

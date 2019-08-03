@@ -41,7 +41,7 @@
 
   /*默认的下拉选择器宽度*/
   .default-select-width {
-    width: 240px;
+    width: 200px;
   }
 
   /*表格内边距*/

@@ -5,9 +5,10 @@
         <a-icon style="font-size: 24px;margin-right: 20px;cursor: pointer"
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed=!collapsed"/>
         <img src="../assets/logo.png" width="50"/>
-        <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;">西青区河长制信息管理系统</h1>
+        <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;cursor: pointer" @click="getMenuList">西青区河长制信息管理系统</h1>
       </div>
       <div style="display:flex;justify-content: center;align-items: center">
+        <a-icon type="setting" style="font-size: 22px;margin-right: 10px;cursor: pointer" @click="getSettingMenuList" title="设置" />
         <InfoNotice style="margin-right: 14px;cursor: pointer"></InfoNotice>
         <CurrentUser></CurrentUser>
       </div>
@@ -39,7 +40,7 @@
   </a-layout>
 </template>
 <script>
-  import {menuList} from "../config/config";
+  import {menuList, settingMenuList} from "../config/config";
   import CurrentUser from "./CurrentUser";
   import InfoNotice from "./InfoNotice";
 
@@ -71,6 +72,12 @@
         if(target){
           this.$router.push(target);
         }
+      },
+      getMenuList(){
+        this.menuList=menuList;
+      },
+      getSettingMenuList(){
+        this.menuList=settingMenuList;
       },
       // 进行页面切换时，新旧dom交替，交替前如果没有滚动条，交替过程中出现了滚动条，
       // 就会出现页面抖动，影响体验，所以动画过程中，设置overflowY属性为hidden

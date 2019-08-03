@@ -13,16 +13,16 @@
         <option v-for="item in regionList" :key="item.id" :value="item.id">{{item.name}}</option>
       </select>
     </div>
-    <div class="map-control" style="bottom: 12px;right: 12px;box-shadow: none;height: 90px;width: 125px;padding: 10px;background-color: white;font-size: 14px;color: rgba(0,0,0,.85)">
+    <div class="map-control" style="bottom: 12px;right: 12px;box-shadow: none;height: 90px;width: 135px;padding: 10px;background-color: white;font-size: 14px;color: rgba(0,0,0,.85)">
       <p style="border-left: solid 3px #9c9b9b;color: rgba(0,0,0,.85);padding-left: 10px;margin: 0">图标类别</p>
       <ul style="list-style: none;margin-top: 4px;padding-left: 4px">
-        <li style="display: flex;padding: 2px 0;align-items: center">
-          <img src="../../assets/river-patrol-legend.gif" width="20"/>
+        <li style="display: flex;padding: 2px 0;align-items: center;flex-wrap: nowrap">
+          <img src="../../../public/river-patrol-legend.gif" width="20"/>
           <span style="margin-left: 5px">巡河：</span>
           <span>{{patrolAmount}} 人</span>
         </li>
-        <li style="display: flex;padding: 2px;align-items: center">
-          <img src="../../assets/online-legend.png" width="20"/>
+        <li style="display: flex;padding: 2px;align-items: center;flex-wrap: nowrap">
+          <img src="../../../public/online-legend.png" width="20"/>
           <span style="margin-left: 5px">在线：</span>
           <span>{{onlineAmount}} 人</span>
         </li>
@@ -34,6 +34,9 @@
 <script>
   import {get} from "../../util/axios";
   import {GET_PATROL_AND_ONLINE_DATA, GET_REGION_LIST} from "../../api/event";
+  import {GET_RIVER_PATROL_AND_ONLINE_DETAIL} from "../../api/home";
+  import {REGION_ID} from "../../config/config";
+  import {timer} from 'rxjs';
 
   export default {
     data() {
@@ -43,12 +46,17 @@
         regionId: '',
         map:null,
         onlineAmount:'-',
-        patrolAmount:'-'
+        patrolAmount:'-',
+        subscription:null,
+        polyline:null
       }
     },
     mounted() {
       this.getRegionList();
       this.initMap();
+    },
+    beforeDestroy(){
+      this.subscription.unsubscribe();
     },
     methods: {
       getRegionList() {
@@ -61,12 +69,17 @@
       initMap() {
         this.map = new T.Map('map');
         this.map.centerAndZoom(new T.LngLat(117.222880472695, 39.07894444826), 13);
-        this.getPatrolAndOnlineData();
+        // 地图初始化完毕后开始轮询
+        this.subscription=timer(500, 30000).subscribe(()=>{
+          this.getPatrolAndOnlineDetail();
+          this.getPatrolAndOnlineAmount();
+        });
       },
-      getPatrolAndOnlineData(){
+      getPatrolAndOnlineAmount(){
         get(`${GET_PATROL_AND_ONLINE_DATA}120103000000`).then(res=>{
           if(res.resCode===1){
-            console.log(res.data);
+            this.patrolAmount=res.data.countPatrol;
+            this.onlineAmount=res.data.countOnline;
           }
         });
       },
@@ -96,7 +109,50 @@
         this.isFullScreen = false;
       },
       repaint(region){
-        this.map.panTo(new T.LngLat(region.longitude,region.latitude),10+region.grade)
+        this.map.panTo(new T.LngLat(region.longitude,region.latitude),10+region.grade);
+        // if(region.spatialData){
+        //   const pointStringArray=region.spatialData.slice(15,region.spatialData.length-3).split(',');
+        //   const arr=[];
+        //   pointStringArray.forEach(item=>{
+        //     let LngLatArr= item.split(' ');
+        //     arr.push(new T.LngLat(parseFloat(LngLatArr[0]),parseFloat(LngLatArr[1])))
+        //   });
+        //   console.log(arr);
+        //   const polyline = new T.Polyline(arr, {color:"red", weight:3, opacity:0.5});
+        //   this.map.addOverLay(polyline);
+        //   this.polyline=Object.freeze(polyline);
+        // }
+      },
+      getPatrolAndOnlineDetail(){
+        const params= {
+          hzname: "",
+          status: "Y,L", //Y在线,L巡河,O离线
+          level: "2,3,4,5"
+        };
+        get(`${GET_RIVER_PATROL_AND_ONLINE_DETAIL}/${REGION_ID}`,params).then(res=>{
+          if(res.resCode===1){
+            this.map.clearOverLays();// 把所有覆盖物都删除了，之后还得把边界线给加上
+            const onlineIcon = new T.Icon({
+              iconUrl: '/online-legend.png',
+              iconSize: new T.Point(24, 24),
+              iconAnchor: new T.Point(10, 25)
+            });
+            const patrolIcon = new T.Icon({
+              iconUrl: '/river-patrol-legend.gif',
+              iconSize: new T.Point(32, 32),
+              iconAnchor: new T.Point(10, 25)
+            });
+            res.data.forEach(item=>{
+              if(item.status===1){
+                const marker = new T.Marker(new T.LngLat(item.longitude, item.latitude), {icon: onlineIcon});
+                this.map.addOverLay(marker);
+              }else if(item.status===2){
+                const marker = new T.Marker(new T.LngLat(item.longitude, item.latitude), {icon: patrolIcon});
+                this.map.addOverLay(marker);
+              }
+            })
+          }
+        })
       }
     },
     watch: {

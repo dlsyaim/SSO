@@ -29,7 +29,7 @@
           <a-divider type="vertical"/>
           <span data-method="modify" :data-id="item.id" class="table-operation">修改</span>
           <a-divider type="vertical"/>
-          <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem">
+          <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
           <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
           </a-popconfirm>
         </span>
@@ -56,7 +56,7 @@
        <a-col span="6" class="modal-detail-item">河长级别：</a-col>
        <a-col span="18" class="modal-detail-item">{{selected.gradeName}}&nbsp;</a-col>
        <a-col span="6" class="modal-detail-item">角色：</a-col>
-       <a-col span="18" class="modal-detail-item">{{selected.roles}}&nbsp;</a-col>
+       <a-col span="18" class="modal-detail-item">{{selected.roleNames}}&nbsp;</a-col>
        <a-col span="6" class="modal-detail-item">联系电话：</a-col>
        <a-col span="18" class="modal-detail-item">{{selected.cellphone}}&nbsp;</a-col>
        <a-col span="6" class="modal-detail-item">联系电话：</a-col>
@@ -142,7 +142,9 @@
          const method=e.target.dataset.method;
          const id=e.target.dataset.id;
          if(id&&method){
-           this.selected=this.list.find(item=>item.id===id);
+            const selected=this.list.find(item=>item.id===id);
+           selected.roleNames=selected.roles.map(role=>role.name).join(',');
+           this.selected=selected;
            if(method==='modify'){
               this.$router.push({path:'/information/river-chief-directory/form',query:{id:this.selected.id}})
            }else if(method==='detail'){

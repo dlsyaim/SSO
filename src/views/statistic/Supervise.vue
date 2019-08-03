@@ -76,7 +76,6 @@
       resetSearchCondition() {
         this.startTime = null;
         this.endTime = null;
-        this.acceptPerson = '';
       },
       disableStartDate(startTime) {
         if (!startTime || !this.endTime) {
