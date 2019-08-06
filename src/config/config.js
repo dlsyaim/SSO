@@ -1,8 +1,8 @@
 /**
  * api根路径
- * @type {string}
+ * @type {string}http://10.0.0.96:7244
  */
-export const BASE_URL='http://39.106.76.142';
+export const BASE_URL='http://10.0.0.96:7244';
 
 /**
  * 上传文件接口
@@ -62,3 +62,9 @@ export const menuList = [
   {id: 'c', funcUrl: 'river-patrol', icon: 'file', name: '工作台账', children: []},
   {id: 'd', funcUrl: 'river-patrol', icon: 'file', name: '展示发布', children: []}
 ];
+
+export const GetQueryString = (name) => {
+  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+  var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+  if(r!=null)return  unescape(r[2]); return null;
+};
