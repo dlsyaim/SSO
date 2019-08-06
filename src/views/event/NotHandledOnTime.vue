@@ -3,11 +3,11 @@
     <a-card title="未及时处理问题" :bordered="false" style="min-height: 100%">
       <div style="display: flex;align-items: center">
         <span>开始日期：</span>
-        <a-date-picker @change="onStartChange" :value="startTime" style="margin-right: 40px"/>
+        <a-date-picker @change="onStartChange" :value="startTime" style="margin-right: 40px;width: 200px"/>
         <span>结束日期：</span>
-        <a-date-picker @change="onEndChange" :value="endTime" style="margin-right: 40px"/>
+        <a-date-picker @change="onEndChange" :value="endTime" style="margin-right: 40px;width: 200px"/>
         <span>委办单位：</span>
-        <a-input placeholder="请输入委办单位" v-model="acceptPerson" style="margin-right: 40px;width: 240px"></a-input>
+        <a-input placeholder="请输入委办单位" v-model="acceptPerson" style="margin-right: 40px;width: 200px"></a-input>
         <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
         <a-button @click="resetSearchCondition">重置</a-button>
       </div>

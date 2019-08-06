@@ -5,30 +5,26 @@
         <a-icon style="font-size: 24px;margin-right: 20px;cursor: pointer"
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed=!collapsed"/>
         <img src="../assets/logo.png" width="50"/>
-        <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;cursor: pointer" @click="getMenuList">西青区河长制信息管理系统</h1>
+        <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;cursor: pointer" @click="getMenuList">
+          西青区河长制信息管理系统</h1>
       </div>
       <div style="display:flex;justify-content: center;align-items: center">
-        <a-icon type="setting" style="font-size: 22px;margin-right: 10px;cursor: pointer" @click="getSettingMenuList" title="设置" />
+        <a-icon type="setting" style="font-size: 22px;margin-right: 10px;cursor: pointer" @click="getSettingMenuList"
+                title="设置"/>
         <InfoNotice style="margin-right: 14px;cursor: pointer"></InfoNotice>
         <CurrentUser></CurrentUser>
       </div>
     </a-layout-header>
-    <a-layout style="height: 100%" v-if="menuList.length!==0">
-      <a-layout-sider collapsible v-model="collapsed" :trigger="null" class="layout-sider" collapsedWidth="0">
-        <ul id="menu" @mouseover="handleMouseHover" @click="handleMenuClick">
-          <template v-for="menu in menuList">
-            <li v-if="menu.children.length===0" :key="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
-            <a-popover :title="null" placement="rightTop" :key="menu.id" v-else>
-              <template slot="content">
-                <ul id="subMenu" @click="handleMenuClick">
-                  <li class="sub-menu-item" v-for="subMenu in subMenuList" :key="subMenu.id" :data-target="subMenu.funcUrl"
-                      :style="{backgroundColor:(selectedMenuId===subMenu.id?'#f2f2f2':'')}">{{subMenu.name}}
-                  </li>
-                </ul>
-              </template>
-              <li :data-id="menu.id" :key="menu.id" class="menu-item">{{menu.name}}</li>
-            </a-popover>
-          </template>
+    <transition name="sub-menu">
+      <ul id="subMenu" v-show="subMenuList.length!==0" @click="handleMenuClick" @mouseout="handleSubMenuMouseOut">
+        <li class="sub-menu-item" v-for="item in subMenuList" :key="item.id" :data-target="item.funcUrl">{{item.name}}</li>
+      </ul>
+    </transition>
+    <a-layout style="height: 100%;" v-if="menuList.length!==0">
+      <a-layout-sider collapsible v-model="collapsed" :trigger="null" class="layout-sider" collapsedWidth="0"
+                      @click="handleMenuClick">
+        <ul id="menu">
+          <li v-for="menu in menuList" :key="menu.id" :data-id="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
         </ul>
       </a-layout-sider>
       <a-layout-content :style="{overflowY:shouldHiddenOverFlowContent?'hidden':'auto'}" id="layoutContent">
@@ -43,6 +39,8 @@
   import {menuList, settingMenuList} from "../config/config";
   import CurrentUser from "./CurrentUser";
   import InfoNotice from "./InfoNotice";
+  import {fromEvent} from 'rxjs';
+  import {debounceTime,map,filter} from 'rxjs/operators';
 
   export default {
     components: {CurrentUser, InfoNotice},
@@ -51,14 +49,26 @@
         collapsed: false,
         menuList: menuList,
         subMenuList: [],
-        showSubmenu: false,
-        shouldHiddenOverFlowContent:false
+        shouldHiddenOverFlowContent: false,
+        subscription:null
       }
     },
     computed: {
       selectedMenuId() {
         return -1;
       }
+    },
+    mounted(){
+      this.subscription=fromEvent(document.getElementById('menu'),'mousemove').pipe(
+        debounceTime(100),
+        map(e=>e.target.dataset.id),
+        filter(id=>!!id)
+      ).subscribe(res=>{
+        this.subMenuList=this.menuList.find(item=>item.id===res).children;
+      })
+    },
+    beforeDestroy(){
+      this.subscription.unsubscribe();
     },
     methods: {
       handleMouseHover(e) {
@@ -67,31 +77,37 @@
           this.subMenuList = this.menuList.find(item => item.id.toString() === id).children;
         }
       },
-      handleMenuClick(e){
-        const target=e.target.dataset.target;
-        if(target){
+      handleMenuClick(e) {
+        const target = e.target.dataset.target;
+        if (target) {
           this.$router.push(target);
         }
       },
-      getMenuList(){
-        this.menuList=menuList;
+      handleSubMenuMouseOut(e){
+
+        if(e.fromElement.id==='subMenu'){
+          this.subMenuList=[];
+        }
       },
-      getSettingMenuList(){
-        this.menuList=settingMenuList;
+      getMenuList() {
+        this.menuList = menuList;
+      },
+      getSettingMenuList() {
+        this.menuList = settingMenuList;
       },
       // 进行页面切换时，新旧dom交替，交替前如果没有滚动条，交替过程中出现了滚动条，
       // 就会出现页面抖动，影响体验，所以动画过程中，设置overflowY属性为hidden
-      beforeEnter(){
-        const target=document.querySelector('#layoutContent');
+      beforeEnter() {
+        const target = document.querySelector('#layoutContent');
         const clientHeight = target.clientHeight;
         const scrollHeight = target.scrollHeight;
         // 当页面切换前没有滚动条的时候，才设置overflowY属性为hidden
-        if(clientHeight===scrollHeight){
-          this.shouldHiddenOverFlowContent=true;
+        if (clientHeight === scrollHeight) {
+          this.shouldHiddenOverFlowContent = true;
         }
       },
-      afterLeave(){
-        this.shouldHiddenOverFlowContent=false;
+      afterLeave() {
+        this.shouldHiddenOverFlowContent = false;
       }
     }
   }
@@ -115,13 +131,13 @@
 
   .layout-sider {
     height: 100%;
-    background-color: #438AFE;
+    background-color: #EDEDED;
     overflow-y: auto;
   }
 
   #menu {
     list-style: none;
-    background-color: #3366ff;
+    background-color: #EDEDED;
     width: 100%;
     padding: 0;
     cursor: pointer;
@@ -135,34 +151,39 @@
     justify-content: center;
     white-space: nowrap;
     overflow: hidden;
-    color: #ffffff;
     font-size: 16px;
-    border-bottom: 1px solid #438AFE;
-    transition: all .3s ease-in-out;
+    border-bottom: 1px solid #dddddd;
   }
 
   .menu-item:hover {
-    background-color: #2B52A8;
+    background-color: #4972CE;
+    color: #FFFFFF;
   }
 
   #subMenu {
-    padding: 0;
+    position: absolute;
     list-style: none;
-    cursor: pointer;
-    transition: all .3s ease-in-out;
+    left: 200px;
+    top: 64px;
+    padding: 0;
+    height: calc(100% - 78px);
+    background-color: rgba(114,152,237,.9);
+    z-index: 400;
   }
 
   .sub-menu-item {
     font-size: 16px;
     display: flex;
-    width: 260px;
+    cursor: pointer;
+    color: #ffffff;
+    width: 280px;
     align-items: center;
-    padding: 0 4px;
+    padding: 0 20px;
     height: 50px;
   }
 
   .sub-menu-item:hover {
-    background-color: #f2f2f2;
+    background-color: #4972CE;
   }
 
   .layout-sider::-webkit-scrollbar {
@@ -181,7 +202,6 @@
     background: rgba(0, 0, 0, 0.1);
   }
 
-
   /*页面切换动画*/
   .page-toggle-enter-active {
     transition: opacity .3s ease-in .25s;
@@ -193,6 +213,20 @@
 
   .page-toggle-enter, .page-toggle-leave-to {
     opacity: 0;
+  }
+
+  /*二级菜单动画*/
+  .sub-menu-enter-active {
+    transition: opacity .2s ease-in;
+  }
+
+  .sub-menu-leave-active {
+    transition: opacity .2s ease-out;
+  }
+
+  .sub-menu-enter, .sub-menu-leave-to {
+    opacity: 0;
+    width: 0;
   }
 </style>
 

@@ -87,7 +87,17 @@ export const menuList = [
       {id:'80',funcUrl:'/submitted/information-submitted',name:'信息报送'}
     ]
   },
-  {id: '9', funcUrl: 'river-patrol', icon: 'file', name: '事件处理', children: []},
+  {
+    id: '9',
+    icon: 'file',
+    name: '事件处理',
+    children: [
+      {id:'90',funcUrl:'/event/wait-deal',name:'待办问题'},
+      {id:'91',funcUrl:'/event/trace',name:'问题跟踪'},
+      {id:'92',funcUrl:'/event/comprehensive-query',name:'综合查询'},
+      {id:'93',funcUrl:'/event/not-handled-on-time',name:'未及时处理问题'}
+    ]
+  },
   {id: 'a', funcUrl: 'river-patrol', icon: 'file', name: '河长制考核', children: []}
 ];
 

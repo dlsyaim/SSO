@@ -105,6 +105,29 @@ export default new Router({
           component: () => import(/* webpackChunkName: "submitted" */'./views/submitted/InformationSubmitted')
         },
         /**
+         * 事件处理
+         */
+        {
+          path: 'event/wait-deal',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/WaitDeal')
+        },
+        {
+          path: 'event/trace',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/Trace')
+        },
+        {
+          path: 'event/comprehensive-query',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/ComprehensiveQuery')
+        },
+        {
+          path: 'event/not-handled-on-time',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/NotHandledOnTime')
+        },
+        {
+          path: 'event/detail',
+          component: () => import(/* webpackChunkName: "event" */'./views/event/EventDetail')
+        },
+        /**
          * 系统设置
          */
         {

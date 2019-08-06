@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="待办问题" :bordered="false" style="min-height: 100%">
+    <a-card title="综合查询" :bordered="false" style="min-height: 100%">
       <a-row>
         <a-col span="5">
           <span>问题来源：</span>
@@ -79,6 +79,8 @@
                  @change="handleTableChange">
          <span slot="action" slot-scope="item">
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
+           <a-divider type="verticle"></a-divider>
+          <span data-method="modify" :data-id="item.id" class="table-operation">分值修正</span>
         </span>
         </a-table>
       </div>
@@ -106,7 +108,7 @@
     {title: '问题状态', dataIndex: 'eventStatusName'},
     {title: '委办单位', dataIndex: 'acceptperson'},
     {title: '扣分分值', dataIndex: 'deductionScore'},
-    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 100}
+    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 160}
   ];
   const problemSourceEnum = {
     'A': '河长APP',
@@ -249,13 +251,7 @@
         this.getList();
       },
       handleTableClick(e){
-        const method=e.target.dataset.method;
-        const id=e.target.dataset.id;
-        if(id&&method){
-          if(method==='detail'){
-            this.$router.push({path:'/event/detail',query:{id:id}});
-          }
-        }
+
       }
     }
   }

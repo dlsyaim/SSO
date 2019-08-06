@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="待办问题" :bordered="false" style="min-height: 100%">
+    <a-card title="问题跟踪" :bordered="false" style="min-height: 100%">
       <a-row>
         <a-col span="5">
           <span>问题来源：</span>
@@ -249,13 +249,7 @@
         this.getList();
       },
       handleTableClick(e){
-        const method=e.target.dataset.method;
-        const id=e.target.dataset.id;
-        if(id&&method){
-          if(method==='detail'){
-            this.$router.push({path:'/event/detail',query:{id:id}});
-          }
-        }
+
       }
     }
   }
