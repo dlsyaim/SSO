@@ -16,7 +16,7 @@
       </div>
     </a-layout-header>
     <transition name="sub-menu">
-      <ul id="subMenu" v-show="subMenuList.length!==0" @click="handleMenuClick" @mouseout="handleSubMenuMouseOut">
+      <ul id="subMenu" v-show="subMenuList.length!==0" @click="handleMenuClick" @mouseleave ="handleMouseLeave">
         <li class="sub-menu-item" v-for="item in subMenuList" :key="item.id" :data-target="item.funcUrl">{{item.name}}</li>
       </ul>
     </transition>
@@ -60,10 +60,11 @@
     },
     mounted(){
       this.subscription=fromEvent(document.getElementById('menu'),'mousemove').pipe(
-        debounceTime(100),
+        debounceTime(200),
         map(e=>e.target.dataset.id),
         filter(id=>!!id)
       ).subscribe(res=>{
+        console.log(res);
         this.subMenuList=this.menuList.find(item=>item.id===res).children;
       })
     },
@@ -83,11 +84,13 @@
           this.$router.push(target);
         }
       },
-      handleSubMenuMouseOut(e){
-
-        if(e.fromElement.id==='subMenu'){
+      handleMouseLeave(){
+        // 这里要延迟一段时间将二级导航菜单置空。
+        // 为啥要延迟呢，应该是鼠标移动太快，从一级菜单移动到二级菜单再移出二级菜单，耗时小于防抖时间（这里是200ms），导致二级菜单再鼠标移除后再次出现，
+        // 这只是猜测，不太确定
+        setTimeout(()=>{
           this.subMenuList=[];
-        }
+        },200);
       },
       getMenuList() {
         this.menuList = menuList;
@@ -217,11 +220,11 @@
 
   /*二级菜单动画*/
   .sub-menu-enter-active {
-    transition: opacity .2s ease-in;
+    transition: opacity .15s ease-in;
   }
 
   .sub-menu-leave-active {
-    transition: opacity .2s ease-out;
+    transition: opacity .15s ease-out;
   }
 
   .sub-menu-enter, .sub-menu-leave-to {
