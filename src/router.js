@@ -97,6 +97,14 @@ export default new Router({
           path: 'river-patrol/standing-book',
           component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/StandingBook')
         },
+        {
+          path: 'river-patrol/rectification-feedback',
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/RectificationFeedback')
+        },
+        {
+          path: 'river-patrol/review',
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/Review')
+        },
         /**
          * 信息报送
          */

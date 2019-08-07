@@ -75,6 +75,8 @@ export const menuList = [
     name: '河长巡河',
     children: [
       {id: '50', funcUrl: '/river-patrol/standing-book', icon: 'file', name: '河长巡河台账'},
+      {id: '51', funcUrl: '/river-patrol/rectification-feedback', icon: 'file', name: '整改反馈'},
+      {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
     ]
   },
   {id: '6', funcUrl: 'river-patrol', icon: 'file', name: '监督督导', children: []},

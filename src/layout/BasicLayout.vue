@@ -24,7 +24,7 @@
       <a-layout-sider collapsible v-model="collapsed" :trigger="null" class="layout-sider" collapsedWidth="0"
                       @click="handleMenuClick">
         <ul id="menu">
-          <li v-for="menu in menuList" :key="menu.id" :data-id="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
+          <li v-for="menu in menuList" :class="{active:menu.id===selectedMenuId}" :key="menu.id" :data-id="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
         </ul>
       </a-layout-sider>
       <a-layout-content :style="{overflowY:shouldHiddenOverFlowContent?'hidden':'auto'}" id="layoutContent">
@@ -50,21 +50,17 @@
         menuList: menuList,
         subMenuList: [],
         shouldHiddenOverFlowContent: false,
-        subscription:null
-      }
-    },
-    computed: {
-      selectedMenuId() {
-        return -1;
+        subscription:null,
+        selectedMenuId:''
       }
     },
     mounted(){
       this.subscription=fromEvent(document.getElementById('menu'),'mousemove').pipe(
-        debounceTime(200),
+        debounceTime(100),
         map(e=>e.target.dataset.id),
         filter(id=>!!id)
       ).subscribe(res=>{
-        console.log(res);
+        this.selectedMenuId=res;
         this.subMenuList=this.menuList.find(item=>item.id===res).children;
       })
     },
@@ -72,12 +68,6 @@
       this.subscription.unsubscribe();
     },
     methods: {
-      handleMouseHover(e) {
-        const id = e.target.dataset.id;
-        if (id) {
-          this.subMenuList = this.menuList.find(item => item.id.toString() === id).children;
-        }
-      },
       handleMenuClick(e) {
         const target = e.target.dataset.target;
         if (target) {
@@ -86,11 +76,12 @@
       },
       handleMouseLeave(){
         // 这里要延迟一段时间将二级导航菜单置空。
-        // 为啥要延迟呢，应该是鼠标移动太快，从一级菜单移动到二级菜单再移出二级菜单，耗时小于防抖时间（这里是200ms），导致二级菜单再鼠标移除后再次出现，
+        // 为啥要延迟呢，应该是鼠标移动太快，从一级菜单移动到二级菜单再移出二级菜单，耗时小于防抖时间（这里是100ms），导致二级菜单再鼠标移除后再次出现，
         // 这只是猜测，不太确定
         setTimeout(()=>{
+          this.selectedMenuId='';
           this.subMenuList=[];
-        },200);
+        },100);
       },
       getMenuList() {
         this.menuList = menuList;
@@ -163,6 +154,11 @@
     color: #FFFFFF;
   }
 
+  .active{
+    background-color: #4972CE;
+    color: #FFFFFF;
+  }
+
   #subMenu {
     position: absolute;
     list-style: none;
@@ -179,9 +175,9 @@
     display: flex;
     cursor: pointer;
     color: #ffffff;
-    width: 280px;
+    width: 300px;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 30px;
     height: 50px;
   }
 
