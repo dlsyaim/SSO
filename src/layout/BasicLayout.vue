@@ -29,7 +29,14 @@
       </a-layout-sider>
       <a-layout-content :style="{overflowY:shouldHiddenOverFlowContent?'hidden':'auto'}" id="layoutContent">
         <transition name="page-toggle" @before-enter="beforeEnter" @after-leave="afterLeave">
-          <router-view></router-view>
+          <!--需要缓存组件路由出口-->
+          <keep-alive :max="10">
+            <router-view  v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+        </transition>
+        <transition name="page-toggle" @before-enter="beforeEnter" @after-leave="afterLeave">
+          <!--不需要缓存组件路由出口-->
+          <router-view  v-if="!$route.meta.keepAlive"></router-view>
         </transition>
       </a-layout-content>
     </a-layout>
