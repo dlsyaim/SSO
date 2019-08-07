@@ -106,11 +106,22 @@ export default new Router({
           component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/Review')
         },
         /**
+         * 监督督导
+         */
+        {
+          path: 'supervise/Bulletin',
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Bulletin')
+        },
+        /**
          * 信息报送
          */
         {
           path: 'submitted/information-submitted',
           component: () => import(/* webpackChunkName: "submitted" */'./views/submitted/InformationSubmitted')
+        },
+        {
+          path: 'submitted/submitted-statistic',
+          component: () => import(/* webpackChunkName: "submitted" */'./views/submitted/SubmittedStatistic')
         },
         /**
          * 事件处理

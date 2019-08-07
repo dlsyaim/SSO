@@ -79,14 +79,21 @@ export const menuList = [
       {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
     ]
   },
-  {id: '6', funcUrl: 'river-patrol', icon: 'file', name: '监督督导', children: []},
+  {
+    id: '6',
+    name: '监督督导',
+    children: [
+      {id: '60', funcUrl: '/supervise/bulletin', icon: 'file', name: '通报批评'},
+    ]
+  },
   {id: '7', funcUrl: 'river-patrol', icon: 'file', name: '公众投诉', children: []},
   {
     id: '8',
     icon: 'file',
     name: '信息报送',
     children: [
-      {id:'80',funcUrl:'/submitted/information-submitted',name:'信息报送'}
+      {id:'80',funcUrl:'/submitted/information-submitted',name:'信息报送'},
+      {id:'81',funcUrl:'/submitted/submitted-statistic',name:'报送统计'}
     ]
   },
   {

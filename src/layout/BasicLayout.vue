@@ -60,8 +60,12 @@
         map(e=>e.target.dataset.id),
         filter(id=>!!id)
       ).subscribe(res=>{
-        this.selectedMenuId=res;
         this.subMenuList=this.menuList.find(item=>item.id===res).children;
+        if(this.subMenuList.length!==0){
+          this.selectedMenuId=res;
+        }else {
+          this.selectedMenuId='';
+        }
       })
     },
     beforeDestroy(){
