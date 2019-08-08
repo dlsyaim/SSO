@@ -89,7 +89,7 @@
 <script>
   import {get} from "../../util/axios";
   import {GET_PROBLEM_LIST, GET_PROBLEM_TYPE} from "../../api/event";
-  import {tablePaginationConfig} from "../../config/config";
+  import {BASE_URL, tablePaginationConfig} from "../../config/config";
   import {eventStatusEnum} from "../../config/enum";
   import ACol from "ant-design-vue/es/grid/Col";
   import moment from 'moment';
@@ -173,7 +173,7 @@
           pageSize: this.pagination.pageSize
         };
         this.loading = true;
-        get(GET_PROBLEM_LIST, params).then(res => {
+        get(`${BASE_URL}/eventMgr/v1/event/getTraceTask`, params).then(res => {
           this.loading = false;
           if (res.resCode === 1) {
             this.handleList(res.data.list);
