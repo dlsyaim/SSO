@@ -65,10 +65,10 @@
           <a-tab-pane tab="派单" key="2" forceRender>
             <SendOrder :region-list="regionList"></SendOrder>
           </a-tab-pane>
-          <a-tab-pane tab="下发督办单" key="3" forceRender>
+          <a-tab-pane tab="下发督办单" key="5" forceRender>
             <SuperviseOrder :region-list="regionList"></SuperviseOrder>
           </a-tab-pane>
-          <a-tab-pane tab="下发函" key="4" forceRender>
+          <a-tab-pane tab="下发函" key="6" forceRender>
             <SendLetter :region-list="regionList"></SendLetter>
           </a-tab-pane>
         </a-tabs>

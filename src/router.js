@@ -128,19 +128,31 @@ export default new Router({
          */
         {
           path: 'event/wait-deal',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/WaitDeal')
+          component: () => import(/* webpackChunkName: "event" */'./views/event/WaitDeal'),
+          meta:{
+            keepAlive:true
+          }
         },
         {
           path: 'event/trace',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/Trace')
+          component: () => import(/* webpackChunkName: "event" */'./views/event/Trace'),
+          meta:{
+            keepAlive:true
+          }
         },
         {
           path: 'event/comprehensive-query',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/ComprehensiveQuery')
+          component: () => import(/* webpackChunkName: "event" */'./views/event/ComprehensiveQuery'),
+          meta:{
+            keepAlive:true
+          }
         },
         {
           path: 'event/not-handled-on-time',
-          component: () => import(/* webpackChunkName: "event" */'./views/event/NotHandledOnTime')
+          component: () => import(/* webpackChunkName: "event" */'./views/event/NotHandledOnTime'),
+          meta:{
+            keepAlive:true
+          }
         },
         {
           path: 'event/detail',
