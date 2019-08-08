@@ -249,7 +249,13 @@
         this.getList();
       },
       handleTableClick(e){
-
+        const method=e.target.dataset.method;
+        const id=e.target.dataset.id;
+        if(id&&method){
+          if(method==='detail'){
+            this.$router.push({path:'/event/detail',query:{id:id}});
+          }
+        }
       }
     }
   }

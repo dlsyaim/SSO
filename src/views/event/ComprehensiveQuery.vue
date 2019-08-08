@@ -79,24 +79,38 @@
                  @change="handleTableChange">
          <span slot="action" slot-scope="item">
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
-           <a-divider type="verticle"></a-divider>
-          <span data-method="modify" :data-id="item.id" class="table-operation">分值修正</span>
+           <template v-if="userLevel===3">
+             <a-divider type="vertical"></a-divider>
+             <span data-method="modify" :data-id="item.id" class="table-operation">分值修正</span>
+           </template>
         </span>
         </a-table>
       </div>
     </a-card>
+    <a-modal :visible="isModalVisible"
+             @ok="submit"
+             title="修正分值"
+             :confirmLoading="isSaveLoading"
+             @cancel="isModalVisible=false">
+      <a-form :form="form">
+        <a-form-item label="扣分分值" v-bind="{labelCol: {span: 5}, wrapperCol: {span: 16}}">
+          <a-input placeholder="请输入扣分分值" v-decorator="['score',{rules: [{ required: true, message: '请输入扣分分值!' }]}]"/>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script>
-  import {get} from "../../util/axios";
+  import {get, put} from "../../util/axios";
   import {GET_PROBLEM_LIST, GET_PROBLEM_TYPE} from "../../api/event";
-  import {tablePaginationConfig} from "../../config/config";
+  import {BASE_URL, tablePaginationConfig} from "../../config/config";
   import {eventStatusEnum} from "../../config/enum";
   import ACol from "ant-design-vue/es/grid/Col";
   import moment from 'moment';
   import RegionTreeModal from "../../components/RegionTreeModal";
   import ARow from "ant-design-vue/es/grid/Row";
+  import AFormItem from "ant-design-vue/es/form/FormItem";
 
   const columns = [
     {title: '到达时间', dataIndex: 'arrivalTime'},
@@ -125,7 +139,7 @@
     '2': '特急',
   };
   export default {
-    components: { ARow, RegionTreeModal, ACol},
+    components: {AFormItem, ARow, RegionTreeModal, ACol},
     data() {
       return {
         searchCondition: {
@@ -149,13 +163,20 @@
         problemSourceEnum,
         problemLevelEnum,
         eventStatusEnum,
-        problemTypeList: []
+        problemTypeList: [],
+        userLevel: null,
+        selected:{},
+        isModalVisible: false,
+        isSaveLoading:false,
+        form:null
       }
     },
     mounted() {
       this.searchCondition.userId = JSON.parse(sessionStorage.getItem('userDTO')).id;
       this.getList();
       this.getProblemType();
+      this.userLevel = JSON.parse(sessionStorage.getItem('userDTO')).userLevel;
+      this.form=this.$form.createForm(this);
     },
     methods: {
       getList() {
@@ -175,7 +196,7 @@
           pageSize: this.pagination.pageSize
         };
         this.loading = true;
-        get(GET_PROBLEM_LIST, params).then(res => {
+        get(`${BASE_URL}/eventMgr/v1/event/search`, params).then(res => {
           this.loading = false;
           if (res.resCode === 1) {
             this.handleList(res.data.list);
@@ -250,8 +271,43 @@
         this.pagination = e;
         this.getList();
       },
-      handleTableClick(e){
-
+      handleTableClick(e) {
+        const method = e.target.dataset.method;
+        const id = e.target.dataset.id;
+        if (id && method) {
+          this.selected=this.list.find(item=>item.id===id);
+          if (method === 'detail') {
+            this.$router.push({path: '/event/detail', query: {id: id}});
+          }else if(method==='modify'){
+            this.isModalVisible=true;
+            this.$nextTick(()=>{
+              this.form.setFieldsValue({
+                score:this.selected.deductionScore
+              })
+            })
+          }
+        }
+      },
+      submit(){
+        this.form.validateFields((err, value) => {
+          if (!err) {
+            this.isSaveLoading = true;
+            const params={
+              eventId: this.selected.id,
+              deductionScore:value.score
+            };
+            put(`${BASE_URL}/eventMgr/v1/event/updateEhEventById`,params).then(res=>{
+              this.isSaveLoading=false;
+              if(res.resCode===1){
+                this.$message.success('修改成功');
+                this.getList();
+                setTimeout(()=>{
+                  this.isModalVisible=false;
+                },1000);
+              }
+            })
+          }
+        });
       }
     }
   }

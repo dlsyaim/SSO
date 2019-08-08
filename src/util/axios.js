@@ -62,7 +62,7 @@ export const post = (url,params, data) => {
   });
 };
 
-export const put = (url, data) => {
+export const put = (url,params, data) => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'put',
@@ -70,6 +70,7 @@ export const put = (url, data) => {
       headers: {
         "Access-Token": accessToken
       },
+      params:params,
       data: data
     }).then(res => {
       if (res.status === 200) {
