@@ -35,7 +35,7 @@
     {title: '委办单位', dataIndex: 'acceptPerson'},
     {title: '问题点位', dataIndex: 'address'},
     {title: '问题描述', dataIndex: 'typename'},
-    {title: '是否办结', dataIndex: 'resule'},
+    {title: '是否办结', dataIndex: 'statusName'},
     {title: '延迟时长', dataIndex: 'delayCout'}
   ];
   export default {
@@ -75,7 +75,8 @@
       },
       handleList(list) {
         list.forEach((item, index) => {
-          item.index = index + 1 + this.pagination.current * this.pagination.pageSize
+          item.index = index + 1 + this.pagination.current * this.pagination.pageSize;
+          item.statusName=item.resule==='Z'?'办结':'未办结'
         });
         this.list = list;
       },
