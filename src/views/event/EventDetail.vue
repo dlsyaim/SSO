@@ -7,7 +7,7 @@
           <div style="width: 72%;">
             <a-row class="modal-detail-item">
               <a-col span="8">问题编号：{{eventDetail.serialno}}</a-col>
-              <a-col span="8">问题类型：{{eventDetail.typename}}</a-col>
+              <a-col span="8" style="padding-right: 20px;">问题类型：{{eventDetail.typename}}</a-col>
               <a-col span="8">问题等级：{{eventLevelEnum[eventDetail.eventlevel]}}</a-col>
             </a-row>
             <a-row class="modal-detail-item">
@@ -31,11 +31,28 @@
             </a-row>
             <a-row class="modal-detail-item">
               <a-col span="24">处理前：
-                <div style="display: flex;"></div>
+                <div style="display: inline-flex" v-if="beforeAccessory.length!==0">
+                  <template  v-for="(item,index) in beforeAccessory">
+                    <img v-if="item.accessorytype === 1||item.accessorytype === 2" style="cursor: pointer" width="60" height="60" :src="FILE_URL_PREFIX+item.accessoryurl" @click="previewImage(item)" :key="index"/>
+                    <img v-if="item.accessorytype === 3" style="cursor: pointer" width="60" height="60" src="/sdf" @click="playAudio(item)" :key="index"/>
+                    <img v-if="item.accessorytype === 4" style="cursor: pointer" width="60" height="60" src="/sdf" @click="playVideo(item)" :key="index"/>
+                  </template>
+                </div>
               </a-col>
             </a-row>
             <a-row class="modal-detail-item">
-              <a-col span="24">处理后：</a-col>
+              <a-col span="24">处理后：
+                  <div v-if="afterAccessory.length!==0" style="display:inline-flex;">
+                    <template  v-for="(item,index) in afterAccessory">
+                      <img v-if="item.accessorytype === 1||item.accessorytype === 2" style="cursor: pointer" width="60" height="60" :src="FILE_URL_PREFIX+item.accessoryurl" @click="previewImage(item)" :key="index"/>
+                      <img v-if="item.accessorytype === 3" style="cursor: pointer" width="60" height="60" src="/sdf" @click="playAudio(item)" :key="index"/>
+                      <img v-if="item.accessorytype === 4" style="cursor: pointer" width="60" height="60" src="/sdf" @click="playVideo(item)" :key="index"/>
+                    </template>
+                  </div>
+              </a-col>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="previewVisible=false">
+                <img width="480" :src="previewImageUrl" />
+              </a-modal>
             </a-row>
             <a-row style="margin-top: 8px">
               <a-col span="24">说明：上报电话请填写手机号码或者座机号码，联系方式无限制</a-col>
@@ -58,18 +75,24 @@
         </a-table>
       </a-card>
       <a-card :title="null" v-if="operationTypeList.length" :bodyStyle="{padding:'16px'}">
-        <a-tabs defaultActiveKey="1">
+        <a-tabs>
           <a-tab-pane tab="委办" key="1" v-if="operationTypeList.lastIndexOf('sendOrder')!==-1" forceRender>
-            <Delegate></Delegate>
+            <Delegate :user-id="userId" :event-id="id"></Delegate>
           </a-tab-pane>
-          <a-tab-pane tab="派单" key="2" forceRender>
-            <SendOrder :region-list="regionList"></SendOrder>
+          <a-tab-pane tab="派单" key="2" v-if="operationTypeList.lastIndexOf('delegate')!==-1" forceRender>
+            <SendOrder :region-list="regionList" :user-id="userId" event-id="id"></SendOrder>
+          </a-tab-pane>
+          <a-tab-pane tab="结案" key="3" v-if="operationTypeList.lastIndexOf('close')!==-1" forceRender>
+            <Close :event-id="id" :user-id="userId"></Close>
+          </a-tab-pane>
+          <a-tab-pane tab="退回" key="4" v-if="operationTypeList.lastIndexOf('rollback')!==-1" forceRender>
+            <Rollback :event-id="id" :user-id="userId"></Rollback>
           </a-tab-pane>
           <a-tab-pane tab="下发督办单" key="5" forceRender>
             <SuperviseOrder :region-list="regionList"></SuperviseOrder>
           </a-tab-pane>
           <a-tab-pane tab="下发函" key="6" forceRender>
-            <SendLetter :region-list="regionList"></SendLetter>
+            <SendLetter :region-list="regionList" :event-id="id"></SendLetter>
           </a-tab-pane>
         </a-tabs>
       </a-card>
@@ -82,7 +105,9 @@
   import {GET_EVENT_DETAIL, GET_EVENT_HANDLE_TYPE_LIST, GET_EVENT_PROCESS_STATUS} from "../../api/event";
   import SendOrder from "./event-detail-operation/SendOrder";
   import Delegate from "./event-detail-operation/Delegate";
-  import {BASE_URL} from "../../config/config";
+  import Rollback from "./event-detail-operation/Rollback";
+  import Close from "./event-detail-operation/Close";
+  import {BASE_URL, FILE_URL_PREFIX} from "../../config/config";
   import SuperviseOrder from "./event-detail-operation/SuperviseOrder";
   import SendLetter from "./event-detail-operation/SendLetter";
   import ARow from "ant-design-vue/es/grid/Row";
@@ -113,17 +138,23 @@
   };
 
   export default {
-    components: {ACol, ARow, SendLetter, SuperviseOrder, Delegate, SendOrder},
+    components: {ACol, ARow, SendLetter, SuperviseOrder, Delegate, SendOrder,Rollback,Close},
     data() {
       return {
         id: '',
+        userId:'',
         eventDetail: {},
         processStatusList: [],
         columns,
         operationTypeList: [],
         regionList: [],
         eventSourceEnum,
-        eventLevelEnum
+        eventLevelEnum,
+        FILE_URL_PREFIX,
+        beforeAccessory:[],
+        afterAccessory:[],
+        previewVisible:false,
+        previewImageUrl:''
       }
     },
     beforeMount() {
@@ -134,6 +165,8 @@
       this.getProcessStatus();
       this.getOperationTypeList();
       this.getRegionList();
+      this.getAccessoryList();
+      this.userId = JSON.parse(sessionStorage.getItem('userDTO')).id;
     },
     methods: {
       getEventDetail() {
@@ -176,6 +209,12 @@
         });
         this.processStatusList = list;
       },
+      getAccessoryList(){
+         get(`${BASE_URL}/eventMgr/v1/event/findAccessoryList?eventId=${this.id}`).then(res=>{
+           this.beforeAccessory=res.data.beforeAccessory;
+           this.afterAccessory=res.data.afterAccessory;
+         })
+      },
       initMap() {
         const longitude = this.eventDetail.longitude;
         const latitude = this.eventDetail.latitude;
@@ -189,6 +228,16 @@
         } else {
           this.$message.warn('缺少坐标，无法绘制地图');
         }
+      },
+      previewImage(target){
+        this.previewImageUrl=FILE_URL_PREFIX+target.accessoryurl;
+        this.previewVisible=true;
+      },
+      playAudio(target){
+
+      },
+      playVideo(target){
+
       }
     }
   }

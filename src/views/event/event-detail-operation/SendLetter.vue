@@ -77,6 +77,8 @@
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
   import ATextarea from "ant-design-vue/es/input/TextArea";
+  import {post} from "../../../util/axios";
+  import {BASE_URL} from "../../../config/config";
   const formLayout = {
     labelCol: {span: 6},
     wrapperCol: {span: 17}
@@ -89,6 +91,10 @@
         default(){
           return []
         }
+      },
+      eventId:{
+        type:String,
+        default:''
       }
     },
     data() {
@@ -105,7 +111,15 @@
       submit(){
         this.form.validateFields((err, value) => {
           if (!err) {
-            console.log(value);
+            const params=Object.assign({},value,{eventid:this.eventId});
+            post(`${BASE_URL}/eventMgr/v1/event/addEventDubanhan`,params).then(res=>{
+              if(res.resCode===1){
+                this.$message.success('操作成功');
+                setTimeout(()=>{
+                  this.$router.go(-1);
+                },1500)
+              }
+            })
           }
         });
       },

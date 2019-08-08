@@ -1,7 +1,7 @@
 <template>
   <a-form :form="form">
     <a-form-item v-bind="formLayout" label="选择区域">
-      <a-select placeholder="请选择区域" @blur="getPersonList" mode="multiple">
+      <a-select placeholder="请选择区域" @blur="getPersonList" mode="multiple" v-decorator="['regions']">
         <a-select-option v-for="item in regionList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
       </a-select>
     </a-form-item>
@@ -17,6 +17,7 @@
     </a-form-item>
     <a-form-item :wrapper-col="{span:formLayout.wrapperCol.span,offset:formLayout.labelCol.span}">
       <a-button type="primary" @click="submit" :loading="isSaveLoading">确认</a-button>
+      <a-button @click="reset" style="margin-left: 20px">重置</a-button>
     </a-form-item>
   </a-form>
 </template>
@@ -24,7 +25,7 @@
 <script>
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
-  import {get} from "../../../util/axios";
+  import {get, post} from "../../../util/axios";
   import {BASE_URL} from "../../../config/config";
 
   const formLayout = {
@@ -40,6 +41,14 @@
         default(){
           return []
         }
+      },
+      userId:{
+        default:'',
+        type:String
+      },
+      eventId:{
+        type:String,
+        default:''
       }
     },
     data() {
@@ -57,7 +66,7 @@
     methods:{
       getPersonList(e){
         if(e.length===0){
-          this.isLoadingPersonList=false,
+          this.isLoadingPersonList=false;
             this.personList=[];
         }else {
           this.isLoadingPersonList=true;
@@ -70,12 +79,30 @@
           })
         }
       },
-      submit(){
+      submit: function () {
         this.form.validateFields((err, value) => {
           if (!err) {
-            console.log(value);
+            this.isSaveLoading = true;
+            const params = {
+              handlerIds:value.handlerIds,
+              resultDesc:value.resultDesc,
+              eventId:this.eventId,
+              userId:this.userId
+            };
+            get(`${BASE_URL}/eventMgr/v1/event/sendOrder`,params).then(res=>{
+              this.isSaveLoading=false;
+              if(res.resCode===1){
+                this.$message.success('派单成功');
+                setTimeout(()=>{
+                  this.$router.go(-1);
+                },1500)
+              }
+            })
           }
         });
+      },
+      reset(){
+        this.form.resetFields();
       }
     }
   }

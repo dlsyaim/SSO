@@ -28,6 +28,16 @@
   };
   export default {
     components: {ATextarea, ACol, ARow},
+    props:{
+      eventId:{
+        type:String,
+        required:''
+      },
+      userId:{
+        type:String,
+        required:''
+      }
+    },
     data() {
       return {
         form: null,
@@ -49,13 +59,28 @@
           }
         })
       },
-      submit(){
+      submit: function () {
         this.form.validateFields((err, value) => {
           if (!err) {
-            console.log(value);
+            this.isSaveLoading = true;
+            const params = {
+              handlerIds:value.handlerIds,
+              resultDesc:value.resultDesc,
+              eventId:this.eventId,
+              userId:this.userId
+            };
+            get(`${BASE_URL}/eventMgr/v1/event/delegate`,params).then(res=>{
+              this.isSaveLoading=false;
+              if(res.resCode===1){
+                this.$message.success('委办成功');
+                setTimeout(()=>{
+                  this.$router.go(-1);
+                },1500)
+              }
+            })
           }
         });
-      }
+      },
     }
   }
 </script>

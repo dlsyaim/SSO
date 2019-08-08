@@ -10,7 +10,7 @@ export const BASE_URL='http://10.0.0.96';
  */
 export const UPLOAD_URL='http://10.0.0.96/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://47.93.191.69:8080';
+export const FILE_URL_PREFIX='http://10.0.0.95/fm';
 
 /**
  * 表格常用默认分页配置

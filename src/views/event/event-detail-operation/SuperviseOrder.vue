@@ -89,6 +89,10 @@
         default(){
           return []
         }
+      },
+      eventId:{
+        type:String,
+        default:''
       }
     },
     data() {
@@ -105,7 +109,15 @@
       submit(){
         this.form.validateFields((err, value) => {
           if (!err) {
-            console.log(value);
+            const params=Object.assign({},value,{eventid:this.eventId});
+            post(`${BASE_URL}/eventMgr/v1/event/addEventDubandan`,params).then(res=>{
+              if(res.resCode===1){
+                this.$message.success('操作成功');
+                setTimeout(()=>{
+                  this.$router.go(-1);
+                },1500)
+              }
+            })
           }
         });
       },
