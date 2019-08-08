@@ -25,7 +25,14 @@ export default new Router({
          */
         {
           path: 'statistic/river-patrol',
-          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverPatrol')
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverPatrol'),
+          meta:{
+            keepAlive:true
+          }
+        },
+        {
+          path: 'statistic/river-patrol-detail',
+          component: () => import(/* webpackChunkName: "statistic" */'./views/statistic/RiverPatrolDetail')
         },
         {
           path: 'statistic/event',
