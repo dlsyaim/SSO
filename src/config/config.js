@@ -121,6 +121,7 @@ export const settingMenuList=[
     icon: 'file',
     name: '考核设置',
     children: [
+      {id:'c5',icon:'file',name:'考核评分占比配置',funcUrl:'/setting/rating-ratio'},
       {id:'c6',icon:'file',name:'问题处理时限设置',funcUrl:'/setting/handle-time'}
     ]
   },

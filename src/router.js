@@ -173,6 +173,10 @@ export default new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserList')
         },
         {
+          path: 'setting/rating-ratio',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/RatingRatio')
+        },
+        {
           path: 'setting/handle-time',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/HandleTimeSetting')
         },
