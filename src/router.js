@@ -180,6 +180,10 @@ export default new Router({
           path: 'setting/handle-time',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/HandleTimeSetting')
         },
+        {
+          path: 'setting/role-permission',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/RolePermission')
+        },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]
     }

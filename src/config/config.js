@@ -125,6 +125,11 @@ export const settingMenuList=[
       {id:'c6',icon:'file',name:'问题处理时限设置',funcUrl:'/setting/handle-time'}
     ]
   },
-  {id: 'd', funcUrl: 'river-patrol', icon: 'file', name: '权限设置', children: []},
+  {id: 'd',
+    name: '权限设置',
+    children: [
+      {id:'d0',icon:'file',name:'角色权限',funcUrl:'/setting/role-permission'}
+    ]
+  },
   {id: 'e', funcUrl: 'river-patrol', icon: 'file', name: '数字字典管理', children: []}
 ];
