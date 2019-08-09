@@ -52,6 +52,7 @@
   /*表头上边框*/
   th{
     border-top: 1px solid #e8e8e8;
+    font-size: 15px;
   }
 
   /*不显示天地图左下角版权标识*/
