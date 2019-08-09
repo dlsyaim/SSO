@@ -116,7 +116,14 @@ export const settingMenuList=[
       {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'}
     ]
   },
-  {id: 'c', funcUrl: 'river-patrol', icon: 'file', name: '考核设置', children: []},
+  {
+    id: 'c',
+    icon: 'file',
+    name: '考核设置',
+    children: [
+      {id:'c6',icon:'file',name:'问题处理时限设置',funcUrl:'/setting/handle-time'}
+    ]
+  },
   {id: 'd', funcUrl: 'river-patrol', icon: 'file', name: '权限设置', children: []},
   {id: 'e', funcUrl: 'river-patrol', icon: 'file', name: '数字字典管理', children: []}
 ];

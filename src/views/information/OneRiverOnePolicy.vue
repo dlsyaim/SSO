@@ -48,8 +48,8 @@
     >
       <a-form :form="form">
           <a-form-item v-bind="formLayout" label="所属区域">
-            <a-input placeholder="请选择所属区域" style="cursor: pointer" readOnly @click="visible=true"
-                     v-decorator="['regionId',{rules: [{ required: true, message: '请选择所属区域!' }]}]"></a-input>
+            <a-input placeholder="请选择所属区域" style="cursor: pointer" readOnly @click="visible=true" :value="region.name"></a-input>
+            <a-input v-decorator="['regionId',{rules: [{ required: true, message: '请选择所属区域!' }]}]" style="display: none"></a-input>
           </a-form-item>
         <RegionTreeModal :show-mask="false" v-model="visible" @getRegion="getRegion"></RegionTreeModal>
         <a-form-item v-bind="formLayout" label="上传文件">
@@ -75,10 +75,10 @@
 </template>
 
 <script>
-  import {get} from "../../util/axios";
+  import {get, post} from "../../util/axios";
   import moment from 'moment';
   import {GET_ONE_RIVER_ONE_POLICY_LIST} from "../../api/information";
-  import {tablePaginationConfig} from "../../config/config";
+  import {BASE_URL, tablePaginationConfig} from "../../config/config";
   import RegionTreeModal from "../../components/RegionTreeModal";
 
   const columns = [
@@ -114,7 +114,7 @@
         formLayout,
         fileList:[],
         visible:false,
-        region:null
+        region:{}
       }
     },
     mounted() {
@@ -184,17 +184,33 @@
 
       },
       add(){
-        this.form.validateFields((err, values) => {
+        this.form.validateFields((err, value) => {
           if (!err) {
             this.confirmLoading = true;
-            console.log(this.fileList);
+            const data=new FormData();
+            data.append('regionId',value.regionId);
+            if(this.fileList.length!==0){
+              data.append('file',this.fileList[0]);
+              data.append('type',this.type);
+            };
+            this.confirmLoading=true;
+            post(`${BASE_URL}/watersource/v1/doc/add`,null,data).then(res=>{
+              this.confirmLoading=false;
+              if(res.resCode===1){
+                this.$message.success('操作成功');
+                setTimeout(()=>{
+                  this.form.resetFields();
+                  this.isAddModalVisible=false;
+                },1500)
+              }
+            })
           }
         });
       },
       getRegion(e){
         this.region=e;
         this.form.setFieldsValue({
-          regionId:e.name
+          regionId:e.id
         })
       },
       beforeUpload(file){
@@ -202,9 +218,14 @@
         if(typeList.lastIndexOf(file.type)===-1){
           this.$message.warn('只能上传pdf，doc，docx格式的文件');
           return false;
-        }else if(this.fileList.map(item=>item.lastModified).lastIndexOf(file.lastModified)!==-1){
+        }else if(this.fileList.length===1){
+          this.$message.warn('只能上传一个文件');
           return false;
-        }else {
+        }
+        // else if(this.fileList.map(item=>item.lastModified).lastIndexOf(file.lastModified)!==-1){
+        //   return false;
+        // }
+        else {
           this.fileList = [...this.fileList, file];
           return false;
         }

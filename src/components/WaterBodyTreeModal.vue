@@ -1,8 +1,10 @@
 <template>
   <a-modal
-    title="选择区域"
-    v-model="show"
+    title="选择水体"
+    :visible="visible"
+    @cancel="handleCancel"
     @ok="handleOk"
+    destroyOnClose
   >
     <a-input-search
       placeholder="请输入区域名称"
@@ -41,30 +43,23 @@
     },
     data() {
       return {
-        isTreeInit: false,
         loading: true,
         noData: false,
         treeSetting: {
           async: {
             enable: true,
-            url: `${BASE_URL}/information/v1/administrativeRegion/waterBodyTree?waterType=${this.waterType}`,
+            url: `${BASE_URL}/watersource/v1/reachChairMan/bindList?waterType=${this.waterType}`,
             dataType: 'json',
             type: 'get',
             autoParam: ['id=parentCode']
           },
+          check:{
+            enable:true,
+            chkboxType: { "Y": "", "N": "" }
+          },
           callback: {
             onAsyncSuccess: this.asyncGetRegionNodesSuccess,
           }
-        }
-      }
-    },
-    computed: {
-      show: {
-        get() {
-          return this.visible;
-        },
-        set(value) {
-          this.$emit('change', value);
         }
       }
     },
@@ -78,8 +73,8 @@
         get(`${BASE_URL}/watersource/v1/reachChairMan/bindList`, params).then(res => {
           this.loading = false;
           if (res.resCode === 1) {
+            this.treeSetting.async.url=`${BASE_URL}/watersource/v1/reachChairMan/bindList?waterType=${this.waterType}`;
             $.fn.zTree.init($('#waterBodyTree'), this.treeSetting, res.data);
-            this.isTreeInit = true;
           }
         })
       },
@@ -95,8 +90,8 @@
         }
       },
       handleOk() {
-        const selectedNodes = $.fn.zTree.getZTreeObj('waterBodyTree').getSelectedNodes();
-        this.$emit('getWaterBody', selectedNodes[0]);
+        const checkedNodes = $.fn.zTree.getZTreeObj('waterBodyTree').getCheckedNodes();
+        this.$emit('getWaterBody', checkedNodes);
       },
       onSearch(e) {
         this.searchRegion(e);
@@ -115,6 +110,16 @@
             }
           }
         })
+      },
+      handleCancel(){
+        this.$emit('getWaterBody', []);
+      }
+    },
+    watch:{
+      visible(newVal){
+        if(newVal){
+          this.initTree();
+        }
       }
     }
   }

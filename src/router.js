@@ -172,6 +172,10 @@ export default new Router({
           path: 'setting/user-list',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserList')
         },
+        {
+          path: 'setting/handle-time',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/HandleTimeSetting')
+        },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]
     }

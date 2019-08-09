@@ -4,9 +4,9 @@
       <div style="display: flex;align-items: center;justify-content: space-between">
         <div style="display: flex;align-items: center">
           <span>河长姓名：</span>
-          <a-input v-model="name" placeholder="请输入河长姓名" style="margin-right: 40px;width: 240px"></a-input>
+          <a-input v-model="name" placeholder="请输入河长姓名" style="margin-right: 40px;width: 200px"></a-input>
           <span>行政区域：</span>
-          <a-input :value="region.name" style="width: 240px;cursor: pointer;margin-right: 40px" placeholder="请选择行政区域"
+          <a-input :value="region.name" style="width: 200px;cursor: pointer;margin-right: 40px" placeholder="请选择行政区域"
                    readOnly @click="visible=true"></a-input>
           <RegionTreeModal v-model="visible" @getRegion="getRegion"></RegionTreeModal>
           <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
@@ -156,7 +156,9 @@
         this.region = e;
       },
       deleteItem(){
+        this.loading=true;
         deleteRequest(`${DELETE_RIVER_CHIEF}?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
           if(res.resCode===1){
             this.$message.success('删除成功');
             this.getList();

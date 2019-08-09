@@ -45,6 +45,7 @@
     <a-modal :visible="isModalVisible" title="详情" width="700px" :footer="null"  @cancel="handleCancel">
       <a-table :columns="modalTableColumns"
                rowKey="id"
+               size="small"
                @change="handleModalTableChange"
                :dataSource="modalTableData"
                :loading="isModalTableLoading">
