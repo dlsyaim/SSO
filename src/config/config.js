@@ -129,7 +129,8 @@ export const settingMenuList=[
     name: '权限设置',
     children: [
       {id:'d0',icon:'file',name:'菜单权限',funcUrl:'/setting/menu-permission'},
-      {id:'d1',icon:'file',name:'角色权限',funcUrl:'/setting/role-permission'}
+      {id:'d1',icon:'file',name:'角色权限',funcUrl:'/setting/role-permission'},
+      {id:'d2',icon:'file',name:'app菜单权限设置',funcUrl:'/setting/app-menu-permission'}
     ]
   },
   {id: 'e', funcUrl: 'river-patrol', icon: 'file', name: '数字字典管理', children: []}

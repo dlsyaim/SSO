@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="菜单权限" :bordered="false" style="min-height: 100%">
+    <a-card title="app端功能权限" :bordered="false" style="min-height: 100%">
       <div style="display: flex;justify-content: space-between;align-items:stretch">
         <a-card style="width: 31%" :bodyStyle="{padding:'18px'}">
           <div style="height: 40px;display: flex;align-items: center;background-color: #f2f2f2;padding-left: 20px;font-size: 15px;color: rgba(0,0,0,.85)">角色</div>
@@ -33,7 +33,7 @@
   export default {
     data() {
       return {
-        functionType:1,
+        functionType:5,
         selectedRole:null,
         loading1:true,
         loading2:false,
@@ -94,6 +94,7 @@
           this.isSaveLoading=false;
           if(res.resCode===1){
             this.$message.success('授权成功');
+            console.log(checkedNodes);
             checkedNodes.map(item=>{
               if(item.children.length!==0){
                 item.isParent=true;

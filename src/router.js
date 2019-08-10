@@ -188,6 +188,10 @@ export default new Router({
           path: 'setting/role-permission',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/RolePermission')
         },
+        {
+          path: 'setting/app-menu-permission',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/AppMenuPermission')
+        },
         {path: '*', component: () => import('./views/exception/PageNotFound')}
       ]
     }
