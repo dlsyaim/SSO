@@ -5,7 +5,7 @@
         <a-card style="width: 31%" :bodyStyle="{padding:'18px'}">
           <div style="height: 40px;display: flex;align-items: center;background-color: #f2f2f2;padding-left: 20px;font-size: 15px;color: rgba(0,0,0,.85)">角色</div>
           <a-spin :spinning="loading1">
-            <ul id="tree1" class="ztree" style="margin-top: 20px;height: 560px;overflow-y: auto"></ul>
+            <ul id="tree5" class="ztree" style="margin-top: 20px;height: 560px;overflow-y: auto"></ul>
           </a-spin>
         </a-card>
         <a-card style="width: 31%" :bodyStyle="{padding:'18px'}">
@@ -38,7 +38,7 @@
         loading1:true,
         loading2:false,
         loading3:false,
-        tree1Setting: {
+        tree5Setting: {
           enable: true,
           callback: {
             onClick: this.zTreeOnClick
@@ -60,7 +60,7 @@
       getRoleList(){
         get(`${BASE_URL}/uip/smRole/queryRoleList?pageNumber=-1&pageSize=-1`).then(res=>{
           if(res.resCode===1){
-            $.fn.zTree.init($('#tree1'),this.tree1Setting,res.data.records);
+            $.fn.zTree.init($('#tree5'),this.tree5Setting,res.data.records);
             this.loading1=false;
           }
         })
