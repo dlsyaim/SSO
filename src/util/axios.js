@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Qs from 'qs';
 import Vue from 'vue';
 
 axios.defaults.validateStatus = () => true;
@@ -42,7 +43,10 @@ export const post = (url,params, data) => {
         "Access-Token": accessToken
       },
       params:params,
-      data: data
+      data: data,
+      paramsSerializer: function(params) {
+        return Qs.stringify(params, {arrayFormat: 'repeat'})
+      }
     }).then(res => {
       if (res.status === 200) {
         if(res.data.resCode===1){
