@@ -37,7 +37,6 @@
         loading1:true,
         loading2:false,
         loading3:false,
-        isTree2Init:false,
         tree1Setting: {
           enable: true,
           callback: {
@@ -73,20 +72,16 @@
         this.selectedRole=treeNode;
         get(`${BASE_URL}/uip/smAuthority/queryAuthorityRoleList?roleId=${treeNode.id}`).then(res=>{
           if(res.resCode===1){
-            if(!this.isTree2Init){
-              $.fn.zTree.init($('#tree2'),this.tree2Setting,this.tree1Data);
-              this.isTree2Init=true;
-            }
             $.fn.zTree.init($('#tree3'),{},res.data);
             this.loading3=false;
-            const treeObj=$.fn.zTree.getZTreeObj("tree2");
+            const tree2Data=JSON.parse(JSON.stringify(this.tree1Data));
             const checkedNodeIdList=res.data.map(item=>item.id);
-            treeObj.checkAllNodes(false);
-            this.tree1Data.forEach(item=>{
+            tree2Data.forEach(item=>{
               if(checkedNodeIdList.lastIndexOf(item.id)!==-1){
-                treeObj.checkNode(item,true);
+                item.checked=true;
               }
             });
+            $.fn.zTree.init($('#tree2'),this.tree2Setting,tree2Data);
             this.loading2=false;
           }
         })
