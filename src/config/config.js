@@ -121,6 +121,8 @@ export const settingMenuList=[
     icon: 'file',
     name: '考核设置',
     children: [
+      {id:'c0',icon:'file',name:'考核评分类型管理',funcUrl:'/setting/assessment-score'},
+      {id:'c1',icon:'file',name:'河段考核配置',funcUrl:'/setting/reach-assessment'},
       {id:'c5',icon:'file',name:'考核评分占比配置',funcUrl:'/setting/rating-ratio'},
       {id:'c6',icon:'file',name:'问题处理时限设置',funcUrl:'/setting/handle-time'}
     ]
@@ -132,6 +134,5 @@ export const settingMenuList=[
       {id:'d1',icon:'file',name:'角色权限',funcUrl:'/setting/role-permission'},
       {id:'d2',icon:'file',name:'app菜单权限设置',funcUrl:'/setting/app-menu-permission'}
     ]
-  },
-  {id: 'e', funcUrl: 'river-patrol', icon: 'file', name: '数字字典管理', children: []}
+  }
 ];

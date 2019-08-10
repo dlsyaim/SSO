@@ -181,6 +181,14 @@ export default new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/HandleTimeSetting')
         },
         {
+          path: 'setting/assessment-score',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/AssessmentScore')
+        },
+        {
+          path: 'setting/reach-assessment',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/ReachAssessment')
+        },
+        {
           path: 'setting/menu-permission',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/MenuPermission')
         },
