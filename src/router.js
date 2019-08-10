@@ -181,6 +181,10 @@ export default new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/HandleTimeSetting')
         },
         {
+          path: 'setting/menu-permission',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/MenuPermission')
+        },
+        {
           path: 'setting/role-permission',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/RolePermission')
         },
