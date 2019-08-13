@@ -229,29 +229,29 @@
          if(this.waterType===0){
            this.reach=e;
            this.form.setFieldsValue({
-             reachIds:e.map(item=>item.id).join(',')
+             reachIds:e.map(item=>item.id)
            });
          }else if(this.waterType===1){
            this.lake=e;
            this.form.setFieldsValue({
-             lakesIds:e.map(item=>item.id).join(',')
+             lakesIds:e.map(item=>item.id)
            });
          }else if(this.waterType===2){
            this.reservoir=e;
            this.form.setFieldsValue({
-             reservoirIds:e.map(item=>item.id).join(',')
+             reservoirIds:e.map(item=>item.id)
            });
          }else if(this.waterType===3){
            this.pond=e;
            this.form.setFieldsValue({
-             pondIds:e.map(item=>item.id).join(',')
+             pondIds:e.map(item=>item.id)
            });
          }
       },
       submit(){
         this.form.validateFields((err, value) => {
           if (!err) {
-            this.isSaveLoading=true;
+            // this.isSaveLoading=true;
             const data={
               name: value.name,
               userName:value.userName,

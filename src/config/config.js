@@ -81,7 +81,9 @@ export const menuList = [
     id: '6',
     name: '监督督导',
     children: [
-      {id: '60', funcUrl: '/supervise/bulletin', icon: 'file', name: '通报批评'},
+      {id: '60', funcUrl: '/supervise/supervise', icon: 'file', name: '督办'},
+      {id: '61', funcUrl: '/supervise/bulletin', icon: 'file', name: '通报批评'},
+      {id: '62', funcUrl: '/supervise/interview-meeting', icon: 'file', name: '约谈会议'},
     ]
   },
   {id: '7', funcUrl: 'river-patrol', icon: 'file', name: '公众投诉', children: []},
@@ -113,7 +115,8 @@ export const settingMenuList=[
     icon: 'file',
     name: '系统管理',
     children: [
-      {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'}
+      {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'},
+      {id:'b1',icon:'file',name:'角色设置',funcUrl:'/setting/role'}
     ]
   },
   {
@@ -123,6 +126,7 @@ export const settingMenuList=[
     children: [
       {id:'c0',icon:'file',name:'考核评分类型管理',funcUrl:'/setting/assessment-score'},
       {id:'c1',icon:'file',name:'河段考核配置',funcUrl:'/setting/reach-assessment'},
+      {id:'c2',icon:'file',name:'评分规则配置',funcUrl:'/setting/scoring-rules'},
       {id:'c5',icon:'file',name:'考核评分占比配置',funcUrl:'/setting/rating-ratio'},
       {id:'c6',icon:'file',name:'问题处理时限设置',funcUrl:'/setting/handle-time'}
     ]

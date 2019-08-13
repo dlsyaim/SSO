@@ -40,7 +40,7 @@
   }
 
   /*默认的下拉选择器宽度*/
-  .default-select-width {
+  .card-container .default-select-width {
     width: 200px;
   }
 

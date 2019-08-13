@@ -116,8 +116,16 @@ export default new Router({
          * 监督督导
          */
         {
-          path: 'supervise/Bulletin',
+          path: 'supervise/supervise',
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Supervise')
+        },
+        {
+          path: 'supervise/bulletin',
           component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Bulletin')
+        },
+        {
+          path: 'supervise/interview-meeting',
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/InterviewMeeting')
         },
         /**
          * 信息报送
@@ -173,6 +181,18 @@ export default new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserList')
         },
         {
+          path: 'setting/user-list/add',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserFormAdd')
+        },
+        {
+          path: 'setting/user-list/edit',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/user-list/UserFormEdit')
+        },
+        {
+          path: 'setting/role',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/RoleSetting')
+        },
+        {
           path: 'setting/rating-ratio',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/RatingRatio')
         },
@@ -187,6 +207,10 @@ export default new Router({
         {
           path: 'setting/reach-assessment',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/ReachAssessment')
+        },
+        {
+          path: 'setting/scoring-rules',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/ScoringRules')
         },
         {
           path: 'setting/menu-permission',
@@ -205,3 +229,4 @@ export default new Router({
     }
   ]
 })
+

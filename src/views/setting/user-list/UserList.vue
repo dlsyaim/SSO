@@ -1,97 +1,181 @@
 <template>
   <div class="card-container">
     <a-card title="用户列表" :bordered="false" style="min-height: 100%">
-      <!--<div style="display: flex;align-items: center;justify-content: space-between">-->
-        <!--<div style="display: flex;align-items: center">-->
-          <!---->
-          <!--<a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>-->
-          <!--<a-button @click="resetSearchCondition">重置</a-button>-->
-        <!--</div>-->
-        <!--<a-button type="primary" @click="isAddModalVisible=true">-->
-          <!--<a-icon type="plus" style="font-size: 16px;"/>-->
-          <!--新增文档-->
-        <!--</a-button>-->
-      <!--</div>-->
+      <div style="display: flex;align-items: center;justify-content: space-between">
+        <div style="display:flex;align-items: center">
+          <span>用户角色：</span>
+          <a-select class="default-select-width" style="margin-right: 40px;" v-model="roleId" placeholder="请选择色用户角色">
+            <a-select-option v-for="item in roleList" :value="item.id" :key="item.id" :title="item.name">{{item.name}}
+            </a-select-option>
+          </a-select>
+          <span>河长名称：</span>
+          <a-input class="default-select-width" style="margin-right: 40px;" v-model="name"
+                   placeholder="请输入河长名称"></a-input>
+          <span>行政区域：</span>
+          <a-input class="default-select-width" style="margin-right: 40px;cursor: pointer;" :value="region.name"
+                   placeholder="请选择行政区域" readOnly @click="visible=true"></a-input>
+          <RegionTreeModal v-model="visible" @getRegion="getRegion"></RegionTreeModal>
+          <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
+          <a-button @click="resetSearchCondition">重置</a-button>
+        </div>
+        <a-button type="primary" @click="$router.push('/setting/user-list/add')">
+          <a-icon type="plus" style="font-size: 16px;"/>
+          新增用户
+        </a-button>
+      </div>
       <div style="margin-top: 18px;" @click="handleTableClick">
-        <!--<a-table :columns="columns"-->
-                 <!--:rowKey="record => record.index"-->
-                 <!--:dataSource="list"-->
-                 <!--:pagination="pagination"-->
-                 <!--:loading="loading"-->
-                 <!--@change="handleTableChange">-->
-          <!--<span slot="action" slot-scope="item">-->
-          <!--<span data-method="download" :data-id="item.id" class="table-operation">下载</span>-->
-          <!--<a-divider type="vertical"/>-->
-          <!--<span data-method="detail" :data-id="item.id" class="table-operation">详情</span>-->
-          <!--<a-divider type="vertical"/>-->
-          <!--<a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">-->
-          <!--<span data-method="delete" :data-id="item.id" class="table-operation">删除</span>-->
-          <!--</a-popconfirm>-->
-        <!--</span>-->
-        <!--</a-table>-->
+        <a-table :columns="columns"
+                 :rowKey="record => record.index"
+                 :dataSource="list"
+                 :pagination="pagination"
+                 :loading="loading"
+                 @change="handleTableChange">
+        <span slot="action" slot-scope="item">
+          <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
+          <a-divider type="vertical"/>
+          <span data-method="modify" :data-id="item.id" class="table-operation">修改</span>
+          <a-divider type="vertical"/>
+          <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
+            <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
+          </a-popconfirm>
+          <a-divider type="vertical"/>
+          <a-popconfirm title="确定要重置密码?" @confirm="resetPassword" placement="topRight">
+            <span data-method="reset" :data-id="item.id" class="table-operation">重置密码</span>
+          </a-popconfirm>
+        </span>
+        </a-table>
       </div>
     </a-card>
+    <a-modal :visible="isDetailModalVisible"
+             title="详情"
+             :footer="null"
+             @cancel="isDetailModalVisible=false"
+             width="800px">
+
+    </a-modal>
   </div>
 </template>
 
 <script>
-  import {tablePaginationConfig} from "../../../config/config";
+  import {BASE_URL, tablePaginationConfig} from "../../../config/config";
+  import {deleteRequest, get, put} from "../../../util/axios";
+  import RegionTreeModal from "../../../components/RegionTreeModal";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
-    {title: '标题', dataIndex: 'name'},
-    {title: '类别', dataIndex: 'typeName'},
-    {title: '上传时间', dataIndex: 'createdate'},
-    {title: '行政区域', dataIndex: 'regionName'},
-    {title: '浏览总量', dataIndex: 'count'},
-    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 200}
+    {title: '用户名', dataIndex: 'userName'},
+    {title: '姓名', dataIndex: 'name'},
+    {title: '性别', dataIndex: 'genderName'},
+    {title: '手机号码', dataIndex: 'cellphone'},
+    {title: '创建时间', dataIndex: 'createTime'},
+    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 240}
   ];
 
   export default {
+    components: {RegionTreeModal},
     data() {
       return {
+        roleList: [],
+        roleId: undefined,
+        name: undefined,
+        region: {},
+        visible: false,
         loading: true,
         list: [],
         columns,
-        pagination:tablePaginationConfig,
-        selected:{},
-        fileList:[],
-        visible:false,
-        region:null
+        pagination: tablePaginationConfig,
+        selected: {},
+        isDetailModalVisible:false
       }
     },
     mounted() {
       this.getList();
+      this.getRoleList();
     },
     methods: {
       getList() {
-
+        this.loading = true;
+        const params = {
+          roleId: this.roleId,
+          name: this.name,
+          regionId: this.regionId,
+          pageSize: this.pagination.pageSize,
+          pageNumber: this.pagination.current
+        };
+        get(`${BASE_URL}/uip/smUser/queryUserList`, params).then(res => {
+          this.loading = false;
+          if (res.resCode === 1) {
+            this.handleData(res.data.records);
+            this.pagination.total = res.data.totalNum;
+          }
+        })
       },
       handleData(list) {
         list.forEach((item, index) => {
-          item.index =(this.pagination.current-1)*this.pagination.pageSize+ index + 1;
+          item.index = (this.pagination.current - 1) * this.pagination.pageSize + index + 1;
+          if (item.gender === 1) {
+            item.genderName = '男';
+          } else if (item.gender === 2) {
+            item.genderName = '女';
+          }
         });
         this.list = list;
       },
-      handleTableChange(e){
-        this.pagination=e;
+      getRoleList() {
+        get(`${BASE_URL}/uip/smRole/queryRoleList`, {pageNumber: -1, pageSize: -1}).then(res => {
+          if (res.resCode === 1) {
+            this.roleList = res.data.records;
+          }
+        })
+      },
+      getRegion(e) {
+        this.region = e;
+      },
+      resetSearchCondition() {
+        this.roleId = undefined;
+        this.name = undefined;
+        this.region = {};
+      },
+      handleTableChange(e) {
+        this.pagination = e;
         this.getList();
       },
-      handleTableClick(e){
-        const method=e.target.dataset.method;
-        const id=e.target.dataset.id;
-        if(method&&id){
-          this.selected=this.list.find(item=>item.id===id);
-          if(method==='download'){
-          }else if(method ==='detail'){
-
+      handleTableClick(e) {
+        const method = e.target.dataset.method;
+        const id = e.target.dataset.id;
+        if (method && id) {
+          this.selected = this.list.find(item => item.id === id);
+          if (method === 'detail') {
+            this.isDetailModalVisible=true;
+          } else if (method === 'modify') {
+            this.$router.push({path: '/setting/user-list/edit', query: {id: this.selected.id}});
+          } else if (method === 'delete') {
+            //
+          } else if (method === 'reset') {
+            //
           }
         }
+      },
+      deleteItem() {
+        this.loading=true;
+        deleteRequest(`${BASE_URL}/uip/smUser/deleteById?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('删除成功');
+            this.getList();
+          }
+        })
+      },
+      resetPassword() {
+        this.loading=true;
+        put(`${BASE_URL}/uip/smUser/resetPassword`,{id:this.selected.id}).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('重置成功');
+          }
+        })
       }
     }
   }
 </script>
 
-<style scoped>
-
-</style>

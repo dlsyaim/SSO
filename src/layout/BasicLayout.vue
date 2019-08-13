@@ -227,16 +227,24 @@
 
   /*二级菜单动画*/
   .sub-menu-enter-active {
-    transition: opacity .15s ease-in;
+    animation: bounce-in .3s;
   }
 
   .sub-menu-leave-active {
-    transition: opacity .15s ease-out;
+    animation: bounce-in .3s reverse;
   }
 
   .sub-menu-enter, .sub-menu-leave-to {
-    opacity: 0;
     width: 0;
+  }
+
+  @keyframes bounce-in {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 300px;
+    }
   }
 </style>
 

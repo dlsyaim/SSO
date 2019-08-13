@@ -92,7 +92,11 @@
       },
       handleOk() {
         const selectedNodes=$.fn.zTree.getZTreeObj('regionTree').getSelectedNodes();
-        this.$emit('getRegion',selectedNodes[0]);
+        if(selectedNodes.length===0){
+          this.$emit('getRegion',{});
+        }else {
+          this.$emit('getRegion',selectedNodes[0]);
+        }
         this.$emit('change', false)
       },
       onSearch(e){
