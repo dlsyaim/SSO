@@ -109,9 +109,9 @@
         const method=e.target.dataset.method;
         if(id&&method){
           if(method==='k'){
-
+            this.$router.push({path:'/setting/scoring-rules/k',query:{id:id}});
           }else if(method==='f'){
-
+            this.$router.push({path:'/setting/scoring-rules/f',query:{id:id}});
           }else if(method==='modify'){
             const selected=this.list.find(item=>item.id===id);
             this.selected=selected;

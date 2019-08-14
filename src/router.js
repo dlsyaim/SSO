@@ -213,6 +213,14 @@ export default new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/ScoringRules')
         },
         {
+          path: 'setting/scoring-rules/f',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/score-rules/RuleF')
+        },
+        {
+          path: 'setting/scoring-rules/k',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/score-rules/RuleK')
+        },
+        {
           path: 'setting/menu-permission',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/MenuPermission')
         },

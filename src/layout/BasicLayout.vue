@@ -16,7 +16,7 @@
       </div>
     </a-layout-header>
     <transition name="sub-menu">
-      <ul id="subMenu" v-show="subMenuList.length!==0" @click="handleMenuClick" @mouseleave ="handleMouseLeave">
+      <ul id="subMenu" v-show="!collapsed&&subMenuList.length!==0" @click="handleMenuClick" @mouseleave ="handleMouseLeave">
         <li class="sub-menu-item" v-for="item in subMenuList" :key="item.id" :data-target="item.funcUrl">{{item.name}}</li>
       </ul>
     </transition>

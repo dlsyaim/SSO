@@ -192,6 +192,7 @@
             if(this.fileList.length!==0){
               data.append('file',this.fileList[0]);
               data.append('type',this.type);
+              data.append('jsonFile','');
             }
             this.confirmLoading=true;
             post(`${BASE_URL}/watersource/v1/doc/add`,null,data).then(res=>{
