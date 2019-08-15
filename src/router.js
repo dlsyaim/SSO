@@ -249,7 +249,7 @@ router.beforeEach((to, from, next) => {
     const query=formatLocationSearch(window.location.search);
     if(query.ST){
       // 有st，拿st换老系统token
-      post(`${BASE_URL}/login/loginWithSt?st=${query.ST}`).then(res=>{
+      post(`http://125.119.248.89:9080/uip/login/loginWithSt?st=${query.ST}`).then(res=>{
         if(res.resCode===1){
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substr(1);
@@ -264,8 +264,7 @@ router.beforeEach((to, from, next) => {
       })
     }else {
       //没有st，去登录中心获取st
-      // window.location.href=`${SSO_CENTER_URl}?from=${window.location.href.toString()}`;
-      window.location.href=`${SSO_CENTER_URl}?info=v3`;
+      window.location.href=`${SSO_CENTER_URl}?from=${window.location.href.toString()}&info=v3`;
     }
   }else {
     next();
