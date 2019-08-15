@@ -3,10 +3,13 @@ import Router from 'vue-router'
 
 import BasicLayout from './layout/BasicLayout'
 import SignIn from './views/SignIn'
+import {BASE_URL, SSO_CENTER_URl} from "./config/config";
+import {formatLocationSearch} from "./util/formatLocationSearch";
+import {post} from "./util/axios";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -236,5 +239,37 @@ export default new Router({
       ]
     }
   ]
-})
+});
 
+router.beforeEach((to, from, next) => {
+  const token=sessionStorage.getItem('Access-Token');
+  // 判断是否有token，有token正常进行导航
+  if(!token){
+    // 没有token看看是否由SSO登录中心登录完成，带着ST跳转而来
+    const query=formatLocationSearch(window.location.search);
+    if(query.ST){
+      // 有st，拿st换老系统token
+      post(`${BASE_URL}/login/loginWithSt?st=${query.ST}`).then(res=>{
+        if(res.resCode===1){
+          sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
+          const token=res.data.tokenInfo.token.substr(1);
+          sessionStorage.setItem('Access-Token',token);
+          // 登录成功除去遮罩层
+          const preloader = document.querySelector('.preloader');
+          preloader.className += ' preloader-hidden-add preloader-hidden-add-active';
+          setTimeout(function () {
+            preloader.className += ' preloader-hidden';
+          }, 750);
+        }
+      })
+    }else {
+      //没有st，去登录中心获取st
+      // window.location.href=`${SSO_CENTER_URl}?from=${window.location.href.toString()}`;
+      window.location.href=`${SSO_CENTER_URl}?info=v3`;
+    }
+  }else {
+    next();
+  }
+});
+
+export default router;

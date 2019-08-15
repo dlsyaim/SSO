@@ -13,6 +13,11 @@ export const UPLOAD_URL='http://10.0.0.96/inform/v1/informReport/upload';
 export const FILE_URL_PREFIX='http://10.0.0.95/fm';
 
 /**
+ * SSO登录中心地址
+ */
+export const SSO_CENTER_URl='http://10.0.0.96:81';
+
+/**
  * 表格常用默认分页配置
  */
 export const tablePaginationConfig = {
