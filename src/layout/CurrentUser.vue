@@ -12,7 +12,7 @@
         <a-icon type="setting" style="font-size: 16px"/><span>修改密码</span>
       </a-menu-item>
       <a-menu-divider />
-      <a-menu-item>
+      <a-menu-item @click="logOut">
         <a-icon type="logout" style="font-size: 16px"/><span>退出登录</span>
       </a-menu-item>
     </a-menu>
@@ -20,9 +20,17 @@
 </template>
 
 <script>
+  import {SSO_CENTER_URl} from "../config/config";
+
   export default {
     data() {
       return {}
+    },
+    methods:{
+      logOut(){
+        sessionStorage.removeItem('Access-Token');
+        window.location.href=SSO_CENTER_URl;
+      }
     }
   }
 </script>

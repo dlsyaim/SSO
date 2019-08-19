@@ -4,15 +4,13 @@ import Vue from 'vue';
 
 axios.defaults.validateStatus = () => true;
 
-const accessToken = sessionStorage.getItem('Access-Token') ? sessionStorage.getItem('Access-Token') : '';
-
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'get',
       url: url,
       headers: {
-        'Access-Token': accessToken
+        'Access-Token': sessionStorage.getItem('Access-Token')
       },
       params: params
     }).then(res => {
@@ -40,7 +38,7 @@ export const post = (url,params, data) => {
       method: 'post',
       url: url,
       headers: {
-        "Access-Token": accessToken
+        "Access-Token": sessionStorage.getItem('Access-Token')
       },
       params:params,
       data: data,
@@ -72,7 +70,7 @@ export const put = (url,params, data) => {
       method: 'put',
       url: url,
       headers: {
-        "Access-Token": accessToken
+        "Access-Token": sessionStorage.getItem('Access-Token')
       },
       params:params,
       data: data
@@ -101,7 +99,7 @@ export const deleteRequest = (url) => {
       method: 'delete',
       url: url,
       headers: {
-        "Access-Token": accessToken
+        "Access-Token": sessionStorage.getItem('Access-Token')
       }
     }).then(res => {
       if (res.status === 200) {

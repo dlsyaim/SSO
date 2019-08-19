@@ -249,19 +249,16 @@ router.beforeEach((to, from, next) => {
     const query=formatLocationSearch(window.location.search);
     if(query.ST){
       // 有st，拿st换老系统token
-      post(`http://125.119.248.89:9080/uip/login/loginWithSt?st=${query.ST}`).then(res=>{
+      post(`${BASE_URL}/uip/login/loginWithSt?st=${query.ST}`).then(res=>{
         if(res.resCode===1){
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token.substr(1);
           sessionStorage.setItem('Access-Token',token);
           // 登录成功除去遮罩层
-          const preloader = document.querySelector('.preloader');
-          preloader.className += ' preloader-hidden-add preloader-hidden-add-active';
-          setTimeout(function () {
-            preloader.className += ' preloader-hidden';
-          }, 750);
+          closeLayer();
+          next();
         }
-      })
+      });
     }else {
       //没有st，去登录中心获取st
       window.location.href=`${SSO_CENTER_URl}?from=${window.location.href.toString()}&info=v3`;
@@ -270,5 +267,13 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+function closeLayer(){
+  const preloader = document.querySelector('.preloader');
+  preloader.className += ' preloader-hidden-add preloader-hidden-add-active';
+  setTimeout(function () {
+    preloader.className += ' preloader-hidden';
+  }, 750);
+}
 
 export default router;

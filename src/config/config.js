@@ -2,20 +2,20 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://10.0.0.96';
+export const BASE_URL='http://60.186.187.209:9080';
 
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://10.0.0.96/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://60.186.187.209:9080/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://10.0.0.95/fm';
+export const FILE_URL_PREFIX='http://60.186.187.209/fm';
 
 /**
  * SSO登录中心地址
  */
-export const SSO_CENTER_URl='http://125.119.248.89:9081';
+export const SSO_CENTER_URl='http://60.186.187.209:9081';
 
 /**
  * 表格常用默认分页配置
