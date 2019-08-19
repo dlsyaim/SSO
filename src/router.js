@@ -252,7 +252,7 @@ router.beforeEach((to, from, next) => {
       post(`${BASE_URL}/uip/login/loginWithSt?st=${query.ST}`).then(res=>{
         if(res.resCode===1){
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
-          const token=res.data.tokenInfo.token.substr(1);
+          const token=res.data.tokenInfo.token;
           sessionStorage.setItem('Access-Token',token);
           // 登录成功除去遮罩层
           closeLayer();

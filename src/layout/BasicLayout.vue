@@ -11,7 +11,7 @@
       <div style="display:flex;justify-content: center;align-items: center">
         <a-icon type="setting" style="font-size: 22px;margin-right: 10px;cursor: pointer" @click="getSettingMenuList"
                 title="设置"/>
-        <InfoNotice style="margin-right: 14px;cursor: pointer"></InfoNotice>
+        <!--<InfoNotice style="margin-right: 14px;cursor: pointer"></InfoNotice>-->
         <CurrentUser></CurrentUser>
       </div>
     </a-layout-header>
