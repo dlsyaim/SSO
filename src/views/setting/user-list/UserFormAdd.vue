@@ -2,7 +2,7 @@
   <div class="card-container">
     <a-card title="新增用户" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.push('/setting/user-list')">返回</a-button>
-      <a-form :form="form" style="width: 80%">
+      <a-form style="width: 80%">
         <a-row>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="用户角色">

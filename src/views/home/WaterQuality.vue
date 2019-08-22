@@ -90,7 +90,7 @@
             name: '',
             type: 'pie',
             radius: ['30%', '50%'],
-            center: ['30%', '35%'],
+            center: ['40%', '50%'],
             data: [
               {
                 value: data ? data.one : 0,
@@ -143,7 +143,8 @@
                 show: true
               }
             }
-          }]
+          }],
+
         };
         echarts.init(document.getElementById('waterQualityChart')).setOption(pieChartOption);
       },

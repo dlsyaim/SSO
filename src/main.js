@@ -8,7 +8,6 @@ import 'ant-design-vue/dist/antd.css'
 Vue.use(Antd);
 
 // 引入ztree和jquery
-import $ from 'jquery';
 import 'ztree'
 import 'ztree/css/zTreeStyle/zTreeStyle.css'
 

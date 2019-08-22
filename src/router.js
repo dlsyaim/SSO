@@ -89,6 +89,14 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectory')
         },
         {
+          path: 'information/reach',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachList')
+        },
+        {
+          path: 'information/reach/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachAdd')
+        },
+        {
           path: 'information/river-chief-directory/form',
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectoryForm')
         },

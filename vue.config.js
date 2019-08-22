@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/hzz/' : '/',
+  publicPath: '/hzz/',
   lintOnSave: false,
   css: {
     loaderOptions: {

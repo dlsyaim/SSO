@@ -91,7 +91,10 @@
       },
       handleOk() {
         const checkedNodes = $.fn.zTree.getZTreeObj('waterBodyTree').getCheckedNodes();
-        this.$emit('getWaterBody', checkedNodes);
+        const data=checkedNodes.map(item=>{
+          return {id:item.id,name:item.name,grade:item.grade};
+        });
+        this.$emit('getWaterBody', data);
       },
       onSearch(e) {
         this.searchRegion(e);

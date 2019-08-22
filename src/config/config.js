@@ -2,20 +2,20 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://60.186.187.209:9080';
+export const BASE_URL='http://115.200.227.61:9080';
 
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://60.186.187.209:9080/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://115.200.227.61/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://60.186.187.209/fm';
+export const FILE_URL_PREFIX='http://115.200.227.61/fm';
 
 /**
  * SSO登录中心地址
  */
-export const SSO_CENTER_URl='http://60.186.187.209:9081';
+export const SSO_CENTER_URl='http://115.200.227.61:9081';
 
 /**
  * 表格常用默认分页配置
@@ -67,8 +67,9 @@ export const menuList = [
     icon: 'file',
     name: '信息查询', children: [
       {id: '30', funcUrl: '/information/river-chief-directory', icon: 'file', name: '河长名录'},
-      {id: '31', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
-      {id: '32', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
+      {id: '31', funcUrl: '/information/reach', icon: 'file', name: '河段管理'},
+      {id: '37', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
+      {id: '38', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
     ]
   },
   {id: '4', funcUrl: 'river-patrol', icon: 'file', name: '信息发布', children: []},

@@ -69,6 +69,9 @@
       initMap() {
         this.map = new T.Map('map');
         this.map.centerAndZoom(new T.LngLat(117.222880472695, 39.07894444826), 13);
+        setTimeout(()=>{
+          this.map.checkResize();
+        },100);
         // 地图初始化完毕后开始轮询
         this.subscription=timer(500, 30000).subscribe(()=>{
           this.getPatrolAndOnlineDetail();
@@ -133,12 +136,12 @@
           if(res.resCode===1){
             this.map.clearOverLays();// 把所有覆盖物都删除了，之后还得把边界线给加上
             const onlineIcon = new T.Icon({
-              iconUrl: '/online-legend.png',
+              iconUrl: '/hzz/online-legend.png',
               iconSize: new T.Point(24, 24),
               iconAnchor: new T.Point(10, 25)
             });
             const patrolIcon = new T.Icon({
-              iconUrl: '/river-patrol-legend.gif',
+              iconUrl: '/hzz/river-patrol-legend.gif',
               iconSize: new T.Point(32, 32),
               iconAnchor: new T.Point(10, 25)
             });

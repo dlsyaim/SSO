@@ -30,8 +30,13 @@
           </a-col>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="河长职务">
-              <a-select placeholder="请选择河长职务" v-decorator="['position']">
-                <a-select-option v-for="item in riverChiefType" :value="item.id" :key="item.id">{{item.typeName}}</a-select-option>
+              <a-input placeholder="请输入河长职务" v-decorator="['position']"></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col span="8">
+            <a-form-item v-bind="formLayout" label="河长类型">
+              <a-select placeholder="请选择河长类型" v-decorator="['chairmanRole']">
+                <a-select-option v-for="item in riverChiefType" :value="item.typeName" :key="item.id">{{item.typeName}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -146,6 +151,7 @@
     },
     computed:{
       reachName(){
+        console.log(this.reach);
         return this.reach.map(item=>item.name).join(',');
       },
       lakeName(){
@@ -169,7 +175,6 @@
         get(GET_RIVER_CHIEF_DETAIL,{id:id}).then(res=>{
           if(res.resCode===1){
             const value=res.data;
-            console.log(res.data);
             this.form.setFieldsValue({
               name: value.name,
               userName:value.userName,
@@ -229,52 +234,49 @@
          if(this.waterType===0){
            this.reach=e;
            this.form.setFieldsValue({
-             reachIds:e.map(item=>item.id)
+             reachIds:e
            });
          }else if(this.waterType===1){
            this.lake=e;
            this.form.setFieldsValue({
-             lakesIds:e.map(item=>item.id)
+             lakesIds:e
            });
          }else if(this.waterType===2){
            this.reservoir=e;
            this.form.setFieldsValue({
-             reservoirIds:e.map(item=>item.id)
+             reservoirIds:e
            });
          }else if(this.waterType===3){
            this.pond=e;
            this.form.setFieldsValue({
-             pondIds:e.map(item=>item.id)
+             pondIds:e
            });
          }
       },
       submit(){
         this.form.validateFields((err, value) => {
           if (!err) {
-            // this.isSaveLoading=true;
-            const data={
-              name: value.name,
-              userName:value.userName,
-              position: value.position,
-              cellphone:value.cellphone,
-              description: value.description,
-              regionCode: value.regionCode,
-              status: value.status?1:2,
-              chairmanRole: value.chairmanRole,
-              isAssess: value.isAssess?1:2,
-              docId: value.docId,
-              reachIds: value.reachIds,
-              lakesIds: value.lakesIds,
-              pondIds: value.pondIds,
-              reservoirIds:value.reservoirIds ,
-              role: value.role.join(',')
-            };
-            post(`${BASE_URL}/watersource/v1/reachChairMan/addUser`,data).then(res=>{
+            this.isSaveLoading=true;
+            const data=new FormData();
+            for (let key in value){
+              if(value[key]){
+                if(typeof value[key]==='string'){
+                  data.append(key,value[key]);
+                }else {
+                  data.append(key,JSON.stringify(value[key]));
+                }
+              }else {
+                data.append(key,'');
+              }
+            }
+            data.set('status',(value.status?1:2).toString());
+            data.set('isAssess',(value.isAssess?1:2).toString());
+            post(`${BASE_URL}/watersource/v1/reachChairMan/addUser`,null,data).then(res=>{
               this.isSaveLoading=false;
               if(res.resCode===1){
                 this.$message.success('新增成功');
                 setTimeout(()=>{
-                  this.$router.go(-1);
+                  this.$router.replace('/information/river-chief-directory');
                 },1500);
               }
             })
