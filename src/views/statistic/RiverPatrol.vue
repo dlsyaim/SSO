@@ -35,8 +35,8 @@
         </a-table>
       </div>
       <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-show="mode==='chart'">
-        <div id="chart1" style="height: 400px;width: 80%"></div>
-        <div id="chart2" style="height: 400px;width: 80%;margin-top: 20px"></div>
+        <div id="chart1" style="height: 400px;width: 1000px"></div>
+        <div id="chart2" style="height: 400px;width: 1000px;margin-top: 20px"></div>
       </div>
     </a-card>
   </div>
