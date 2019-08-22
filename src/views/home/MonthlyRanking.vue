@@ -2,7 +2,12 @@
   <a-card :title="null" :bodyStyle="{padding:0}">
     <a-spin :spinning="loading">
       <p style="font-size: 16px;font-weight: 600;margin: 8px 0 0 10px">月度考核排名({{month}}月)</p>
-      <div style="width: 100%;height: 360px" id="monthlyRankingChart"></div>
+      <div style="width: 100%;height: 360px;" id="monthlyRankingChart">
+        <div style="width: 100%;height: 200px;display: flex;align-items: center;justify-content: center;flex-direction: column">
+          <img src="../../assets/no-data.svg"/>
+          <span style="margin-top: 16px;color: rgba(0,0,0,.35)">暂无考核数据</span>
+        </div>
+      </div>
     </a-spin>
   </a-card>
 </template>
@@ -23,7 +28,6 @@
     mounted() {
       this.initDate();
       this.getData();
-      this.chartInstance = echarts.init(document.getElementById('monthlyRankingChart'));
     },
     methods: {
       initDate() {
@@ -49,7 +53,10 @@
         get(GET_MONTH_RANK, params).then(res => {
           this.loading = false;
           if (res.resCode === 1) {
-            this.renderChart(res.data);
+            if(res.data.length!==0){
+              this.chartInstance = echarts.init(document.getElementById('monthlyRankingChart'));
+              this.renderChart(res.data);
+            }
           }
         })
       },
