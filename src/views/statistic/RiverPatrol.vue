@@ -35,8 +35,8 @@
         </a-table>
       </div>
       <div style="display: flex;flex-direction: column;justify-content: center;align-items: center" v-show="mode==='chart'">
-        <div id="chart1" style="height: 400px;width: 1000px"></div>
-        <div id="chart2" style="height: 400px;width: 1000px;margin-top: 20px"></div>
+        <div id="chart1" style="height: 420px;width: 1200px" v-if="grade<3"></div>
+        <div id="chart2" style="height: 420px;width: 1200px;margin-top: 20px"></div>
       </div>
     </a-card>
   </div>
@@ -203,7 +203,10 @@
             silent: false,
             axisLine: {onZero: true},
             splitLine: {show: false},
-            splitArea: {show: false}
+            splitArea: {show: false},
+            axisLabel:{
+              rotate:20
+            },
           },
           yAxis: [
             {
@@ -286,7 +289,10 @@
             silent: false,
             axisLine: {onZero: true},
             splitLine: {show: false},
-            splitArea: {show: false}
+            splitArea: {show: false},
+            axisLabel:{
+              rotate:20,
+            },
           },
           yAxis: [
             {
@@ -341,16 +347,18 @@
           ]
         };
         this.list.forEach(item=>{
-          chartOption1.xAxis.data.push(item.regionName);
-          chartOption1.series[0].data.push(item.countyHasPatrolNum);
-          chartOption1.series[1].data.push(item.countyNeedPatrolNum);
-          chartOption1.series[2].data.push(item.countyPatrolRate);
+          if(this.grade<3){
+            chartOption1.xAxis.data.push(item.regionName);
+            chartOption1.series[0].data.push(item.countyHasPatrolNum);
+            chartOption1.series[1].data.push(item.countyNeedPatrolNum);
+            chartOption1.series[2].data.push(item.countyPatrolRate);
+            echarts.init(document.getElementById('chart1')).setOption(chartOption1);
+          }
           chartOption2.xAxis.data.push(item.regionName);
           chartOption2.series[0].data.push(item.townHasPatrolNum);
           chartOption2.series[1].data.push(item.townNeedPatrolNum);
           chartOption2.series[2].data.push(item.townPatrolRate);
         });
-        echarts.init(document.getElementById('chart1')).setOption(chartOption1);
         echarts.init(document.getElementById('chart2')).setOption(chartOption2);
       }
     }
