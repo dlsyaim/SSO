@@ -12,7 +12,7 @@
           <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
           <a-button @click="resetSearchCondition">重置</a-button>
         </div>
-        <a-button type="primary" @click="$router.push('/information/river-chief-directory/form')">
+        <a-button type="primary" @click="$router.push('/information/river-chief-directory/add')">
           <a-icon style="font-size: 16px" type="plus"></a-icon>
           新增
         </a-button>
@@ -146,7 +146,7 @@
            selected.roleNames=selected.roles.map(role=>role.name).join(',');
            this.selected=selected;
            if(method==='modify'){
-              this.$router.push({path:'/information/river-chief-directory/form',query:{id:this.selected.id}})
+              this.$router.push({path:'/information/river-chief-directory/edit',query:{id:this.selected.id}})
            }else if(method==='detail'){
              this.isModalVisible=true;
            }

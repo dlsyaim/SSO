@@ -89,16 +89,20 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectory')
         },
         {
+          path: 'information/river-chief-directory/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectoryForm')
+        },
+        {
+          path: 'information/river-chief-directory/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/FormEdit')
+        },
+        {
           path: 'information/reach',
           component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachList')
         },
         {
           path: 'information/reach/add',
           component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachAdd')
-        },
-        {
-          path: 'information/river-chief-directory/form',
-          component: () => import(/* webpackChunkName: "information" */'./views/information/river-chief-directory/RiverChiefDirectoryForm')
         },
         {
           path: 'information/one-river-one-policy',
@@ -109,11 +113,32 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/SuperviseEvent')
         },
         /**
+         * 信息发布
+         */
+        {
+          path: 'publish/info-publish',
+          component: () => import(/* webpackChunkName: "publish" */'./views/publish/publish/InformationPublish'),
+          meta:{
+            keepAlive:true
+          }
+        },
+        {
+          path: 'publish/info-publish/detail',
+          component: () => import(/* webpackChunkName: "publish" */'./views/publish/publish/detail')
+        },
+        /**
          * 河长巡河
          */
         {
           path: 'river-patrol/standing-book',
-          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/StandingBook')
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/standing-book/StandingBookList'),
+          meta:{
+            keepAlive:true
+          }
+        },
+        {
+          path: 'river-patrol/standing-book/detail',
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/standing-book/StandingBookDetail')
         },
         {
           path: 'river-patrol/rectification-feedback',

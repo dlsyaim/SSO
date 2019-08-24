@@ -71,11 +71,25 @@
         </a-form-item>
       </a-form>
     </a-modal>
+    <a-modal
+      title="政策文件详情"
+      :visible="isDetailModalVisible"
+      @cancel="isDetailModalVisible=false"
+      :footer="null"
+    >
+      <p class="modal-detail-item"><span class="detail-item-label">文档名称：</span><span>{{selected.name}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">文档类别：</span><span>{{selected.typeName}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">行政区域：</span><span>{{selected.regionName}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">河长：</span><span>{{selected.userName}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">上传时间：</span><span>{{selected.createdate}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">是否公开：</span><span>{{selected.publicflag==='2'?'私有':'公有'}}</span></p>
+      <p class="modal-detail-item"><span class="detail-item-label">关键字：</span><span>{{selected.keywords}}</span></p>
+    </a-modal>
   </div>
 </template>
 
 <script>
-  import {get, post} from "../../util/axios";
+  import {deleteRequest, get, post} from "../../util/axios";
   import moment from 'moment';
   import {GET_ONE_RIVER_ONE_POLICY_LIST} from "../../api/information";
   import {BASE_URL, tablePaginationConfig} from "../../config/config";
@@ -114,7 +128,8 @@
         formLayout,
         fileList:[],
         visible:false,
-        region:{}
+        region:{},
+        isDetailModalVisible:false
       }
     },
     mounted() {
@@ -176,12 +191,19 @@
            if(method==='download'){
              window.location.href=this.selected.filepath;
            }else if(method ==='detail'){
-
+             this.isDetailModalVisible=true;
            }
          }
       },
       deleteItem(){
-
+        this.loading=true;
+        deleteRequest(`${BASE_URL}/watersource/v1/doc/delete?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('删除成功');
+            this.getList();
+          }
+        })
       },
       add(){
         this.form.validateFields((err, value) => {

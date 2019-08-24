@@ -2,20 +2,20 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://115.200.227.61:9080';
+export const BASE_URL='http://125.119.246.114:9080';
 
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://115.200.227.61/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://125.119.246.114/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://115.200.227.61/fm';
+export const FILE_URL_PREFIX='http://125.119.246.114:9085/files';
 
 /**
  * SSO登录中心地址
  */
-export const SSO_CENTER_URl='http://115.200.227.61:9081';
+export const SSO_CENTER_URl='http://125.119.246.114:9081';
 
 /**
  * 表格常用默认分页配置
@@ -72,7 +72,14 @@ export const menuList = [
       {id: '38', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
     ]
   },
-  {id: '4', funcUrl: 'river-patrol', icon: 'file', name: '信息发布', children: []},
+  {
+    id: '4',
+    icon: 'file',
+    name: '信息发布',
+    children: [
+      {id: '40', funcUrl: '/publish/info-publish', icon: 'file', name: '信息发布'},
+    ]
+  },
   {
     id: '5',
     icon: 'file',

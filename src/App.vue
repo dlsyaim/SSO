@@ -69,8 +69,13 @@
 
   /*弹出框每一条详情的内边距*/
   .modal-detail-item{
-    padding: 6px 0;
     font-size: 15px;
     color: rgba(0,0,0,.85);
+    margin-bottom: 16px;
+  }
+  /*弹出框每一条详情的label*/
+  .detail-item-label{
+    width: 120px;
+    display: inline-block;
   }
 </style>

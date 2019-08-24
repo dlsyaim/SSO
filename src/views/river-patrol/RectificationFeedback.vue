@@ -9,9 +9,9 @@
           </a-select>
           <span>开始月份：</span>
           <a-month-picker v-model="startTime" :disabledDate="disableStartDate" style="margin-right: 40px" class="default-select-width"/>
-          <span>结束日期：</span>
-          <a-month-picker v-model="endTime" :disabledDate="disableEndDate" style="margin-right: 40px" class="default-select-width"/>
           <span>结束月份：</span>
+          <a-month-picker v-model="endTime" :disabledDate="disableEndDate" style="margin-right: 40px" class="default-select-width"/>
+          <span>是否完成：</span>
           <a-radio-group v-model="state" style="margin-right: 40px">
             <a-radio value="1">是</a-radio>
             <a-radio value="2">否</a-radio>
@@ -24,7 +24,7 @@
       <div style="margin-top: 18px;" @click="handleTableClick">
         <a-table :columns="columns"
                  @change="handleTableChange"
-                 :rowKey="record => record.id"
+                 rowKey="id"
                  :dataSource="list"
                  :pagination="pagination"
                  :loading="loading">
@@ -44,7 +44,7 @@
       :title="isEdit?'编辑':'新增整改'"
       :visible="isFormModalVisible"
       @cancel="isFormModalVisible=false"
-      :confirmLoading="confirmLoading"
+      :confirmLoading="isSaveLoading"
       @ok="submit"
       width="760px"
     >
@@ -70,8 +70,8 @@
           <a-col span="12">
             <a-form-item v-bind="formLayout" label="是否完成">
               <a-radio-group v-decorator="['state', {rules: [{ required: true, message: '请选择是否完成!'}],initialValue:'1'}]">
-                <a-radio value="1">是</a-radio>
-                <a-radio value="2">否</a-radio>
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="2">否</a-radio>
               </a-radio-group>
             </a-form-item>
           </a-col>
@@ -107,7 +107,10 @@
           </a-col>
           <a-col span="24">
             <a-form-item v-bind="{labelCol: {span: 3},wrapperCol: {span: 20}}" label="附件">
-              <a-upload :fileList="fileList"
+              <a-upload @change="uploadFile"
+                        name="files"
+                        :fileList="fileList"
+                        :action="BASE_URL+'/analysis/v1/saAbarbeitung/upload'"
                         :remove="handleFileRemove">
                 <div style="display: flex;align-items: center;justify-content: space-between;width: 144px">
                   <a-button>
@@ -131,7 +134,7 @@
 </template>
 
 <script>
-  import {get} from "../../util/axios";
+  import {get, post, put} from "../../util/axios";
   import {BASE_URL, tablePaginationConfig} from "../../config/config";
   import moment from 'moment';
   import ARow from "ant-design-vue/es/grid/Row";
@@ -170,11 +173,12 @@
         form:null,
         isFormModalVisible:false,
         isEdit:false,
-        confirmLoading:false,
+        isSaveLoading:false,
         selected:{},
         isDetailModalVisible:false,
         formLayout,
-        fileList:[]
+        fileList:[],
+        BASE_URL
       }
     },
     mounted(){
@@ -238,6 +242,40 @@
       showAddModal(){
         this.isEdit=false;
         this.isFormModalVisible=true;
+        this.form.resetFields();
+        this.fileList=[];
+      },
+      showEditModal(){
+        this.isFormModalVisible=true;
+        this.isEdit=true;
+        // 初始化原有的上传文件
+        if(this.selected.accessoryyuan){
+          this.fileList=[
+            {
+              uid:this.selected.id,
+              responseUrl:this.selected.accessoryyuan,
+              name: this.selected.accessoryyuan.split('_').reverse()[0],
+              status: 'done'
+            }
+          ]
+        }else {
+          this.fileList=[];
+        }
+        this.$nextTick(()=>{
+          const data=this.selected;
+          this.form.setFieldsValue({
+            begin_time: data.begin_time?moment(data.begin_time):null,
+            reply_time: data.reply_time?moment(data.reply_time):null,
+            deadline: data.deadline?moment(data.deadline):null,
+            state: data.state,
+            region: data.region,
+            notekeeper: data.notekeeper,
+            object: data.object,
+            duty: data.duty,
+            items: data.items,
+            remark: data.remark,
+          });
+        })
       },
       handleTableChange(e){
         this.pagination=e;
@@ -251,25 +289,70 @@
           if(method==='detail'){
             this.isDetailModalVisible=true;
           }else if(method==='modify'){
-            this.isFormModalVisible=true;
-            this.isEdit=true;
+            this.showEditModal();
           }
         }
       },
       submit(){
-
+        this.form.validateFields((err,value)=>{
+          if(!err){
+            this.isSaveLoading=true;
+            const fileUrlArray= this.fileList.filter(item=>item.responseUrl).map(item=>item.responseUrl);
+            value.accessoryyuan=fileUrlArray.join(',');
+            value.begin_time=moment(value.begin_time).format('YYYY-MM-DD');
+            value.reply_time=moment(value.reply_time).format('YYYY-MM-DD');
+            value.deadline=moment(value.deadline).format('YYYY-MM-DD');
+            if(this.isEdit){
+              this.edit(value);
+            }else {
+              this.add(value);
+            }
+          }
+        })
       },
-      add(){
-
+      add(value){
+         post(`${BASE_URL}/analysis/v1/saAbarbeitung/add`,value).then(res=>{
+           this.isSaveLoading=false;
+           if(res.resCode===1){
+             this.$message.success('新增成功');
+             this.getList();
+             setTimeout(()=>{
+               this.isFormModalVisible=false;
+             },1000)
+           }
+         })
       },
-      edit(){
-
+      edit(value){
+        const data=Object.assign({},value,{id:this.selected.id});
+        put(`${BASE_URL}/analysis/v1/saAbarbeitung/update`,data).then(res=>{
+          this.isSaveLoading=false;
+          if(res.resCode===1){
+            this.$message.success('修改成功');
+            this.getList();
+            setTimeout(()=>{
+              this.isFormModalVisible=false;
+            },1000)
+          }
+        })
       },
       deleteItem(){
 
       },
-      handleFileRemove(){
-
+      uploadFile({file, fileList}){
+        this.fileList=fileList;
+        if (file.status === 'done') {
+          this.$message.success('上传成功');
+          this.fileList.forEach(item=>{
+            if(item.uid===file.uid){
+              item.responseUrl=file.response.data[0];
+            }
+          });
+        } else if (file.status === 'error') {
+          this.$message.error('上传失败');
+        }
+      },
+      handleFileRemove(file){
+        this.fileList=this.fileList.filter(item=>item.uid!==file.uid);
       }
     }
   }

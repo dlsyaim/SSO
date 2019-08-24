@@ -212,7 +212,7 @@
         }else {
           detail.showImage=false;
         }
-        if(detail.detail_url){
+        if(detail.detail_url&&afterFix==='pdf'){
           detail.showPDF=true;
           detail.pdfUrl=FILE_URL_PREFIX+detail.detail_url;
         }else {
