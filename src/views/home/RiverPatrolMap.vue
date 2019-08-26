@@ -79,7 +79,7 @@
         });
       },
       getPatrolAndOnlineAmount(){
-        get(`${GET_PATROL_AND_ONLINE_DATA}120103000000`).then(res=>{
+        get(`${GET_PATROL_AND_ONLINE_DATA}${REGION_ID}`).then(res=>{
           if(res.resCode===1){
             this.patrolAmount=res.data.countPatrol;
             this.onlineAmount=res.data.countOnline;

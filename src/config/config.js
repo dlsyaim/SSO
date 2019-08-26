@@ -30,9 +30,9 @@ export const tablePaginationConfig = {
 };
 
 /**
- * 河西区regionId
+ * 西青区regionId
  */
-export const REGION_ID=120103000000;
+export const REGION_ID=120111000000;
 /**
  * 地图密钥
  */
