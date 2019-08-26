@@ -1,7 +1,8 @@
 <template>
   <a-modal
     title="选择区域"
-    v-model="show"
+    :visible="visible"
+    @cancel="$emit('change',false)"
     :mask="showMask"
     @ok="handleOk"
   >
@@ -55,16 +56,6 @@
           callback: {
             onAsyncSuccess: this.asyncGetRegionNodesSuccess,
           }
-        }
-      }
-    },
-    computed: {
-      show: {
-        get() {
-          return this.visible;
-        },
-        set(value) {
-          this.$emit('change', value);
         }
       }
     },
