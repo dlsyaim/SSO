@@ -34,10 +34,12 @@
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
           <a-divider type="vertical"/>
           <span data-method="modify" :data-id="item.id" class="table-operation">修改</span>
-          <a-divider type="vertical"/>
-          <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
-            <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
-          </a-popconfirm>
+          <template v-if="item.couldDelete">
+            <a-divider type="vertical"/>
+            <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
+              <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
+            </a-popconfirm>
+          </template>
           <a-divider type="vertical"/>
           <a-popconfirm title="确定要重置密码?" @confirm="resetPassword" placement="topRight">
             <span data-method="reset" :data-id="item.id" class="table-operation">重置密码</span>
@@ -118,6 +120,8 @@
           } else if (item.gender === 2) {
             item.genderName = '女';
           }
+          // 管理员的角色id为‘1’，不可删除
+          item.couldDelete=!(item.roleList.some(item=>item.id==='1'));
         });
         this.list = list;
       },
@@ -149,10 +153,6 @@
             this.isDetailModalVisible=true;
           } else if (method === 'modify') {
             this.$router.push({path: '/setting/user-list/edit', query: {id: this.selected.id}});
-          } else if (method === 'delete') {
-            //
-          } else if (method === 'reset') {
-            //
           }
         }
       },
