@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import BasicLayout from './layout/BasicLayout'
-import SignIn from './views/SignIn'
 import {BASE_URL, SSO_CENTER_URl} from "./config/config";
 import {formatLocationSearch} from "./util/formatLocationSearch";
 import {post} from "./util/axios";
@@ -17,7 +16,6 @@ const router = new Router({
       path: '/',
       component: BasicLayout,
       children: [
-        {path: 'sign-in', component: SignIn},
         /**
          * 综合首页
          */
@@ -153,7 +151,7 @@ const router = new Router({
          */
         {
           path: 'supervise/supervise',
-          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Supervise')
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/supervise/SuperviseList')
         },
         {
           path: 'supervise/bulletin',
