@@ -162,6 +162,13 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/InterviewMeeting')
         },
         /**
+         * 公众投诉
+         */
+        {
+          path: 'complaint',
+          component: () => import(/* webpackChunkName: "complaint" */'./views/complaint/PublicComplaint')
+        },
+        /**
          * 信息报送
          */
         {

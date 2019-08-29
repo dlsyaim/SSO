@@ -2,20 +2,20 @@
  * api根路径
  * @type {string}
  */
-export const BASE_URL='http://125.119.246.114:9080';
+export const BASE_URL='http://122.224.129.35:9080';
 
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://125.119.246.114/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://122.224.129.35/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://125.119.246.114:9085/files';
+export const FILE_URL_PREFIX='http://122.224.129.35:9085/files';
 
 /**
  * SSO登录中心地址
  */
-export const SSO_CENTER_URl='http://125.119.246.114:9081';
+export const SSO_CENTER_URl='http://122.224.129.35:9081';
 
 /**
  * 表格常用默认分页配置
@@ -99,7 +99,7 @@ export const menuList = [
       {id: '62', funcUrl: '/supervise/interview-meeting', icon: 'file', name: '约谈会议'},
     ]
   },
-  {id: '7', funcUrl: 'river-patrol', icon: 'file', name: '公众投诉', children: []},
+  {id: '7', funcUrl: '/complaint', icon: 'file', name: '公众投诉', children: []},
   {
     id: '8',
     icon: 'file',

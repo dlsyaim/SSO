@@ -100,10 +100,18 @@
         </a-table>
       </div>
     </a-card>
+    <!--详情-->
+    <SuperviseDetail v-model="isDetailModalVisible" :detail="selected"/>
     <!--发起督办-->
-    <AddSupervise :region-list="regionList" :supervise-type-enum="superviseTypeEnum" v-model="isAddSuperviseModalVisible" @success="getList"></AddSupervise>
+    <AddSupervise :region-list="regionList" :supervise-type-enum="superviseTypeEnum" v-model="isAddSuperviseModalVisible" @success="getList"/>
     <!--督办反馈-->
-    <SuperviseFeedBack :region-list="regionList" v-model="isSuperviseFeedbackVisible"></SuperviseFeedBack>
+    <SuperviseFeedBack :region-list="regionList" :feedback-list="feedbackList" :record-id="selected.id" v-model="isSuperviseFeedbackVisible" @success="getList"/>
+    <!--现场核查-->
+    <OnsiteVertification v-model="isCheckVisible" :record-id="selected.id" :check-result="checkResult" @success="getList"/>
+    <!--生成督办单-->
+    <SuperviseDan v-model="isDanVisible" :record="selected" @success="getList"/>
+    <!--生成督办函-->
+    <SuperviseHan v-model="isHanVisible" :record="selected" @success="getList"/>
   </div>
 </template>
 
@@ -111,10 +119,14 @@
   import ARow from "ant-design-vue/es/grid/Row";
   import moment from 'moment';
   import {BASE_URL, tablePaginationConfig} from "../../../config/config";
-  import {get, post} from "../../../util/axios";
+  import {deleteRequest, get, post} from "../../../util/axios";
   import ATextarea from "ant-design-vue/es/input/TextArea";
   import SuperviseFeedBack from "./SuperviseFeedBack";
   import AddSupervise from "./AddSupervise";
+  import SuperviseDan from "./SuperviseDan";
+  import SuperviseHan from "./SuperviseHan";
+  import OnsiteVertification from "./OnsiteVertification";
+  import SuperviseDetail from "./SuperviseDetail";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -139,7 +151,9 @@
   };
 
   export default {
-    components: {AddSupervise, SuperviseFeedBack, ATextarea, ARow},
+    components: {
+      SuperviseDetail,
+      OnsiteVertification, SuperviseHan, SuperviseDan, AddSupervise, SuperviseFeedBack, ATextarea, ARow},
     data() {
       return {
         searchCondition: {
@@ -162,8 +176,14 @@
         pagination: tablePaginationConfig,
         columns,
         BASE_URL,
+        isDetailModalVisible:false,
         isAddSuperviseModalVisible: false,
-        isSuperviseFeedbackVisible:false
+        isSuperviseFeedbackVisible:false,
+        feedbackList:[],
+        isCheckVisible:false,
+        checkResult:{},
+        isDanVisible:false,
+        isHanVisible:false
       }
     },
     mounted() {
@@ -265,20 +285,57 @@
         if(id&&method){
           this.selected=this.list.find(item=>item.id===id);
           if(method==='detail'){
-
+            this.isDetailModalVisible=true;
           }else if(method==='feedback'){
-             this.isSuperviseFeedbackVisible=true;
+            this.getFeedbackList();
           }else if(method==='check'){
-
+            this.getCheckResult();
           }else if(method==='dan'){
-
+             this.isDanVisible=true;
           }else if(method==='han'){
-
+             this.isHanVisible=true;
           }
         }
       },
+      getFeedbackList(){
+        this.loading=true;
+        const params={
+          reportId:this.selected.id,
+          replyStatus: 1
+        };
+        get(`${BASE_URL}/inform/v1/informAccept/list`,params).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            if(res.data.length===0){
+              this.$message.warn('暂无反馈结果');
+            }else {
+              this.feedbackList=res.data;
+              this.isSuperviseFeedbackVisible=true;
+            }
+          }
+        })
+      },
+      getCheckResult(){
+        this.loading=true;
+        get(`${BASE_URL}/duban/v1/DubanSupervision/detailFeedbackhc`,{supervisionid:this.selected.id}).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.checkResult=res.data[0];
+            this.isCheckVisible=true;
+          }
+        })
+      },
       deleteItem(){
-
+        this.loading=true;
+        deleteRequest(`${BASE_URL}/duban/v1/DubanSupervision/delete?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.getList();
+            // 由于删除成功或者失败，resCode都是1，只能用一个中性的信息提示
+            // 坑！
+            this.$message.info(res.data);
+          }
+        })
       },
       exportFile() {
         window.location.href = BASE_URL + '/duban/v1/DubanSupervision/createExcel?project='

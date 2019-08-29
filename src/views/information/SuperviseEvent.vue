@@ -187,7 +187,6 @@
         this.form.validateFields((err, values) => {
           if (!err) {
             this.confirmLoading = true;
-            console.log(this.fileList);
           }
         });
       },
