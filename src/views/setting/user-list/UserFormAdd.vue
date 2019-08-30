@@ -2,7 +2,7 @@
   <div class="card-container">
     <a-card title="新增用户" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.push('/setting/user-list')">返回</a-button>
-      <a-form style="width: 80%">
+      <a-form :form="form" style="width: 80%">
         <a-row>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="用户角色">
@@ -18,12 +18,16 @@
           </a-col>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="用户名">
-              <a-input placeholder="请输入用户名" v-decorator="['userName', {rules: [{ required: true, message: '请输入用户名!' }]}]"></a-input>
+              <a-input placeholder="请输入用户名" v-decorator="['userName',
+              {rules:[{ required: true, message: '请输入用户名!' },usernameAsyncValidator],
+              validateFirst:true,
+              validateTrigger:'blur'
+              }]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="登录密码">
-              <a-input placeholder="请输入登录密码" v-decorator="['password', {rules: [{ required: true, message: '请输入登录密码!' }]}]"></a-input>
+              <a-input placeholder="请输入登录密码" type="password" v-decorator="['password', {rules: [{ required: true, message: '请输入登录密码!' }]}]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
@@ -36,7 +40,11 @@
           </a-col>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="移动电话">
-              <a-input placeholder="请输入移动电话" v-decorator="['cellphone', {rules: [{ required: true, message: '请输入移动电话!' }]}]"></a-input>
+              <a-input placeholder="请输入移动电话" v-decorator="['cellphone',
+              {rules: [{ required: true, message: '请输入移动电话!' },{ pattern: '^[1][3,4,5,7,8][0-9]{9}$', message: '请输入正确的移动电话!' },cellphoneAsyncValidator],
+              validateFirst:true,
+              validateTrigger:'blur'
+              }]"></a-input>
             </a-form-item>
           </a-col>
           <a-col span="8">
@@ -128,6 +136,22 @@
 
   const formLayout={labelCol: {span: 6},wrapperCol: {span: 15}};
 
+  const usernameAsyncValidator={validator:(rules,value,callback)=>{
+      get(`${BASE_URL}/uip/common/checkUserNameExist?userName=${value}`).then(res=>{
+        if(res.resCode!==1){
+          callback(new Error());
+        }
+      })
+    },message:'用户名已存在'};
+
+  const cellphoneAsyncValidator={validator:(rules,value,callback)=>{
+      get(`${BASE_URL}/uip/common/checkCellphoneExist?cellphone=${value}`).then(res=>{
+        if(res.resCode!==1){
+          callback(new Error());
+        }
+      })
+    },message:'手机号码已存在'};
+
   export default {
     components: {ATextarea, RegionTreeModal, ACol, ARow},
     data() {
@@ -140,7 +164,10 @@
         previewImage:'',
         previewVisible:false,
         fileList:[],
-        isSaveLoading:false
+        isSaveLoading:false,
+        userNameInput:null,
+        usernameAsyncValidator,
+        cellphoneAsyncValidator
       }
     },
     mounted(){
@@ -154,6 +181,13 @@
             this.roleList = res.data.records;
           }
         })
+      },
+      checkUserNameExist(userName){
+         get(`${BASE_URL}/uip/common/checkUserNameExist?userName=${userName}`).then(res=>{
+           if(res.resCode!==1){
+
+           }
+         })
       },
       getRegion(e){
         this.region=e;
@@ -197,12 +231,14 @@
             }
             post(`${BASE_URL}/uip/smUser/addUser`,null,data).then(res=>{
               this.isSaveLoading=false;
-              if(res.resCode===1){
+              // 上传图像这有问题，只要http返回200，将当做操作成功
+              // 原有河长制系统也是这样的
+              // if(res.resCode===1){
                 this.$message.success('创建成功');
                 setTimeout(()=>{
-                  this.$router.go(-1);
+                  this.$router.replace('/setting/user-list');
                 },1500);
-              }
+              // }
             })
           }
         })
