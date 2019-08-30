@@ -78,4 +78,8 @@
     width: 120px;
     display: inline-block;
   }
+
+  .width50{
+    width: 50%;
+  }
 </style>

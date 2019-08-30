@@ -6,7 +6,7 @@
         <a-row>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="用户角色">
-              <a-select placeholder="请选择用户角色" v-decorator="['inputSectionCode', {rules: [{ required: true, message: '请选择用户角色!' }]}]">
+              <a-select placeholder="请选择用户角色" v-decorator="['roleIds', {rules: [{ required: true, message: '请选择用户角色!' }]}]">
                 <a-select-option v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </a-form-item>
@@ -156,6 +156,7 @@
     components: {ATextarea, RegionTreeModal, ACol, ARow},
     data() {
       return {
+        id:'',
         roleList:[],
         form:null,
         region:{},
@@ -173,8 +174,34 @@
     mounted(){
       this.getRoleList();
       this.form=this.$form.createForm(this);
+      this.id=this.$route.query.id;
+      this.getDetail();
     },
     methods:{
+      getDetail(){
+        get(`${BASE_URL}/uip/smUser/getById?id=${this.id}`).then(res=>{
+          if(res.resCode===1){
+            const data=res.data;
+            this.region={name:data.regionName};
+            this.form.setFieldsValue({
+              roleIds:data.roleList.map(item=>item.id)[0],
+              name:data.name,
+              userName:data.userName,
+              password:data.password,
+              gender:data.gender,
+              cellphone:data.cellphone,
+              regionId:data.regionId,
+              birthday:data.birthday?moment(data.birthday):null,
+              email:data.email,
+              weixin:data.weixin,
+              qq:data.qq,
+              department:data.department,
+              description:data.description,
+              position:data.position
+            });
+          }
+        })
+      },
       getRoleList() {
         get(`${BASE_URL}/uip/smRole/queryRoleList`, {pageNumber: -1, pageSize: -1}).then(res => {
           if (res.resCode === 1) {

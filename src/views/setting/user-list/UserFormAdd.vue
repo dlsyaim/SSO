@@ -6,7 +6,7 @@
         <a-row>
           <a-col span="8">
             <a-form-item v-bind="formLayout" label="用户角色">
-              <a-select placeholder="请选择用户角色" v-decorator="['inputSectionCode', {rules: [{ required: true, message: '请选择用户角色!' }]}]">
+              <a-select placeholder="请选择用户角色" v-decorator="['roleIds', {rules: [{ required: true, message: '请选择用户角色!' }]}]">
                 <a-select-option v-for="item in roleList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </a-form-item>

@@ -53,7 +53,72 @@
              :footer="null"
              @cancel="isDetailModalVisible=false"
              width="800px">
-
+       <a-row class="modal-detail-item">
+         <a-col span="12">
+           <span class="detail-item-label">角色名称：</span>
+           <span v-if="isDetailModalVisible">{{selected.roleList[0].name}}</span>
+         </a-col>
+         <a-col span="12">
+           <span class="detail-item-label">用户真实姓名：</span>
+           <span >{{selected.name}}</span>
+         </a-col>
+       </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="12">
+          <span class="detail-item-label">用户名：</span>
+          <span>{{selected.userName}}</span>
+        </a-col>
+        <a-col span="12">
+          <span class="detail-item-label">性别：</span>
+          <span >{{selected.gender===1?'男':'女'}}</span>
+        </a-col>
+      </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="12">
+          <span class="detail-item-label">移动电话：</span>
+          <span>{{selected.cellphone}}</span>
+        </a-col>
+        <a-col span="12">
+          <span class="detail-item-label">所属行政区域：</span>
+          <span>{{selected.regionName}}</span>
+        </a-col>
+      </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="12">
+          <span class="detail-item-label">生日：</span>
+          <span>{{selected.birthday}}</span>
+        </a-col>
+        <a-col span="12">
+          <span class="detail-item-label">邮箱地址：</span>
+          <span >{{selected.email}}</span>
+        </a-col>
+      </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="12">
+          <span class="detail-item-label">微信账号：</span>
+          <span>{{selected.weixin}}</span>
+        </a-col>
+        <a-col span="12">
+          <span class="detail-item-label">QQ号：</span>
+          <span >{{selected.qq}}</span>
+        </a-col>
+      </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="12">
+          <span class="detail-item-label">用户职位：</span>
+          <span>{{selected.position}}</span>
+        </a-col>
+        <a-col span="12">
+          <span class="detail-item-label">部门信息：</span>
+          <span >{{selected.department}}</span>
+        </a-col>
+      </a-row>
+      <a-row class="modal-detail-item">
+        <a-col span="24">
+          <span class="detail-item-label">备注：</span>
+          <span>{{selected.description}}</span>
+        </a-col>
+      </a-row>
     </a-modal>
   </div>
 </template>
@@ -62,6 +127,7 @@
   import {BASE_URL, tablePaginationConfig} from "../../../config/config";
   import {deleteRequest, get, put} from "../../../util/axios";
   import RegionTreeModal from "../../../components/RegionTreeModal";
+  import ARow from "ant-design-vue/es/grid/Row";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -74,7 +140,7 @@
   ];
 
   export default {
-    components: {RegionTreeModal},
+    components: {ARow, RegionTreeModal},
     data() {
       return {
         roleList: [],
