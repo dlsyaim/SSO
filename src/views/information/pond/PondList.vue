@@ -1,13 +1,13 @@
 <template>
   <div class="card-container">
-    <a-card title="河流管理" :bordered="false" style="min-height: 100%">
+    <a-card title="坑塘管理" :bordered="false" style="min-height: 100%">
       <div style="display: flex;align-items: center;justify-content: space-between">
         <div style="display: flex;align-items: center">
-          <span>河流名称：</span>
-          <a-input v-model="riverName" placeholder="请输入河流名称" class="default-select-width"
+          <span>坑塘名称：</span>
+          <a-input v-model="name" placeholder="请输入坑塘名称" class="default-select-width"
                    style="margin-right: 40px"></a-input>
           <span>河流类型：</span>
-          <a-select v-model="riverType" placeholder="请选择河流类型" class="default-select-width" style="margin-right: 40px">
+          <a-select v-model="undefined" placeholder="请选择河流类型" class="default-select-width" style="margin-right: 40px">
             <a-select-option v-for="item in riverTypeList" :key="item.id" :value="item.id">{{item.typeName}}</a-select-option>
           </a-select>
           <span>所属区域：</span>
@@ -69,7 +69,7 @@
     components: {RegionTreeModal},
     data() {
       return {
-        riverName: '',
+        name: '',
         riverTypeList:[],
         riverType:undefined,
         region: {},
@@ -89,13 +89,13 @@
       getList() {
         this.loading = true;
         const params = {
-          riverName: this.riverName,
-          riverType:this.riverType,
+          name: this.name,
+          type:this.type,
           regionName: this.region.name,
           pageSize: this.pagination.pageSize,
           pageNumber: this.pagination.current
         };
-        get(`${BASE_URL}/watersource/v1/river/list`, params).then(res => {
+        get(`${BASE_URL}/watersource/v1/pond/list`, params).then(res => {
           this.loading = false;
           if (res.resCode === 1) {
             this.handleData(res.data.list);

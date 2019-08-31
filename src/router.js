@@ -111,6 +111,18 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverAdd')
         },
         {
+          path: 'information/pond',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondList')
+        },
+        {
+          path: 'information/pond/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondAdd')
+        },
+        {
+          path: 'information/pond/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondEdit')
+        },
+        {
           path: 'information/one-river-one-policy',
           component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
         },
@@ -244,6 +256,10 @@ const router = new Router({
         {
           path: 'setting/menu',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/menu/MenuList')
+        },
+        {
+          path: 'setting/wechat',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/WeChatBackend')
         },
         {
           path: 'setting/rating-ratio',
