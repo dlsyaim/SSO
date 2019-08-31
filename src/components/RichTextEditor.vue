@@ -1,6 +1,6 @@
 <template>
 
-  <div style="position: relative">
+  <div style="position: relative;z-index: 0">
     <a-spin :spinning="isUploadingPicture">
       <div :id="tagId"></div>
     </a-spin>

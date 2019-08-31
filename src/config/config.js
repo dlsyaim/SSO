@@ -68,6 +68,7 @@ export const menuList = [
     name: '信息查询', children: [
       {id: '30', funcUrl: '/information/river-chief-directory', icon: 'file', name: '河长名录'},
       {id: '31', funcUrl: '/information/reach', icon: 'file', name: '河段管理'},
+      {id: '32', funcUrl: '/information/river', icon: 'file', name: '河流管理'},
       {id: '37', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
       {id: '38', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
     ]
@@ -129,7 +130,8 @@ export const settingMenuList=[
     name: '系统管理',
     children: [
       {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'},
-      {id:'b1',icon:'file',name:'角色设置',funcUrl:'/setting/role'}
+      {id:'b1',icon:'file',name:'角色设置',funcUrl:'/setting/role'},
+      {id:'b2',icon:'file',name:'菜单管理',funcUrl:'/setting/menu'}
     ]
   },
   {

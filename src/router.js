@@ -103,6 +103,14 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachAdd')
         },
         {
+          path: 'information/river',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverList')
+        },
+        {
+          path: 'information/river/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverAdd')
+        },
+        {
           path: 'information/one-river-one-policy',
           component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
         },
@@ -234,6 +242,10 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/RoleSetting')
         },
         {
+          path: 'setting/menu',
+          component: () => import(/* webpackChunkName: "setting" */'./views/setting/menu/MenuList')
+        },
+        {
           path: 'setting/rating-ratio',
           component: () => import(/* webpackChunkName: "setting" */'./views/setting/RatingRatio')
         },
@@ -295,6 +307,9 @@ router.beforeEach((to, from, next) => {
           // 登录成功除去遮罩层
           closeLayer();
           next();
+        }else {
+          alert(res.msg);
+          window.location.href=SSO_CENTER_URl;
         }
       });
     }else {
