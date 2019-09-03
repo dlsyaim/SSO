@@ -133,7 +133,7 @@ export const settingMenuList=[
       {id:'b0',icon:'file',name:'用户列表',funcUrl:'/setting/user-list'},
       {id:'b1',icon:'file',name:'角色设置',funcUrl:'/setting/role'},
       {id:'b2',icon:'file',name:'菜单管理',funcUrl:'/setting/menu'},
-      {id:'b3',icon:'file',name:'微信后台管理后台',funcUrl:'/setting/wechat'}
+      {id:'b3',icon:'file',name:'微信管理后台',funcUrl:'/setting/wechat'}
     ]
   },
   {

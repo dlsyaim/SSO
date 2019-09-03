@@ -5,11 +5,12 @@ import store from './store'
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
-Vue.use(Antd);
-
 // 引入ztree和jquery
+
 import 'ztree'
 import 'ztree/css/zTreeStyle/zTreeStyle.css'
+
+Vue.use(Antd);
 
 Vue.config.productionTip = false;
 

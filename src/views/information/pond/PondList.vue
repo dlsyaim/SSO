@@ -6,9 +6,9 @@
           <span>坑塘名称：</span>
           <a-input v-model="name" placeholder="请输入坑塘名称" class="default-select-width"
                    style="margin-right: 40px"></a-input>
-          <span>河流类型：</span>
-          <a-select v-model="undefined" placeholder="请选择河流类型" class="default-select-width" style="margin-right: 40px">
-            <a-select-option v-for="item in riverTypeList" :key="item.id" :value="item.id">{{item.typeName}}</a-select-option>
+          <span>坑塘类型：</span>
+          <a-select v-model="pondType" placeholder="请选择坑塘类型" class="default-select-width" style="margin-right: 40px">
+            <a-select-option v-for="item in pondTypeList" :key="item.id" :value="item.id">{{item.typeName}}</a-select-option>
           </a-select>
           <span>所属区域：</span>
           <a-input :value="region.name" placeholder="请选择所属区域" class="default-select-width"
@@ -17,7 +17,7 @@
           <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
           <a-button @click="resetSearchCondition">重置</a-button>
         </div>
-        <a-button type="primary" @click="$router.push('/information/river/add')">
+        <a-button type="primary" @click="$router.push('/information/pond/add')">
           <a-icon type="plus" style="font-size: 16px;"/>
           新增
         </a-button>
@@ -33,12 +33,6 @@
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
           <a-divider type="vertical"/>
           <span data-method="modify" :data-id="item.id" class="table-operation">编辑</span>
-          <a-divider type="vertical"/>
-          <span data-method="upload" :data-id="item.id" class="table-operation">上传文档</span>
-          <a-divider type="vertical"/>
-          <span data-method="up" :data-id="item.id" class="table-operation">上移</span>
-          <a-divider type="vertical"/>
-          <span data-method="down" :data-id="item.id" class="table-operation">下移</span>
           <a-divider type="vertical"/>
           <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
             <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
@@ -57,12 +51,11 @@
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
-    {title: '河流编码', dataIndex: 'riverCode'},
-    {title: '河流名称', dataIndex: 'riverName'},
-    {title: '河流类型', dataIndex: 'riverTypeName'},
-    {title: '所属水系', dataIndex: 'waterName'},
-    {title: '行政区域', dataIndex: 'regionName'},
-    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 320}
+    {title: '坑塘名称', dataIndex: 'pondName'},
+    {title: '坑塘类型', dataIndex: 'pondTypeName'},
+    {title: '所属区域', dataIndex: 'regionName'},
+    {title: '面积/m²', dataIndex: 'acreage'},
+    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 220}
   ];
 
   export default {
@@ -70,8 +63,8 @@
     data() {
       return {
         name: '',
-        riverTypeList:[],
-        riverType:undefined,
+        pondTypeList:[],
+        pondType:undefined,
         region: {},
         visible: false,
         list: [],
@@ -83,14 +76,14 @@
     },
     mounted() {
       this.getList();
-      this.getRiverTypeList();
+      this.getPondTypeList();
     },
     methods: {
       getList() {
         this.loading = true;
         const params = {
           name: this.name,
-          type:this.type,
+          type:this.pondType,
           regionName: this.region.name,
           pageSize: this.pagination.pageSize,
           pageNumber: this.pagination.current
@@ -109,15 +102,16 @@
         });
         this.list = list;
       },
-      getRiverTypeList(){
-        get(`${BASE_URL}/watersource/v1/river/riverType`,{type: '104'}).then(res=>{
+      getPondTypeList(){
+        get(`${BASE_URL}/watersource/v1/pond/pondType`).then(res=>{
           if(res.resCode===1){
-            this.riverTypeList=res.data;
+            this.pondTypeList=res.data;
           }
         })
       },
       resetSearchCondition() {
-        this.reachName = '';
+        this.name = '';
+        this.pondType=undefined;
         this.region = {};
       },
       getRegion(e) {
@@ -136,52 +130,19 @@
           if (method === 'detail') {
 
           } else if (method === 'modify') {
-            this.$router.push({path: 'edit', query: {id: this.selected.id}});
-          } else if (method === 'upload') {
-
-          } else if (method === 'up') {
-            this.moveUp();
-          } else if (method === 'down') {
-            this.moveDown();
+            this.$router.push({path: '/information/pond/edit', query: {id: this.selected.id}});
           }
         }
       },
-
       deleteItem() {
         this.loading=true;
-        deleteRequest(`${BASE_URL}/watersource/v1/river/delete?id=${this.selected.id}`).then(res=>{
+        deleteRequest(`${BASE_URL}/watersource/v1/pond/delete?id=${this.selected.id}`).then(res=>{
           this.loading=false;
           if(res.resCode===1){
             this.$message.success('删除成功');
             this.getList();
           }
         })
-      },
-      moveUp() {
-        this.loading=true;
-        const params={
-          id:this.selected.id,
-          status:0
-        };
-        put(`${BASE_URL}/watersource/v1/river/sortOrder`,params).then(res=>{
-          this.loading=false;
-          if(res.resCode===1){
-            this.$message.success('上移成功')
-          }
-        });
-      },
-      moveDown() {
-        this.loading=true;
-        const params={
-          id:this.selected.id,
-          status:1
-        };
-        put(`${BASE_URL}/watersource/v1/river/sortOrder`,params).then(res=>{
-          this.loading=false;
-          if(res.resCode===1){
-            this.$message.success('下移成功')
-          }
-        });
       }
     }
   }

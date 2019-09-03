@@ -68,7 +68,7 @@
                 <a-form-item v-bind="formLayout" label="所属水系">
                   <a-input style="cursor: pointer" @click="isWaterSystemModalVisible=true" :value="waterSystem.name"
                            readOnly placeholder="请选择所属水系"></a-input>
-                  <input style="display: none" v-decorator="['waterName',{rules:[{required:true,message:'请选择所属水系'}]}]"/>
+                  <input style="display: none" v-decorator="['waterCode',{rules:[{required:true,message:'请选择所属水系'}]}]"/>
                   <WaterSystemTreeModal v-model="isWaterSystemModalVisible"
                                         @getWaterSystem="getWaterSystem"></WaterSystemTreeModal>
                 </a-form-item>
@@ -85,12 +85,12 @@
               </a-col>
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="起点断面">
-                  <a-input placeholder="请选择起点断面" v-decorator="['startPoint']"></a-input>
+                  <a-input placeholder="请选择起点断面" v-decorator="['startSection']"></a-input>
                 </a-form-item>
               </a-col>
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="终点断面">
-                  <a-input placeholder="请选择终点断面" v-decorator="['endPoint']"></a-input>
+                  <a-input placeholder="请选择终点断面" v-decorator="['endSection']"></a-input>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -99,7 +99,7 @@
                 <a-form-item v-bind="{labelCol: {span: 3},wrapperCol: {span: 20}}" label="流经区域">
                   <a-input placeholder="请选择流经区域" :value="checkedRegionName" readOnly style="cursor: pointer"
                            @click="isCheckAbleRegionTreeModalVisible=true"></a-input>
-                  <input style="display: none" v-decorator="['throughAreaName']"/>
+                  <input style="display: none" v-decorator="['throughArea']"/>
                   <CheckableRegionTreeModal v-model="isCheckAbleRegionTreeModalVisible"
                                             @getCheckedRegion="getCheckedRegion"></CheckableRegionTreeModal>
                 </a-form-item>
@@ -120,7 +120,7 @@
               <a-upload @change="uploadFile"
                         name="files"
                         :fileList="fileList"
-                        :action="BASE_URL+'/analysis/v1/saAbarbeitung/upload'"
+                        :action="BASE_URL+'/watersource/v1/attachment/upload'"
                         :remove="handleFileRemove">
                 <div style="display: flex;align-items: center;justify-content: space-between;width: 144px">
                   <a-button>
@@ -131,18 +131,20 @@
               </a-upload>
             </a-form-item>
             <a-form-item v-bind="{wrapperCol: {span: 21,offset:2}}">
-              <!--<a-upload @change="uploadFile"-->
-              <!--name="files"-->
-              <!--:fileList="fileList"-->
-              <!--:action="BASE_URL+'/analysis/v1/saAbarbeitung/upload'"-->
-              <!--:remove="handleFileRemove">-->
-              <!--<div style="display: flex;align-items: center;justify-content: space-between;width: 144px">-->
-              <a-button>
-                <a-icon type="upload"/>
-                图片上传
-              </a-button>
-              <!--</div>-->
-              <!--</a-upload>-->
+              <a-upload @change="uploadPicture"
+                        name="files"
+                        listType="picture"
+                        :fileList="pictureList"
+                        accept="image/*"
+                        :action="BASE_URL+'/analysis/v1/saAbarbeitung/upload'"
+                        :remove="handlePictureRemove">
+                <div style="display: flex;align-items: center;justify-content: space-between;width: 144px">
+                  <a-button>
+                    <a-icon type="upload"/>
+                    图片上传
+                  </a-button>
+                </div>
+              </a-upload>
             </a-form-item>
             <a-form-item v-bind="{wrapperCol: {span: 21,offset:2}}">
               <a-button :loading="isSaveLoading" type="primary" @click="save">保存</a-button>
@@ -195,7 +197,7 @@
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
   import {BASE_URL} from "../../../config/config";
-  import {get} from "../../../util/axios";
+  import {get, post} from "../../../util/axios";
   import RegionTreeModal from "../../../components/RegionTreeModal";
   import WaterSystemTreeModal from "../../../components/WaterSystemTreeModal";
   import RichTextEditor from "../../../components/RichTextEditor";
@@ -233,6 +235,7 @@
         editorContent: '',
         BASE_URL,
         fileList: [],
+        pictureList: [],
         isSaveLoading: false,
         isCheckAbleRegionTreeModalVisible: false,
         checkedRegionName: '',
@@ -275,29 +278,47 @@
             this.isSaveLoading = true;
             const data = new FormData();
             for (let key in value) {
-              data.append(key, value[key]);
+              let value=value[key];
+              if(!value&&value!==0){
+                value='';
+              }
+              data.append(key,value);
             }
-            data.append('overView', this.editorContent);
+            console.log(data);
+            // data.append('overView', this.editorContent);
+            // const file=this.fileList.filter(item=>!!item.responseUrl).map(item=>item.responseUrl);
+            // data.append('jsonFiles',JSON.stringify(file));
+            // const picture=this.pictureList.filter(item=>!!item.responseUrl).map(item=>item.responseUrl);
+            // data.append('jsonImages',JSON.stringify(picture));
+            // post(`${BASE_URL}/watersource/v1/river/add`,null,data).then(res=>{
+            //   this.isSaveLoading=false;
+            //   if(res.resCode===1){
+            //     this.$message.success('新增成功');
+            //     setTimeout(()=>{
+            //       this.$router.replace('/information/river');
+            //     },1500);
+            //   }
+            // })
           }
         })
       },
       getRegion(e) {
         this.region = e;
+        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10+parseInt(e.grade));
         this.form.setFieldsValue({
           regionCode: e.id
         });
       },
       getWaterSystem(e) {
         this.waterSystem = e;
-        console.log(e);
         this.form.setFieldsValue({
-          waterName: e.name
+          waterCode: e.name
         });
       },
       getCheckedRegion(e) {
         this.checkedRegionName = e.map(item => item.name).join(',');
         this.form.setFieldsValue({
-          throughAreaName: e.map(item => item.id)
+          throughArea: e.map(item => item.id).join(',')
         });
       },
       draw() {
@@ -312,21 +333,21 @@
       clear() {
         if (this.drawLineTool) {
           this.drawLineTool.clear();
-          this.currentTravel='';
+          this.currentTravel = '';
           this.form.setFieldsValue({
-            midPointLongitude:'',
-            midPointLatitude:'',
-            length:''
+            midPointLongitude: '',
+            midPointLatitude: '',
+            length: ''
           });
         }
       },
       drawEnd(e) {
         this.form.setFieldsValue({
-          midPointLongitude:e.currentLnglats[0].lng,
-          midPointLatitude:e.currentLnglats[0].lat,
-          length:e.currentDistance
+          midPointLongitude: e.currentLnglats[0].lng,
+          midPointLatitude: e.currentLnglats[0].lat,
+          length: e.currentDistance
         });
-        this.currentTravel =e;
+        this.currentTravel = e;
       },
       changeMapSize() {
         this.isMapMax = !this.isMapMax;
@@ -349,6 +370,22 @@
       },
       handleFileRemove(file) {
         this.fileList = this.fileList.filter(item => item.uid !== file.uid);
+      },
+      uploadPicture({file, fileList}) {
+        this.pictureList = fileList;
+        if (file.status === 'done') {
+          this.$message.success('上传成功');
+          this.pictureList.forEach(item => {
+            if (item.uid === file.uid) {
+              item.responseUrl = file.response.data[0];
+            }
+          });
+        } else if (file.status === 'error') {
+          this.$message.error('上传失败');
+        }
+      },
+      handlePictureRemove(file) {
+        this.pictureList = this.pictureList.filter(item => item.uid !== file.uid);
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="card-container">
     <a-card title="微信管理后台" :bordered="false" style="min-height: 100%">
-      <a-button size="large" type="primary" @click="goWeChatBackend">微信管理后台</a-button>
+      <a-button size="large" type="primary" @click="goWeChatBackend">前往微信管理后台</a-button>
     </a-card>
   </div>
 </template>

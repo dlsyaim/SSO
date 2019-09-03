@@ -16,7 +16,7 @@
       <span style="color: rgba(0,0,0,.3);margin-top: 6px">暂无匹配数据</span>
     </div>
     <a-spin :spinning="loading">
-      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="regionTree"></ul>
+      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="checkRegionTree"></ul>
     </a-spin>
   </a-modal>
 </template>
@@ -70,7 +70,7 @@
         get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=120100000000`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
-            $.fn.zTree.init($('#regionTree'), this.treeSetting, res.data);
+            $.fn.zTree.init($('#checkRegionTree'), this.treeSetting, res.data);
             this.isTreeInit=true;
           }
         })
@@ -87,7 +87,7 @@
         }
       },
       handleOk() {
-        const checkedNodes=$.fn.zTree.getZTreeObj('regionTree').getCheckedNodes();
+        const checkedNodes=$.fn.zTree.getZTreeObj('checkRegionTree').getCheckedNodes();
         if(checkedNodes.length===0){
           this.$emit('getCheckedRegion',[]);
         }else {
@@ -100,13 +100,13 @@
       },
       searchRegion(regionName){
         this.loading=true;
-        $.fn.zTree.destroy('regionTree');
+        $.fn.zTree.destroy('checkRegionTree');
         get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=120100000000&regionName=${regionName}`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             if(res.data.length!==0){
               this.noData=false;
-              $.fn.zTree.init($('#regionTree'), this.treeSetting, res.data);
+              $.fn.zTree.init($('#checkRegionTree'), this.treeSetting, res.data);
             }else {
               this.noData=true
             }
