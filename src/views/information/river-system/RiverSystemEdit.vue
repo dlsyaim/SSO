@@ -211,7 +211,6 @@
         })
       },
       save() {
-        console.log();
         this.form.validateFields('');
         this.form.validateFields((err, value) => {
           if (!err) {

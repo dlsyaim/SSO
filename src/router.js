@@ -147,6 +147,10 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemEdit')
         },
         {
+          path: 'information/river-system/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemDetail')
+        },
+        {
           path: 'information/one-river-one-policy',
           component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
         },

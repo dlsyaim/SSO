@@ -70,6 +70,8 @@
   /*弹出框每一条详情的内边距*/
   .modal-detail-item{
     font-size: 15px;
+    display: flex;
+    align-items: flex-start;
     color: rgba(0,0,0,.85);
     margin-bottom: 16px;
   }

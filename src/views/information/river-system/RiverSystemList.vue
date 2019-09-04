@@ -115,7 +115,7 @@
         if (id && method) {
           this.selected = this.list.find(item => item.id === id);
           if (method === 'detail') {
-
+            this.$router.push({path: '/information/river-system/detail', query: {id: this.selected.id}});
           } else if (method === 'modify') {
             this.$router.push({path: '/information/river-system/edit', query: {id: this.selected.id}});
           }
