@@ -123,6 +123,30 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondEdit')
         },
         {
+          path: 'information/lake',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeList')
+        },
+        {
+          path: 'information/lake/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeAdd')
+        },
+        {
+          path: 'information/lake/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeEdit')
+        },
+        {
+          path: 'information/river-system',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemList')
+        },
+        {
+          path: 'information/river-system/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemAdd')
+        },
+        {
+          path: 'information/river-system/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemEdit')
+        },
+        {
           path: 'information/one-river-one-policy',
           component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
         },

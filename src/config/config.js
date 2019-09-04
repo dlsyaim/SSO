@@ -70,6 +70,8 @@ export const menuList = [
       {id: '31', funcUrl: '/information/reach', icon: 'file', name: '河段管理'},
       {id: '32', funcUrl: '/information/river', icon: 'file', name: '河流管理'},
       {id: '33', funcUrl: '/information/pond', icon: 'file', name: '坑塘管理'},
+      {id: '34', funcUrl: '/information/lake', icon: 'file', name: '湖泊管理'},
+      {id: '35', funcUrl: '/information/river-system', icon: 'file', name: '水系管理'},
       {id: '37', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
       {id: '38', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
     ]
