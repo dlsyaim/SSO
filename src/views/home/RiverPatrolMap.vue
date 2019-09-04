@@ -112,7 +112,11 @@
         this.isFullScreen = false;
       },
       repaint(region){
-        this.map.panTo(new T.LngLat(region.longitude,region.latitude),10+region.grade);
+        if(region.longitude&&region.latitude){
+          this.map.panTo(new T.LngLat(region.longitude,region.latitude),10+region.grade);
+        }else {
+          this.$message.warn('无经纬度，无法绘制');
+        }
         // if(region.spatialData){
         //   const pointStringArray=region.spatialData.slice(15,region.spatialData.length-3).split(',');
         //   const arr=[];

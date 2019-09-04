@@ -24,6 +24,7 @@
 <script>
   import {GET_EVENT_LIST} from "../../api/event";
   import {get} from "../../util/axios";
+  import moment from 'moment';
 
   export default {
     data() {

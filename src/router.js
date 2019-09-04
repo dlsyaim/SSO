@@ -263,6 +263,13 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "event" */'./views/event/EventDetail')
         },
         /**
+         * 河长制考核
+         */
+        {
+          path: '/check/river-chief-check',
+          component: () => import(/* webpackChunkName: "check" */'./views/check/RiverChiefCheck')
+        },
+        /**
          * 系统设置
          */
         {

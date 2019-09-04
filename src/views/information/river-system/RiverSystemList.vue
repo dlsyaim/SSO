@@ -30,6 +30,10 @@
           <a-divider type="vertical"/>
           <span data-method="modify" :data-id="item.id" class="table-operation">编辑</span>
           <a-divider type="vertical"/>
+          <span data-method="up" :data-id="item.id" class="table-operation">上移</span>
+          <a-divider type="vertical"/>
+          <span data-method="down" :data-id="item.id" class="table-operation">下移</span>
+          <a-divider type="vertical"/>
           <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
             <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
           </a-popconfirm>
@@ -51,7 +55,7 @@
     {title: '水系名称', dataIndex: 'waterName'},
     {title: '所属流域', dataIndex: 'basinName'},
     {title: '备注', dataIndex: 'remark'},
-    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 220}
+    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 240}
   ];
 
   export default {
@@ -118,6 +122,10 @@
             this.$router.push({path: '/information/river-system/detail', query: {id: this.selected.id}});
           } else if (method === 'modify') {
             this.$router.push({path: '/information/river-system/edit', query: {id: this.selected.id}});
+          }else if (method === 'up') {
+            this.moveUp();
+          } else if (method === 'down') {
+            this.moveDown();
           }
         }
       },
@@ -138,10 +146,11 @@
           id:this.selected.id,
           status:0
         };
-        put(`${BASE_URL}/watersource/v1/river/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/waterSystem/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
-            this.$message.success('上移成功')
+            this.$message.success('上移成功');
+            this.getList();
           }
         });
       },
@@ -151,10 +160,11 @@
           id:this.selected.id,
           status:1
         };
-        put(`${BASE_URL}/watersource/v1/river/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/waterSystem/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
             this.$message.success('下移成功')
+            this.getList();
           }
         });
       }

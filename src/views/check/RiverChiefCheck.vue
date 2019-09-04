@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="公众投诉" :bordered="false" style="min-height: 100%">
+    <a-card title="河长制考核" :bordered="false" style="min-height: 100%">
 
     </a-card>
   </div>

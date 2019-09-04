@@ -56,8 +56,8 @@
     methods: {
       getList() {
         const params = {
-          beginDate: this.startTime ? moment(this.startTime).format('YYYY-mm-DD') : '',
-          endDate: this.endTime ? moment(this.endTime).format('YYYY-mm-DD') : ''
+          beginDate: this.startTime ? moment(this.startTime).format('YYYY-MM-DD') : '',
+          endDate: this.endTime ? moment(this.endTime).format('YYYY-MM-DD') : ''
         };
         this.loading = true;
         get(GET_SUPERVISE_STATISTIC_LIST, params).then(res => {

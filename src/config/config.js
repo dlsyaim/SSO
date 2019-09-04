@@ -73,16 +73,18 @@ export const menuList = [
       {id: '34', funcUrl: '/information/lake', icon: 'file', name: '湖泊管理'},
       {id: '35', funcUrl: '/information/river-system', icon: 'file', name: '水系管理'},
       {id: '37', funcUrl: '/information/one-river-one-policy', icon: 'file', name: '一河（湖）一策'},
-      {id: '38', funcUrl: '/information/supervise-event', icon: 'file', name: '督办事件'},
+      {id: '38', funcUrl: '/statistic/supervise', icon: 'file', name: '督办事件'},
+      {id: '39', funcUrl: '/event/comprehensive-query', icon: 'file', name: '河湖问题查询'},
+      {id: '36', funcUrl: '/statistic/water-quality', icon: 'file', name: '日常考核查询'},
+      {id: '300', funcUrl: '/statistic/supervise', icon: 'file', name: '督办事件查询'},
     ]
   },
   {
     id: '4',
     icon: 'file',
     name: '信息发布',
-    children: [
-      {id: '40', funcUrl: '/publish/info-publish', icon: 'file', name: '信息发布'},
-    ]
+    funcUrl: '/publish/info-publish',
+    children: []
   },
   {
     id: '5',
@@ -90,7 +92,7 @@ export const menuList = [
     name: '河长巡河',
     children: [
       {id: '50', funcUrl: '/river-patrol/standing-book', icon: 'file', name: '河长巡河台账'},
-      {id: '51', funcUrl: '/river-patrol/rectification-feedback', icon: 'file', name: '整改反馈'},
+      {id: '51', funcUrl: '/event/comprehensive-query', icon: 'file', name: '整改反馈查询'},
       {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
     ]
   },
@@ -124,7 +126,7 @@ export const menuList = [
       {id:'93',funcUrl:'/event/not-handled-on-time',name:'未及时处理问题'}
     ]
   },
-  {id: 'a', funcUrl: 'river-patrol', icon: 'file', name: '河长制考核', children: []}
+  {id: 'a', funcUrl: '/check/river-chief-check', icon: 'file', name: '河长制考核', children: []}
 ];
 
 export const settingMenuList=[
