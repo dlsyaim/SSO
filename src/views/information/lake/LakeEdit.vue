@@ -415,8 +415,7 @@
         this.form.setFieldsValue({
           throughArea: e.map(item => item.id).join(',')
         });
-      }
-      ,
+      },
       draw() {
         if (this.drawLineTool) {
           this.drawLineTool.clear();
@@ -425,8 +424,7 @@
         this.drawLineTool = new T.PolygonTool(this.map);
         this.drawLineTool.open();
         this.drawLineTool.addEventListener('draw', this.drawEnd);
-      }
-      ,
+      },
       clear() {
         if (this.drawLineTool) {
           this.drawLineTool.clear();

@@ -24,14 +24,15 @@
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="坑塘类型">
                   <a-select v-decorator="['pondType']" placeholder="请选择坑塘类型">
-                    <a-select-option v-for="item in pondTypeList" :key="item.id" :value="item.typeValue">{{item.typeName}}
+                    <a-select-option v-for="item in pondTypeList" :key="item.id" :value="item.typeValue">
+                      {{item.typeName}}
                     </a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="坑塘面积">
-                  <a-input placeholder="坑塘面积可由绘制得出" addonAfter="m²"
+                  <a-input placeholder="坑塘面积可由绘制得出" addonAfter="km²"
                            v-decorator="['acreage']"></a-input>
                 </a-form-item>
               </a-col>
@@ -51,20 +52,20 @@
                 </a-form-item>
               </a-col>
             </a-row>
-            <a-row>
-              <a-col span="24">
-                <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="概述内容">
-                  <RichTextEditor tag-id="desc" @getEditorContent="editorContent=$event"></RichTextEditor>
-                </a-form-item>
-              </a-col>
-            </a-row>
-            <a-row>
-              <a-col span="24">
-                <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="备注信息">
-                  <a-textarea rows="4" placeholder="请输入备注信息" v-decorator="['remark']"></a-textarea>
-                </a-form-item>
-              </a-col>
-            </a-row>
+            <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="概述内容">
+              <RichTextEditor tag-id="desc" @getEditorContent="editorContent=$event"></RichTextEditor>
+            </a-form-item>
+            <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="备注信息">
+              <a-textarea rows="4" placeholder="请输入备注信息" v-decorator="['remark']"></a-textarea>
+            </a-form-item>
+            <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="管理人员">
+              <manager-form v-for="item in formList" :key="item.id" ref="manageForm" :form-id="item.id"
+                           @deleteForm="deleteForm"></manager-form>
+              <a-button type="dashed" style="width: 280px;" @click="addForm">
+                <a-icon type="plus"/>
+                添加
+              </a-button>
+            </a-form-item>
             <a-form-item v-bind="{wrapperCol: {span: 21,offset:2}}">
               <a-button :loading="isSaveLoading" type="primary" @click="save">保存</a-button>
               <a-button @click="$router.go(-1)" style="margin-left: 20px">返回</a-button>
@@ -123,6 +124,7 @@
   import CheckableRegionTreeModal from "../../../components/CheckableRegionTreeModal";
   import calculateCenterPoint from "../../../util/calculateCenterPoiont";
   import ATextarea from "ant-design-vue/es/input/TextArea";
+  import ManagerForm from "../../../components/ManagerForm";
 
   const formLayout = {
     labelCol: {span: 6},
@@ -130,7 +132,7 @@
   };
 
   export default {
-    components: {ATextarea, RichTextEditor, RegionTreeModal, ACol, ARow},
+    components: {ManagerForm, ATextarea, RichTextEditor, RegionTreeModal, ACol, ARow},
     data() {
       return {
         isMapMax: false,
@@ -140,6 +142,7 @@
         isRegionTreeModalVisible: false,
         region: {},
         editorContent: '',
+        formList:[],
         isSaveLoading: false,
         drawLineTool: null,
         map: null,
@@ -166,30 +169,56 @@
           }
         })
       },
+      addForm() {
+        const form = {
+          id: (new Date()).getTime(),
+          data: null
+        };
+        this.formList = [...this.formList, form];
+      },
+      deleteForm(e) {
+        this.formList = this.formList.filter(item => item.id !== e);
+      },
       save() {
+        const chairmanList = [];
+        let managerFormHasError = false;
+        if (this.formList.length !== 0) {
+          this.$refs.manageForm.forEach(item => {
+              let chairman = item.submit();
+              if (chairman !== null) {
+                chairmanList.push(chairman);
+              } else {
+                // 一旦某个子表单验证出错，则后续验证主表单时不提交，但是还要验证，给与用户错误提示
+                managerFormHasError = true;
+              }
+            }
+          )
+        }
         this.form.validateFields((err, value) => {
-          if (!err) {
+          if (!err&&!managerFormHasError) {
             this.isSaveLoading = true;
             const data = new FormData();
             for (const key in value) {
-              let v=value[key];
-              if(!v){
-                v='';
+              let v = value[key];
+              if (!v) {
+                v = '';
               }
-              data.append(key,v);
+              data.append(key, v);
             }
-            if(this.currentTravel){
-              const linePoint=this.currentTravel.currentLnglats.map(item=>[item.lng+' '+item.lat]).join(',');
-              data.append('linePoints',linePoint);
-              data.append('spatialData',`MULTIPOLYGON(((${linePoint})))`);
+            if (this.currentTravel) {
+              const linePoint = this.currentTravel.currentLnglats.map(item => [item.lng + ' ' + item.lat]).join(',');
+              data.append('linePoints', linePoint);
+              data.append('spatialData', `MULTIPOLYGON(((${linePoint})))`);
             }
-            post(`${BASE_URL}/watersource/v1/pond/add`,null,data).then(res=>{
-              this.isSaveLoading=false;
-              if(res.resCode===1){
+            data.append('overView', this.editorContent);
+            data.append('chairmanList',JSON.stringify(chairmanList));
+            post(`${BASE_URL}/watersource/v1/pond/add`, null, data).then(res => {
+              this.isSaveLoading = false;
+              if (res.resCode === 1) {
                 this.$message.success('新增成功');
-                setTimeout(()=>{
+                setTimeout(() => {
                   this.$router.replace('/information/pond');
-                },1500);
+                }, 1500);
               }
             })
           }
@@ -197,7 +226,7 @@
       },
       getRegion(e) {
         this.region = e;
-        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10+parseInt(e.grade));
+        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10 + parseInt(e.grade));
         this.form.setFieldsValue({
           regionCode: e.id
         });
@@ -223,11 +252,11 @@
         }
       },
       drawEnd(e) {
-        const centerPoint=calculateCenterPoint(e.currentLnglats);
+        const centerPoint = calculateCenterPoint(e.currentLnglats);
         this.form.setFieldsValue({
           longitude: centerPoint[0],
           latitude: centerPoint[1],
-          acreage: Math.round(e.currentArea/1000000)
+          acreage: Math.round(e.currentArea / 1000000)
         });
         this.currentTravel = e;
       },

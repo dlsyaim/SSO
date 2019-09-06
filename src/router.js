@@ -123,6 +123,10 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondEdit')
         },
         {
+          path: 'information/pond/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondDetail')
+        },
+        {
           path: 'information/lake',
           component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeList')
         },

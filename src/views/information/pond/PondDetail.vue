@@ -1,35 +1,27 @@
 <template>
   <div class="card-container">
-    <a-card title="湖泊详情" :bordered="false" style="min-height: 100%">
+    <a-card title="坑塘详情" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.go(-1)">返回</a-button>
       <div style="width: 100%;height: 400px;border: 1px solid #cccccc;position: relative;z-index: 10;">
         <div id="map" style="height: 100%;width: 100%;"></div>
       </div>
       <a-row class="modal-detail-item" style="margin-top: 30px">
         <a-col span="6">
-          <span class="detail-item-label">湖泊名称：</span>
-          <span>{{detail.lakesName}}</span>
+          <span class="detail-item-label">坑塘名称：</span>
+          <span>{{detail.pondName}}</span>
         </a-col>
         <a-col span="6">
           <span class="detail-item-label">所属区域：</span>
           <span>{{detail.regionName}}</span>
         </a-col>
         <a-col span="6">
-          <span class="detail-item-label">所属水系：</span>
-          <span>{{detail.waterName}}</span>
-        </a-col>
-        <a-col span="6">
-          <span class="detail-item-label">湖泊类型：</span>
-          <span>{{detail.lakesTypeName}}</span>
+          <span class="detail-item-label">坑塘类型：</span>
+          <span>{{detail.pondTypeName}}</span>
         </a-col>
       </a-row>
       <a-row class="modal-detail-item" style="margin-top: 30px">
         <a-col span="6">
-          <span class="detail-item-label">湖泊岸别：</span>
-          <span>{{detail.lakeShoreName}}</span>
-        </a-col>
-        <a-col span="6">
-          <span class="detail-item-label">湖泊面积：</span>
+          <span class="detail-item-label">坑塘面积：</span>
           <span>{{detail.acreage}}</span>
         </a-col>
         <a-col span="6">
@@ -41,20 +33,6 @@
           <span>{{detail.latitude}}</span>
         </a-col>
       </a-row>
-      <a-row class="modal-detail-item" style="margin-top: 30px">
-        <a-col span="6">
-          <span class="detail-item-label">库容：</span>
-          <span>{{detail.capacity}}</span>
-        </a-col>
-        <a-col span="6">
-          <span class="detail-item-label">位置描述：</span>
-          <span>{{detail.location}}</span>
-        </a-col>
-        <a-col span="6">
-          <span class="detail-item-label">所跨区域：</span>
-          <span>{{detail.throughAreaName}}</span>
-        </a-col>
-      </a-row>
       <div class="modal-detail-item">
         <span class="detail-item-label">概述内容：</span>
         <div style="display: inline-block" v-html="detail.overView"></div>
@@ -62,18 +40,6 @@
       <div class="modal-detail-item">
         <span class="detail-item-label">备注信息：</span>
         <span>{{detail.acreage}}</span>
-      </div>
-      <div class="modal-detail-item">
-        <span class="detail-item-label">图片：</span>
-        <div style="display: inline-flex;">
-          <ImagePreview v-for="(item,index) in detail.jsonImages" :key="index" :image-url="item.virtualPath"></ImagePreview>
-        </div>
-      </div>
-      <div class="modal-detail-item">
-        <span class="detail-item-label">文件：</span>
-        <div style="display: inline-block">
-          <span  v-for="(item,index) in detail.jsonFiles" :key="index"><a :href="FILE_URL_PREFIX+item.virtualPath" target="_blank">{{item.name}}</a><br/></span>
-        </div>
       </div>
     </a-card>
   </div>
@@ -88,7 +54,7 @@
   import ImagePreview from "../../../components/ImagePreview";
 
   export default {
-    components: {ImagePreview, ACol, ARow},
+    components: { ACol, ARow},
     data() {
       return {
         detail: {},
@@ -102,9 +68,10 @@
     },
     methods: {
       getDetail(id) {
-        get(`${BASE_URL}/watersource/v1/lakes/detail?id=${id}`).then(res => {
+        get(`${BASE_URL}/watersource/v1/pond/detail?id=${id}`).then(res => {
           if (res.resCode === 1) {
             this.detail = Object.seal(res.data);
+            console.log(res.data);
             this.initMap();
           }
         })

@@ -128,7 +128,7 @@
         if (id && method) {
           this.selected = this.list.find(item => item.id === id);
           if (method === 'detail') {
-
+            this.$router.push({path: '/information/pond/detail', query: {id: this.selected.id}});
           } else if (method === 'modify') {
             this.$router.push({path: '/information/pond/edit', query: {id: this.selected.id}});
           }
