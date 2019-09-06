@@ -23,7 +23,7 @@
 
 <script>
   import {get} from "../util/axios";
-  import {BASE_URL} from "../config/config";
+  import {BASE_URL, REGION_ID} from "../config/config";
 
   export default {
     model: {
@@ -62,7 +62,7 @@
     methods: {
       initTree() {
         this.loading=true;
-        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=120100000000`).then(res => {
+        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=${REGION_ID}`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             $.fn.zTree.init($('#regionTree'), this.treeSetting, res.data);
@@ -96,7 +96,7 @@
       searchRegion(regionName){
         this.loading=true;
         $.fn.zTree.destroy('regionTree');
-        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=120100000000&regionName=${regionName}`).then(res => {
+        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=${REGION_ID}&regionName=${regionName}`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             if(res.data.length!==0){

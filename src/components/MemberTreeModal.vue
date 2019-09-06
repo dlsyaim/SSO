@@ -1,13 +1,14 @@
 <template>
   <a-modal
-    title="选择区域"
+    title="选择人员"
     :visible="visible"
     @cancel="$emit('change',false)"
     :mask="showMask"
     @ok="handleOk"
+    destroyedOnClose
   >
     <a-input-search
-      placeholder="请输入区域名称"
+      placeholder="请输入人员名称"
       @search="onSearch"
       enterButton
     />
@@ -16,7 +17,7 @@
       <span style="color: rgba(0,0,0,.3);margin-top: 6px">暂无匹配数据</span>
     </div>
     <a-spin :spinning="loading">
-      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="checkRegionTree"></ul>
+      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="memberTree"></ul>
     </a-spin>
   </a-modal>
 </template>
@@ -48,18 +49,14 @@
         treeSetting: {
           async: {
             enable: true,
-            url: `${BASE_URL}/information/v1/administrativeRegion/regionTree`,
+            url: `${BASE_URL}/watersource/v1/reach/regionAndUserTree?userType=0`,
             dataType: 'json',
             type: 'get',
             autoParam:['id=parentCode']
           },
-          check: {
-            enable: true,
-            chkStyle: "checkbox",
-            chkboxType: { "Y": "", "N": "" }
-          },
           callback: {
             onAsyncSuccess: this.asyncGetRegionNodesSuccess,
+            beforeClick:this.beforeClick
           }
         }
       }
@@ -67,10 +64,10 @@
     methods: {
       initTree() {
         this.loading=true;
-        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=${REGION_ID}`).then(res => {
+        get(`${BASE_URL}/watersource/v1/reach/regionAndUserTree?userType=1&parentCode=${REGION_ID}`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
-            $.fn.zTree.init($('#checkRegionTree'), this.treeSetting, res.data);
+            $.fn.zTree.init($('#memberTree'), this.treeSetting, res.data);
             this.isTreeInit=true;
           }
         })
@@ -86,27 +83,31 @@
           }
         }
       },
-      handleOk() {
-        const checkedNodes=$.fn.zTree.getZTreeObj('checkRegionTree').getCheckedNodes();
-        if(checkedNodes.length===0){
-          this.$emit('getCheckedRegion',[]);
+      beforeClick(treeId, treeNode, clickFlag){
+        if(!treeNode.type && !treeNode.usertype){
+          return false;
         }else {
-          this.$emit('getCheckedRegion',checkedNodes);
+          return true;
+        }
+      },
+      handleOk() {
+        const selectedNodes=$.fn.zTree.getZTreeObj('memberTree').getSelectedNodes();
+        if(selectedNodes.length===0){
+          this.$emit('getMember',{});
+        }else {
+          this.$emit('getMember',selectedNodes[0]);
         }
         this.$emit('change', false)
       },
       onSearch(e){
-        this.searchRegion(e);
-      },
-      searchRegion(regionName){
         this.loading=true;
-        $.fn.zTree.destroy('checkRegionTree');
-        get(`${BASE_URL}/information/v1/administrativeRegion/regionTree?regionCode=${REGION_ID}&regionName=${regionName}`).then(res => {
+        $.fn.zTree.destroy('memberTree');
+        get(`${BASE_URL}/information/v1/administrativeRegion/regionAndUserTree?userName=${e}&userType=1`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             if(res.data.length!==0){
               this.noData=false;
-              $.fn.zTree.init($('#checkRegionTree'), this.treeSetting, res.data);
+              $.fn.zTree.init($('#memberTree'), this.treeSetting, res.data);
             }else {
               this.noData=true
             }
@@ -116,7 +117,7 @@
     },
     watch:{
       visible(newVal){
-        if(!this.isTreeInit&&newVal){
+        if(newVal){
           this.initTree();
         }
       }

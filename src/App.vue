@@ -46,11 +46,6 @@
     width: 200px;
   }
 
-  /*表格内边距*/
-  #layout .ant-table-default .ant-table-thead > tr > th, #layout .ant-table-default .ant-table-tbody > tr > td {
-    padding: 8px 12px;
-  }
-
   /*表头上边框*/
   th{
     border-top: 1px solid #e8e8e8;
@@ -83,5 +78,9 @@
 
   .width50{
     width: 50%;
+  }
+
+  .cursor-pointer{
+    cursor: pointer;
   }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <a-modal
-    title="选择水系"
+    title="选择河流"
     :visible="visible"
     @cancel="$emit('change',false)"
     :mask="showMask"
     @ok="handleOk"
   >
     <a-input-search
-      placeholder="请输入水系名称"
+      placeholder="请输入河流名称"
       @search="onSearch"
       enterButton
     />
@@ -16,7 +16,7 @@
       <span style="color: rgba(0,0,0,.3);margin-top: 6px">暂无匹配数据</span>
     </div>
     <a-spin :spinning="loading">
-      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="waterSystemTree"></ul>
+      <ul class="ztree" style="margin:10px 0 0 10px;height: 300px;overflow-y: auto;" id="riverTree"></ul>
     </a-spin>
   </a-modal>
 </template>
@@ -50,51 +50,37 @@
     methods: {
       initTree() {
         this.loading=true;
-        get(`${BASE_URL}/watersource/v1/waterSystem/belongWater`).then(res => {
+        get(`${BASE_URL}/watersource/v1/waterSystem/riverLakesReservoir?type=A`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
-            this.renderTree(res.data);
+            $.fn.zTree.init($('#riverTree'), {}, res.data);
+            this.isTreeInit=true;
           }
         })
       },
-      // asyncGetRegionNodesSuccess(event, treeId, treeNode, res) {
-      //   // 对展开节点引发的请求进行处理
-      //   if(treeNode){
-      //     const treeObj = $.fn.zTree.getZTreeObj(treeId);
-      //     treeObj.addNodes(treeNode, -1,res.data);
-      //     if (treeNode.children[0].resCode === 1) {
-      //       treeObj.removeNode(treeNode.children[0]);
-      //       treeObj.updateNode(treeNode);
-      //     }
-      //   }
-      // },
       handleOk() {
-        const selectedNodes=$.fn.zTree.getZTreeObj('waterSystemTree').getSelectedNodes();
+        const selectedNodes=$.fn.zTree.getZTreeObj('riverTree').getSelectedNodes();
         if(selectedNodes.length===0){
-          this.$emit('getWaterSystem',{});
+          this.$emit('getRiver',{});
         }else {
-          this.$emit('getWaterSystem',selectedNodes[0]);
+          this.$emit('getRiver',selectedNodes[0]);
         }
         this.$emit('change', false)
       },
       onSearch(e){
         this.loading=true;
-        $.fn.zTree.destroy('waterSystemTree');
-        get(`${BASE_URL}/watersource/v1/waterSystem/belongWater?waterName=${e}`).then(res => {
+        $.fn.zTree.destroy('riverTree');
+        get(`${BASE_URL}/watersource/v1/waterSystem/riverLakesReservoir?type=A&name=${e}`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             if(res.data.length!==0){
               this.noData=false;
-              this.renderTree(res.data);
+              $.fn.zTree.init($('#riverTree'), {}, res.data);
             }else {
               this.noData=true
             }
           }
         })
-      },
-      renderTree(rawData){
-        $.fn.zTree.init($('#waterSystemTree'), {}, rawData);
-        this.isTreeInit=true;
       }
     },
     watch:{

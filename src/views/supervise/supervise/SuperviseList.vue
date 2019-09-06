@@ -13,9 +13,9 @@
         <a-col span="5">
           <span>行政区域：</span>
           <a-select class="default-select-width" v-model="searchCondition.region" placeholder="请选择行政区域">
-            <a-select-option v-for="item in regionList" :value="item.regionId" :key="item.regionId">
-              {{item.regionName}}
-            </a-select-option>
+            <!--<a-select-option v-for="item in regionList" :value="item.regionId" :key="item.regionId">-->
+              <!--{{item.regionName}}-->
+            <!--</a-select-option>-->
           </a-select>
         </a-col>
         <a-col span="5">

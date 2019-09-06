@@ -7,14 +7,9 @@
           <a-form :form="form">
             <a-row>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流名称">
-                  <a-input placeholder="请输入河流名称"
-                           v-decorator="['riverName',{rules:[{required:true,message:'请输入河流名称'},riverNameAsyncValidator],validateFirst:true,validateTrigger:'blur'}]"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流编码">
-                  <a-input placeholder="请输入河流编码" v-decorator="['riverCode']"></a-input>
+                <a-form-item v-bind="formLayout" label="湖泊名称">
+                  <a-input placeholder="请输入湖泊名称"
+                           v-decorator="['lakesName',{rules:[{required:true,message:'请输入湖泊名称'},lakeNameAsyncValidator],validateFirst:true,validateTrigger:'blur'}]"></a-input>
                 </a-form-item>
               </a-col>
               <a-col span="8">
@@ -27,70 +22,51 @@
                 </a-form-item>
               </a-col>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流类型">
-                  <a-select v-decorator="['riverType']" placeholder="请选择河流类型">
-                    <a-select-option v-for="item in riverTypeList" :key="item.id" :value="item.id">{{item.typeName}}
+                <a-form-item v-bind="formLayout" label="所属水系">
+                  <a-input style="cursor: pointer" @click="isWaterSystemModalVisible=true" :value="waterSystem.name"
+                           readOnly placeholder="请选择所属水系"></a-input>
+                  <input style="display: none" v-decorator="['waterName']"/>
+                  <WaterSystemTreeModal v-model="isWaterSystemModalVisible"
+                                        @getWaterSystem="getWaterSystem"></WaterSystemTreeModal>
+                </a-form-item>
+              </a-col>
+              <a-col span="8">
+                <a-form-item v-bind="formLayout" label="湖泊类型">
+                  <a-select v-decorator="['lakesType']" placeholder="请选择湖泊类型">
+                    <a-select-option v-for="item in lakeTypeList" :key="item.id" :value="item.id">{{item.typeName}}
                     </a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流功能">
-                  <a-select v-decorator="['feature']" placeholder="请选择河流功能">
-                    <a-select-option v-for="item in riverFunctionList" :key="item.id" :value="item.id">
+                <a-form-item v-bind="formLayout" label="湖泊岸别">
+                  <a-select v-decorator="['shore']" placeholder="请选择湖泊岸别">
+                    <a-select-option v-for="item in lakeShoreList" :key="item.id" :value="item.id">
                       {{item.typeName}}
                     </a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流长度">
-                  <a-input placeholder="河流长度可由绘制得出" addonAfter="km"
-                           v-decorator="['length',{rules:[{required:true,message:'请输入河流长度'}]}]"></a-input>
+                <a-form-item v-bind="formLayout" label="湖泊面积">
+                  <a-input placeholder="湖泊面积可由绘制得出" addonAfter="km²" v-decorator="['acreage']"></a-input>
                 </a-form-item>
               </a-col>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流经度">
-                  <a-input placeholder="河流经度可由绘制得出" v-decorator="['midPointLongitude']"></a-input>
+                <a-form-item v-bind="formLayout" label="湖泊经度">
+                  <a-input placeholder="湖泊经度可由绘制得出" v-decorator="['longitude']"></a-input>
                 </a-form-item>
               </a-col>
               <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流纬度">
-                  <a-input placeholder="河流纬度可由绘制得出" v-decorator="['midPointLatitude']"></a-input>
+                <a-form-item v-bind="formLayout" label="湖泊纬度">
+                  <a-input placeholder="湖泊纬度可由绘制得出" v-decorator="['latitude']"></a-input>
                 </a-form-item>
               </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="流域面积">
-                  <a-input placeholder="请输入流域面积" addonAfter="km²" v-decorator="['area']"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="所属水系">
-                  <a-input style="cursor: pointer" @click="isWaterSystemModalVisible=true" :value="waterSystem.name"
-                           readOnly placeholder="请选择所属水系"></a-input>
-                  <input style="display: none" v-decorator="['waterCode',{rules:[{required:true,message:'请选择所属水系'}]}]"/>
-                  <WaterSystemTreeModal v-model="isWaterSystemModalVisible"
-                                        @getWaterSystem="getWaterSystem"></WaterSystemTreeModal>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流起点">
-                  <a-input placeholder="请输入河流起点" v-decorator="['startPoint']"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="河流终点">
-                  <a-input placeholder="请输入河流终点" v-decorator="['endPoint']"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="起点断面">
-                  <a-input placeholder="请选择起点断面" v-decorator="['startSection']"></a-input>
-                </a-form-item>
-              </a-col>
-              <a-col span="8">
-                <a-form-item v-bind="formLayout" label="终点断面">
-                  <a-input placeholder="请选择终点断面" v-decorator="['endSection']"></a-input>
+            </a-row>
+            <a-row>
+              <a-col span="16">
+                <a-form-item v-bind="{labelCol: {span: 3},wrapperCol: {span: 20}}" label="位置描述">
+                  <a-input placeholder="请输入位置描述" v-decorator="['location']"/>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -112,7 +88,6 @@
                 </a-form-item>
               </a-col>
             </a-row>
-
             <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="备注信息">
               <a-textarea rows="4" placeholder="请输入备注" v-decorator="['remark']"></a-textarea>
             </a-form-item>
@@ -145,6 +120,10 @@
                   </a-button>
                 </div>
               </a-upload>
+            </a-form-item>
+            <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="管理人员">
+              <ManagerForm v-for="item in formList" :key="item.id" ref="manageForm" :form-id="item.id" @deleteForm="deleteForm"></ManagerForm>
+              <a-button type="dashed" style="width: 280px;" @click="addForm"><a-icon type="plus"/>添加</a-button>
             </a-form-item>
             <a-form-item v-bind="{wrapperCol: {span: 21,offset:2}}">
               <a-button :loading="isSaveLoading" type="primary" @click="save">保存</a-button>
@@ -202,32 +181,37 @@
   import WaterSystemTreeModal from "../../../components/WaterSystemTreeModal";
   import RichTextEditor from "../../../components/RichTextEditor";
   import CheckableRegionTreeModal from "../../../components/CheckableRegionTreeModal";
+  import calculateCenterPoint from "../../../util/calculateCenterPoiont";
+  import ManagerForm from "../../../components/ManagerForm";
 
   const formLayout = {
     labelCol: {span: 6},
     wrapperCol: {span: 16}
   };
 
-  const riverNameAsyncValidator = {
+  const lakeNameAsyncValidator = {
     validator: (rules, value, callback) => {
-      get(`${BASE_URL}/watersource/v1/river/isRepeat?name=${value}`).then(res => {
+      get(`${BASE_URL}/watersource/v1/lakes/isRepeat?name=${value}`).then(res => {
         if (res.resCode !== 1) {
           callback(new Error());
         }
       })
-    }, message: '用户名已存在'
+    }, message: '湖泊名称已存在'
   };
 
   export default {
-    components: {CheckableRegionTreeModal, RichTextEditor, WaterSystemTreeModal, RegionTreeModal, ACol, ARow},
+    components: {
+      ManagerForm,
+      CheckableRegionTreeModal, RichTextEditor, WaterSystemTreeModal, RegionTreeModal, ACol, ARow
+    },
     data() {
       return {
         isMapMax: false,
         form: null,
         formLayout,
-        riverTypeList: [],
-        riverFunctionList: [],
-        riverNameAsyncValidator,
+        lakeTypeList: [],
+        lakeShoreList: [],
+        lakeNameAsyncValidator,
         isRegionTreeModalVisible: false,
         region: {},
         isWaterSystemModalVisible: false,
@@ -236,6 +220,7 @@
         BASE_URL,
         fileList: [],
         pictureList: [],
+        formList: [],
         isSaveLoading: false,
         isCheckAbleRegionTreeModalVisible: false,
         checkedRegionName: '',
@@ -247,8 +232,8 @@
     },
     mounted() {
       this.form = this.$form.createForm(this);
-      this.getRiverTypeList();
-      this.getRiverFunctionList();
+      this.getLakeTypeList();
+      this.getLakeShoreList();
       this.initMap();
     },
     methods: {
@@ -258,33 +243,48 @@
         const scaleControl = new T.Control.Zoom();
         this.map.addControl(scaleControl);
       },
-      getRiverTypeList() {
-        get(`${BASE_URL}/watersource/v1/river/riverType`, {type: '104'}).then(res => {
+      getLakeTypeList() {
+        get(`${BASE_URL}/watersource/v1/river/riverType`, {type: '106'}).then(res => {
           if (res.resCode === 1) {
-            this.riverTypeList = res.data;
+            this.lakeTypeList = res.data;
           }
         })
       },
-      getRiverFunctionList() {
-        get(`${BASE_URL}/watersource/v1/river/riverFeature`).then(res => {
+      getLakeShoreList() {
+        get(`${BASE_URL}/watersource/v1/river/riverType`, {type: '112'}).then(res => {
           if (res.resCode === 1) {
-            this.riverFunctionList = res.data;
+            this.lakeShoreList = res.data;
           }
         })
+      },
+      addForm() {
+        const form = {
+          id: (new Date()).getTime(),
+          data: null
+        };
+        this.formList = [...this.formList, form];
+      },
+      deleteForm(e) {
+        this.formList = this.formList.filter(item => item.id !== e);
       },
       save() {
-        this.form.validateFields((err, value) => {
-          if (!err) {
-            this.isSaveLoading = true;
-            const data = new FormData();
-            for (let key in value) {
-              let value=value[key];
-              if(!value&&value!==0){
-                value='';
-              }
-              data.append(key,value);
-            }
-            console.log(data);
+        if(this.formList.length!==0){
+          this.$refs.manageForm.forEach(item=>{
+            console.log(item.submit());
+          })
+        }
+        // this.form.validateFields((err, value) => {
+        //   if (!err) {
+        //     this.isSaveLoading = true;
+        //     const data = new FormData();
+        //     for (let key in value) {
+        //       let value = value[key];
+        //       if (!value && value !== 0) {
+        //         value = '';
+        //       }
+        //       data.append(key, value);
+        //     }
+        //     console.log(data);
             // data.append('overView', this.editorContent);
             // const file=this.fileList.filter(item=>!!item.responseUrl).map(item=>item.responseUrl);
             // data.append('jsonFiles',JSON.stringify(file));
@@ -299,12 +299,12 @@
             //     },1500);
             //   }
             // })
-          }
-        })
+        //   }
+        // })
       },
       getRegion(e) {
         this.region = e;
-        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10+parseInt(e.grade));
+        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10 + parseInt(e.grade));
         this.form.setFieldsValue({
           regionCode: e.id
         });
@@ -326,7 +326,7 @@
           this.drawLineTool.clear();
           this.drawLineTool.close()
         }
-        this.drawLineTool = new T.PolylineTool(this.map);
+        this.drawLineTool = new T.PolygonTool(this.map);
         this.drawLineTool.open();
         this.drawLineTool.addEventListener('draw', this.drawEnd);
       },
@@ -335,17 +335,18 @@
           this.drawLineTool.clear();
           this.currentTravel = '';
           this.form.setFieldsValue({
-            midPointLongitude: '',
-            midPointLatitude: '',
-            length: ''
+            longitude: '',
+            latitude: '',
+            acreage: ''
           });
         }
       },
       drawEnd(e) {
+        const centerPoint = calculateCenterPoint(e.currentLnglats);
         this.form.setFieldsValue({
-          midPointLongitude: e.currentLnglats[0].lng,
-          midPointLatitude: e.currentLnglats[0].lat,
-          length: e.currentDistance
+          longitude: centerPoint[0],
+          latitude: centerPoint[1],
+          acreage: Math.round(e.currentArea / 1000000)
         });
         this.currentTravel = e;
       },

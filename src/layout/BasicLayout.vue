@@ -25,6 +25,7 @@
                       @click="handleMenuClick">
         <ul id="menu">
           <li v-for="menu in menuList" :class="{active:menu.id===selectedMenuId}" :key="menu.id" :data-id="menu.id" :data-target="menu.funcUrl" class="menu-item">{{menu.name}}</li>
+          <li class="menu-item" @click="getMenuList" v-if="showBackToMainMenu"><a-icon style="margin-right: 10px" type="arrow-left" />返回主菜单</li>
         </ul>
       </a-layout-sider>
       <a-layout-content :style="{overflowY:shouldHiddenOverFlowContent?'hidden':'auto'}" id="layoutContent">
@@ -50,7 +51,7 @@
   import {debounceTime,map,filter} from 'rxjs/operators';
 
   export default {
-    components: {CurrentUser, InfoNotice},
+    components: {CurrentUser},
     data() {
       return {
         collapsed: false,
@@ -58,7 +59,8 @@
         subMenuList: [],
         shouldHiddenOverFlowContent: false,
         subscription:null,
-        selectedMenuId:''
+        selectedMenuId:'',
+        showBackToMainMenu:false
       }
     },
     mounted(){
@@ -96,9 +98,11 @@
       },
       getMenuList() {
         this.menuList = menuList;
+        this.showBackToMainMenu=false;
       },
       getSettingMenuList() {
         this.menuList = settingMenuList;
+        this.showBackToMainMenu=true;
       },
       // 进行页面切换时，新旧dom交替，交替前如果没有滚动条，交替过程中出现了滚动条，
       // 就会出现页面抖动，影响体验，所以动画过程中，设置overflowY属性为hidden

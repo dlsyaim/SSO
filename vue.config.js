@@ -6,7 +6,7 @@ module.exports = {
       less: {
         modifyVars: {
           // 表格内边距
-          'table-padding-vertical': '4px',
+          'table-padding-vertical': '8px',
           'table-padding-horizontal': '12px',
           // 字体颜色
           'text-color': 'rgba(0, 0, 0, .8)',
