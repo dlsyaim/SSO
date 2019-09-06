@@ -135,6 +135,10 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeEdit')
         },
         {
+          path: 'information/lake/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/lake/LakeDetail')
+        },
+        {
           path: 'information/river-system',
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemList')
         },

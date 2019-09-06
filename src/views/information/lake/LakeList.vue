@@ -53,7 +53,7 @@
 <script>
   import RegionTreeModal from "../../../components/RegionTreeModal";
   import {BASE_URL, tablePaginationConfig} from "../../../config/config";
-  import {deleteRequest, get, put} from "../../../util/axios";
+  import {deleteRequest, get, post, put} from "../../../util/axios";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -135,9 +135,9 @@
         if (id && method) {
           this.selected = this.list.find(item => item.id === id);
           if (method === 'detail') {
-
+            this.$router.push({path: '/information/lake/detail', query: {id: this.selected.id}});
           } else if (method === 'modify') {
-            this.$router.push({path: 'edit', query: {id: this.selected.id}});
+            this.$router.push({path: '/information/lake/edit', query: {id: this.selected.id}});
           } else if (method === 'upload') {
 
           } else if (method === 'up') {
@@ -164,10 +164,11 @@
           id:this.selected.id,
           status:0
         };
-        put(`${BASE_URL}/watersource/v1/lakes/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/lakes/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
-            this.$message.success('上移成功')
+            this.$message.success('上移成功');
+            this.getList();
           }
         });
       },
@@ -177,10 +178,11 @@
           id:this.selected.id,
           status:1
         };
-        put(`${BASE_URL}/watersource/v1/lakes/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/lakes/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
-            this.$message.success('下移成功')
+            this.$message.success('下移成功');
+            this.getList();
           }
         });
       }

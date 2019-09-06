@@ -25,7 +25,7 @@
                 <a-form-item v-bind="formLayout" label="所属水系">
                   <a-input style="cursor: pointer" @click="isWaterSystemModalVisible=true" :value="waterSystem.name"
                            readOnly placeholder="请选择所属水系"></a-input>
-                  <input style="display: none" v-decorator="['waterName']"/>
+                  <input style="display: none" v-decorator="['waterCode']"/>
                   <WaterSystemTreeModal v-model="isWaterSystemModalVisible"
                                         @getWaterSystem="getWaterSystem"></WaterSystemTreeModal>
                 </a-form-item>
@@ -33,15 +33,15 @@
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="湖泊类型">
                   <a-select v-decorator="['lakesType']" placeholder="请选择湖泊类型">
-                    <a-select-option v-for="item in lakeTypeList" :key="item.id" :value="item.id">{{item.typeName}}
+                    <a-select-option v-for="item in lakeTypeList" :key="item.id" :value="item.typeValue">{{item.typeName}}
                     </a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="湖泊岸别">
-                  <a-select v-decorator="['shore']" placeholder="请选择湖泊岸别">
-                    <a-select-option v-for="item in lakeShoreList" :key="item.id" :value="item.id">
+                  <a-select v-decorator="['lakeshore']" placeholder="请选择湖泊岸别">
+                    <a-select-option v-for="item in lakeShoreList" :key="item.id" :value="item.typeValue">
                       {{item.typeName}}
                     </a-select-option>
                   </a-select>
@@ -60,6 +60,11 @@
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="湖泊纬度">
                   <a-input placeholder="湖泊纬度可由绘制得出" v-decorator="['latitude']"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col span="8">
+                <a-form-item v-bind="formLayout" label="库容">
+                  <a-input placeholder="请输入库容" addonAfter="km³" v-decorator="['capacity']"></a-input>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -111,7 +116,7 @@
                         listType="picture"
                         :fileList="pictureList"
                         accept="image/*"
-                        :action="BASE_URL+'/analysis/v1/saAbarbeitung/upload'"
+                        :action="BASE_URL+'/watersource/v1/attachment/upload'"
                         :remove="handlePictureRemove">
                 <div style="display: flex;align-items: center;justify-content: space-between;width: 144px">
                   <a-button>
@@ -122,8 +127,12 @@
               </a-upload>
             </a-form-item>
             <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="管理人员">
-              <ManagerForm v-for="item in formList" :key="item.id" ref="manageForm" :form-id="item.id" @deleteForm="deleteForm"></ManagerForm>
-              <a-button type="dashed" style="width: 280px;" @click="addForm"><a-icon type="plus"/>添加</a-button>
+              <ManagerForm v-for="item in formList" :key="item.id" ref="manageForm" :form-id="item.id"
+                           @deleteForm="deleteForm"></ManagerForm>
+              <a-button type="dashed" style="width: 280px;" @click="addForm">
+                <a-icon type="plus"/>
+                添加
+              </a-button>
             </a-form-item>
             <a-form-item v-bind="{wrapperCol: {span: 21,offset:2}}">
               <a-button :loading="isSaveLoading" type="primary" @click="save">保存</a-button>
@@ -194,6 +203,8 @@
       get(`${BASE_URL}/watersource/v1/lakes/isRepeat?name=${value}`).then(res => {
         if (res.resCode !== 1) {
           callback(new Error());
+        }else {
+          callback();
         }
       })
     }, message: '湖泊名称已存在'
@@ -268,59 +279,78 @@
         this.formList = this.formList.filter(item => item.id !== e);
       },
       save() {
-        if(this.formList.length!==0){
-          this.$refs.manageForm.forEach(item=>{
-            console.log(item.submit());
-          })
+        const chairmanList = [];
+        let managerFormHasError = false;
+        if (this.formList.length !== 0) {
+          this.$refs.manageForm.forEach(item => {
+              let chairman = item.submit();
+              if (chairman !== null) {
+                chairmanList.push(chairman);
+              } else {
+                // 一旦某个子表单验证出错，则后续验证主表单时不提交，但是还要验证，给与用户错误提示
+                managerFormHasError = true;
+              }
+            }
+          )
         }
-        // this.form.validateFields((err, value) => {
-        //   if (!err) {
-        //     this.isSaveLoading = true;
-        //     const data = new FormData();
-        //     for (let key in value) {
-        //       let value = value[key];
-        //       if (!value && value !== 0) {
-        //         value = '';
-        //       }
-        //       data.append(key, value);
-        //     }
-        //     console.log(data);
-            // data.append('overView', this.editorContent);
-            // const file=this.fileList.filter(item=>!!item.responseUrl).map(item=>item.responseUrl);
-            // data.append('jsonFiles',JSON.stringify(file));
-            // const picture=this.pictureList.filter(item=>!!item.responseUrl).map(item=>item.responseUrl);
-            // data.append('jsonImages',JSON.stringify(picture));
-            // post(`${BASE_URL}/watersource/v1/river/add`,null,data).then(res=>{
-            //   this.isSaveLoading=false;
-            //   if(res.resCode===1){
-            //     this.$message.success('新增成功');
-            //     setTimeout(()=>{
-            //       this.$router.replace('/information/river');
-            //     },1500);
-            //   }
-            // })
-        //   }
-        // })
+        this.form.validateFields((err, value) => {
+          if (!err&&!managerFormHasError) {
+            this.isSaveLoading = true;
+            const data = new FormData();
+            for (let key in value) {
+              let v = value[key];
+              if (!v && v !== 0) {
+                v = '';
+              }
+              data.append(key, v);
+            }
+            if(this.currentTravel){
+              const linePoint=this.currentTravel.currentLnglats.map(item=>[item.lng+' '+item.lat]).join(',');
+              data.append('linePoints',linePoint);
+              data.append('spatialData',`MULTIPOLYGON(((${linePoint})))`);
+            }
+            data.append('overView', this.editorContent);
+            const file = this.fileList.filter(item => !!item.responseUrl).map(item => item.responseUrl);
+            data.append('jsonFiles', JSON.stringify(file));
+            const picture = this.pictureList.filter(item => !!item.responseUrl).map(item => item.responseUrl);
+            data.append('jsonImages', JSON.stringify(picture));
+            data.append('chairmanList',JSON.stringify(chairmanList));
+            post(`${BASE_URL}/watersource/v1/lakes/add`, null, data).then(res => {
+              this.isSaveLoading = false;
+              if (res.resCode === 1) {
+                this.$message.success('新增成功');
+                setTimeout(() => {
+                  this.$router.replace('/information/lake');
+                }, 1500);
+              }
+            })
+          }
+        })
       },
       getRegion(e) {
         this.region = e;
-        this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10 + parseInt(e.grade));
+        if(e.longitude&&e.latitude){
+          this.map.centerAndZoom(new T.LngLat(e.longitude, e.latitude), 10 + parseInt(e.grade));
+        }
         this.form.setFieldsValue({
           regionCode: e.id
         });
-      },
+      }
+      ,
       getWaterSystem(e) {
         this.waterSystem = e;
         this.form.setFieldsValue({
-          waterCode: e.name
+          waterCode: e.id
         });
-      },
+      }
+      ,
       getCheckedRegion(e) {
         this.checkedRegionName = e.map(item => item.name).join(',');
         this.form.setFieldsValue({
           throughArea: e.map(item => item.id).join(',')
         });
-      },
+      }
+      ,
       draw() {
         if (this.drawLineTool) {
           this.drawLineTool.clear();
@@ -329,7 +359,8 @@
         this.drawLineTool = new T.PolygonTool(this.map);
         this.drawLineTool.open();
         this.drawLineTool.addEventListener('draw', this.drawEnd);
-      },
+      }
+      ,
       clear() {
         if (this.drawLineTool) {
           this.drawLineTool.clear();
@@ -340,7 +371,8 @@
             acreage: ''
           });
         }
-      },
+      }
+      ,
       drawEnd(e) {
         const centerPoint = calculateCenterPoint(e.currentLnglats);
         this.form.setFieldsValue({
@@ -349,13 +381,15 @@
           acreage: Math.round(e.currentArea / 1000000)
         });
         this.currentTravel = e;
-      },
+      }
+      ,
       changeMapSize() {
         this.isMapMax = !this.isMapMax;
         setTimeout(() => {
           this.map.checkResize();
         }, 10);
-      },
+      }
+      ,
       uploadFile({file, fileList}) {
         this.fileList = fileList;
         if (file.status === 'done') {
@@ -368,10 +402,12 @@
         } else if (file.status === 'error') {
           this.$message.error('上传失败');
         }
-      },
+      }
+      ,
       handleFileRemove(file) {
         this.fileList = this.fileList.filter(item => item.uid !== file.uid);
-      },
+      }
+      ,
       uploadPicture({file, fileList}) {
         this.pictureList = fileList;
         if (file.status === 'done') {
@@ -384,7 +420,8 @@
         } else if (file.status === 'error') {
           this.$message.error('上传失败');
         }
-      },
+      }
+      ,
       handlePictureRemove(file) {
         this.pictureList = this.pictureList.filter(item => item.uid !== file.uid);
       }

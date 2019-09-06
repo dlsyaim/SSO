@@ -5,7 +5,7 @@
     @cancel="$emit('change',false)"
     :mask="showMask"
     @ok="handleOk"
-    destroyedOnClose
+    destroyOnClose
   >
     <a-input-search
       placeholder="请输入人员名称"
@@ -49,7 +49,7 @@
         treeSetting: {
           async: {
             enable: true,
-            url: `${BASE_URL}/watersource/v1/reach/regionAndUserTree?userType=0`,
+            url: `${BASE_URL}/watersource/v1/reach/regionAndUserTree?userType=1`,
             dataType: 'json',
             type: 'get',
             autoParam:['id=parentCode']
@@ -102,7 +102,7 @@
       onSearch(e){
         this.loading=true;
         $.fn.zTree.destroy('memberTree');
-        get(`${BASE_URL}/information/v1/administrativeRegion/regionAndUserTree?userName=${e}&userType=1`).then(res => {
+        get(`${BASE_URL}/watersource/v1/reach/findByUser?userName=${e}&userType=1`).then(res => {
           this.loading=false;
           if (res.resCode === 1) {
             if(res.data.length!==0){

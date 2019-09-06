@@ -169,7 +169,6 @@
             const data=res.data;
             this.detail=Object.seal(data);
             this.editorContent=data.overView;
-            console.log(data);
             this.form.setFieldsValue({
               waterName:data.waterName,
               waterCode:data.waterCode,
