@@ -111,6 +111,14 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverAdd')
         },
         {
+          path: 'information/river/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverEdit')
+        },
+        {
+          path: 'information/river/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverDetail')
+        },
+        {
           path: 'information/pond',
           component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondList')
         },
@@ -173,6 +181,22 @@ const router = new Router({
         {
           path: 'information/reservoir/detail',
           component: () => import(/* webpackChunkName: "information" */'./views/information/reservoir/ReservoirDetail')
+        },
+        {
+          path: 'information/basin',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/basin/BasinList')
+        },
+        {
+          path: 'information/basin/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/basin/BasinAdd')
+        },
+        {
+          path: 'information/basin/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/basin/BasinEdit')
+        },
+        {
+          path: 'information/basin/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/basin/BasinDetail')
         },
         {
           path: 'information/one-river-one-policy',

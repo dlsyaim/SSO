@@ -165,7 +165,7 @@
           id:this.selected.id,
           status:0
         };
-        put(`${BASE_URL}/watersource/v1/reservoir/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/reservoir/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
             this.$message.success('上移成功');
@@ -179,7 +179,7 @@
           id:this.selected.id,
           status:1
         };
-        put(`${BASE_URL}/watersource/v1/reservoir/sortOrder`,params).then(res=>{
+        get(`${BASE_URL}/watersource/v1/reservoir/sortOrder`,params).then(res=>{
           this.loading=false;
           if(res.resCode===1){
             this.$message.success('下移成功');

@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="新增河流" :bordered="false" style="min-height: 100%">
+    <a-card title="编辑河流" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.go(-1)">返回</a-button>
       <div style="display: flex;justify-content: space-between;">
         <div style="width: 70%;" :style="{display:isMapMax?'none':'block'}">
@@ -224,6 +224,8 @@
     components: {CheckableRegionTreeModal, RichTextEditor, WaterSystemTreeModal, RegionTreeModal, ACol, ARow},
     data() {
       return {
+        id:'',
+        detail:{},
         isMapMax: false,
         form: null,
         formLayout,
@@ -248,12 +250,59 @@
       }
     },
     mounted() {
+      this.id=this.$route.query.id;
       this.form = this.$form.createForm(this);
       this.getRiverTypeList();
       this.getRiverFunctionList();
-      this.initMap();
+      this.getDetail();
     },
     methods: {
+      getDetail(){
+        get(`${BASE_URL}/watersource/v1/river/detail?id=${this.id}`).then(res=>{
+          if(res.resCode===1){
+            const data=res.data;
+            this.detail=Object.seal(data);
+            this.editorContent=data.overView;
+            this.form.setFieldsValue({
+              reservoirName:data.reservoirName,
+              regionCode:data.regionCode,
+              waterCode:data.waterCode,
+              reservoirType:data.reservoirType,
+              reservoirBank:data.reservoirBank,
+              managementUnit:data.managementUnit,
+              acreage:data.acreage,
+              centerLongitude:data.centerLongitude,
+              centerLatitude:data.centerLatitude,
+              capacity:data.capacity,
+              location:data.location,
+              throughArea:data.throughArea,
+              remark:data.remark
+            });
+            this.region.name=data.regionName;
+            this.waterSystem.waterName=data.waterName;
+            this.checkedRegionName=data.throughAreaName;
+            const fileList=[];
+            data.jsonFiles.forEach(item=>{
+              let file={};
+              file.name=item.name;
+              file.uid=item.virtualPath;
+              file.responseUrl=item;
+              fileList.push(file);
+            });
+            this.fileList=fileList;
+            const pictureList=[];
+            data.jsonImages.forEach(item=>{
+              let picture={};
+              picture.name=item.name;
+              picture.uid=item.virtualPath;
+              picture.responseUrl=item;
+              pictureList.push(picture);
+            });
+            this.pictureList=pictureList;
+            this.initMap();
+          }
+        });
+      },
       initMap() {
         this.map = new T.Map('map');
         this.map.centerAndZoom(new T.LngLat(117.113299075426, 39.02788956452), 11);

@@ -24,7 +24,7 @@
 
 <script>
   import {get} from "../util/axios";
-  import {BASE_URL} from "../config/config";
+  import {BASE_URL, REGION_ID} from "../config/config";
 
   export default {
     props: {
@@ -34,7 +34,7 @@
       },
       regionCode: {
         type: Number,
-        default: 120100000000
+        default: REGION_ID
       },
       waterType: {
         type: Number,
