@@ -4,9 +4,9 @@ import router from './router'
 import store from './store'
 
 import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.less'
-// 引入ztree和jquery
+import 'ant-design-vue/dist/antd.less';
 
+// 引入ztree和jquery
 import 'ztree'
 import 'ztree/css/zTreeStyle/zTreeStyle.css'
 

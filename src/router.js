@@ -159,6 +159,22 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/river-system/RiverSystemDetail')
         },
         {
+          path: 'information/reservoir',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reservoir/ReservoirList')
+        },
+        {
+          path: 'information/reservoir/add',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reservoir/ReservoirAdd')
+        },
+        {
+          path: 'information/reservoir/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reservoir/ReservoirEdit')
+        },
+        {
+          path: 'information/reservoir/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reservoir/ReservoirDetail')
+        },
+        {
           path: 'information/one-river-one-policy',
           component: () => import(/* webpackChunkName: "information" */'./views/information/OneRiverOnePolicy')
         },

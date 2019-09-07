@@ -10,8 +10,8 @@ module.exports = {
           'table-padding-horizontal': '12px',
           // 字体颜色
           'text-color': 'rgba(0, 0, 0, .8)',
-          // 布局,light主题
-          'layout-sider-background-light': '#3366FF',
+          // 输入框行高
+          'input-height-base':'34px'
         },
         javascriptEnabled: true
       }
