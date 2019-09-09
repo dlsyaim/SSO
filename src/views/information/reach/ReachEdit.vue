@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="新增河段" :bordered="false" style="min-height: 100%">
+    <a-card title="编辑河段" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.go(-1)">返回</a-button>
       <div style="display: flex;justify-content: space-between;">
         <div style="width: 70%;" :style="{display:isMapMax?'none':'block'}">
@@ -8,7 +8,7 @@
             <a-row>
               <a-col span="8">
                 <a-form-item v-bind="formLayout" label="河段名称">
-                  <a-input v-decorator="['reachName',{rules:[{required:true,message:'请输入河段名称'},reachNameAsyncValidator],validateFirst:true,validateTrigger:'blur'}]" placeholder="请输入河段名称"/>
+                  <a-input v-decorator="['reachName']" readOnly/>
                 </a-form-item>
               </a-col>
               <a-col span="8">
@@ -178,7 +178,7 @@
             </a-form-item>
             <a-form-item v-bind="{labelCol: {span: 2},wrapperCol: {span: 21}}" label="管理人员">
               <manager-form v-for="item in formList" :key="item.id" ref="manageForm" :form-id="item.id"
-                           @deleteForm="deleteForm"></manager-form>
+                            @deleteForm="deleteForm"></manager-form>
               <a-button type="dashed" style="width: 280px;" @click="addForm">
                 <a-icon type="plus"/>
                 添加
@@ -248,18 +248,6 @@
     wrapperCol: {span: 16}
   };
 
-  const reachNameAsyncValidator = {
-    validator: (rules, value, callback) => {
-      get(`${BASE_URL}/watersource/v1/reach/isRepeat?name=${value}`).then(res => {
-        if (res.resCode !== 1) {
-          callback(new Error());
-        }else {
-          callback();
-        }
-      })
-    }, message: '河段名称已存在'
-  };
-
   export default {
     components: {
       ManagerForm,
@@ -267,6 +255,8 @@
       CheckableRegionTreeModal, RichTextEditor, WaterSystemTreeModal, RegionTreeModal, ACol, ARow},
     data() {
       return {
+        id:'',
+        detail:{},
         isMapMax: false,
         form: null,
         formLayout,
@@ -278,7 +268,6 @@
         waterLevelList: [],
         reachBankPartList:[],
         depositList:[],
-        reachNameAsyncValidator,
         isWaterSystemModalVisible: false,
         waterSystem: {},
         editorContent: '',
@@ -296,19 +285,93 @@
       }
     },
     mounted() {
+      this.id=this.$route.query.id;
       this.form = this.$form.createForm(this);
       this.getReachGradeList();
       this.getWaterLevelList();
       this.getReachBankPartList();
       this.getDepositList();
-      this.initMap();
+      this.getDetail();
     },
     methods: {
+      getDetail(){
+        get(`${BASE_URL}/watersource/v1/reach/detail?id=${this.id}`).then(res=>{
+          if(res.resCode===1){
+            const data=res.data;
+            this.detail=Object.seal(data);
+            this.editorContent=data.overView;
+            this.form.setFieldsValue({
+              lakesName:data.lakesName,
+              regionCode:data.regionCode,
+              waterCode:data.waterCode,
+              lakesType:data.lakesType,
+              lakeshore:data.lakeshore,
+              acreage:data.acreage,
+              longitude:data.longitude,
+              latitude:data.latitude,
+              capacity:data.capacity,
+              location:data.location,
+              throughArea:data.throughArea,
+              remark:data.remark
+            });
+            this.region.name=data.regionName;
+            this.waterSystem.waterName=data.waterName;
+            this.checkedRegionName=data.throughAreaName;
+            if(data.chairmanList.length!==0){
+              const formList=[];
+              data.chairmanList.forEach((item,index)=>{
+                let form={
+                  initialValue:item,
+                  id:index
+                  // 这里使用时间戳可能会造成id重复
+                  // id:(new Date()).getTime()
+                };
+                formList.push(form);
+              });
+              this.formList=formList;
+            }
+            const fileList=[];
+            data.jsonFiles.forEach(item=>{
+              let file={};
+              file.name=item.name;
+              file.uid=item.virtualPath;
+              file.responseUrl=item;
+              fileList.push(file);
+            });
+            this.fileList=fileList;
+            const pictureList=[];
+            data.jsonImages.forEach(item=>{
+              let picture={};
+              picture.name=item.name;
+              picture.uid=item.virtualPath;
+              picture.responseUrl=item;
+              pictureList.push(picture);
+            });
+            this.pictureList=pictureList;
+            this.initMap();
+          }
+        });
+      },
       initMap() {
         this.map = new T.Map('map');
         this.map.centerAndZoom(new T.LngLat(117.113299075426, 39.02788956452), 11);
         const scaleControl = new T.Control.Zoom();
         this.map.addControl(scaleControl);
+        const pointString=this.detail.linePoints;
+        const pointArray=[];
+        if(pointString){
+          const points = [];
+          pointString.split(',').forEach(item=>{
+            let arr=item.split(' ').map(item=>+item);
+            pointArray.push(arr);
+          });
+          this.map.centerAndZoom(new T.LngLat(pointArray[0][0], pointArray[0][1]), 12);
+          pointArray.forEach(item=>{
+            points.push(new T.LngLat(item[0], item[1]));
+          });
+          const polygon = new T.Polygon(points);
+          this.map.addOverLay(polygon);
+        }
       },
       getReachGradeList(){
         get(`${BASE_URL}/watersource/v1/river/riverType`,{type: '116'}).then(res => {

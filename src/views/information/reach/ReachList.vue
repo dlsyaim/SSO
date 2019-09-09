@@ -49,7 +49,7 @@
 <script>
   import RegionTreeModal from "../../../components/RegionTreeModal";
   import {BASE_URL, tablePaginationConfig} from "../../../config/config";
-  import {get} from "../../../util/axios";
+  import {deleteRequest, get} from "../../../util/axios";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -121,9 +121,9 @@
         if (id && method) {
           this.selected = this.list.find(item => item.id === id);
           if (method === 'detail') {
-
+            this.$router.push({path: '/information/reach/detail', query: {id: this.selected.id}});
           } else if (method === 'modify') {
-            this.$router.push({path: 'edit', query: {id: this.selected.id}});
+            this.$router.push({path: '/information/reach/edit', query: {id: this.selected.id}});
           } else if (method === 'upload') {
 
           } else if (method === 'up') {
@@ -133,15 +133,43 @@
           }
         }
       },
-
       deleteItem() {
-
+        this.loading=true;
+        deleteRequest(`${BASE_URL}/watersource/v1/reach/delete?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('删除成功');
+            this.getList();
+          }
+        })
       },
       moveUp() {
-
+        this.loading=true;
+        const params={
+          id:this.selected.id,
+          status:0
+        };
+        get(`${BASE_URL}/watersource/v1/reach/sortOrder`,params).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('上移成功');
+            this.getList();
+          }
+        });
       },
       moveDown() {
-
+        this.loading=true;
+        const params={
+          id:this.selected.id,
+          status:1
+        };
+        get(`${BASE_URL}/watersource/v1/reach/sortOrder`,params).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('下移成功');
+            this.getList();
+          }
+        });
       }
     }
   }

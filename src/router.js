@@ -103,6 +103,14 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachAdd')
         },
         {
+          path: 'information/reach/edit',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachEdit')
+        },
+        {
+          path: 'information/reach/detail',
+          component: () => import(/* webpackChunkName: "information" */'./views/information/reach/ReachDetail')
+        },
+        {
           path: 'information/river',
           component: () => import(/* webpackChunkName: "information" */'./views/information/river/RiverList')
         },
@@ -407,13 +415,12 @@ router.beforeEach((to, from, next) => {
           closeLayer();
           next();
         }else {
-          alert(res.msg);
-          window.location.href=SSO_CENTER_URl;
+          window.location.href=`${SSO_CENTER_URl}?from=${window.location.host}${window.location.path}&info=v3`;
         }
       });
     }else {
       //没有st，去登录中心获取st
-      window.location.href=`${SSO_CENTER_URl}?from=${window.location.href.toString()}&info=v3`;
+      window.location.href=`${SSO_CENTER_URl}?from=${window.location.href}&info=v3`;
     }
   }else {
     next();

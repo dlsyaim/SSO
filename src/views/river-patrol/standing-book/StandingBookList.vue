@@ -4,11 +4,11 @@
       <div style="display: flex;align-items: center;justify-content: space-between">
         <div style="display: flex;align-items: center">
           <span>行政区域：</span>
-          <a-input style="cursor: pointer;margin-right: 40px;width: 240px;" placeholder="请选择行政区域" readOnly
+          <a-input style="cursor: pointer;margin-right: 40px;" class="default-select-width" placeholder="请选择行政区域" readOnly
                    :value="region.name" @click="visible=true"></a-input>
           <RegionTreeModal v-model="visible" @getRegion="getRegion"></RegionTreeModal>
           <span>河长姓名：</span>
-          <a-input v-model="chairmanName" style="margin-right: 40px;width: 240px;" placeholder="请输入河长姓名"></a-input>
+          <a-input v-model="chairmanName" style="margin-right: 40px;" class="default-select-width" placeholder="请输入河长姓名"></a-input>
           <span>开始日期：</span>
           <a-date-picker v-model="startTime" :disabledDate="disableStartDate" style="margin-right: 40px"/>
           <span>结束日期：</span>

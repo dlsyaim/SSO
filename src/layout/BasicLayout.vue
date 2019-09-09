@@ -54,7 +54,7 @@
     components: {CurrentUser},
     data() {
       return {
-        collapsed: false,
+        collapsed: true,
         menuList: menuList,
         subMenuList: [],
         shouldHiddenOverFlowContent: false,
@@ -181,6 +181,7 @@
     top: 64px;
     padding: 0;
     height: calc(100% - 78px);
+    overflow-y: auto;
     background-color: rgba(114,152,237,.9);
     z-index: 400;
   }

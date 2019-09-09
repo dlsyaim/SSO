@@ -56,8 +56,8 @@ export const menuList = [
       {id: '25', funcUrl: '/statistic/automatic-monitoring-station', pId: '2', name: '自动监测站统计与水质分析图'},
       {id: '26', funcUrl: '/statistic/unmanned-aerial', pId: '2', name: '无人机巡河预警分析统计'},
       {id: '27', funcUrl: '/statistic/video-monitoring', pId: '2', name: '视频监控预警分析统计'},
-      {id: '28', funcUrl: '/statistic/execution', pId: '2', name: '一河（湖）一策任务完成情况统计'},
-      {id: '29', funcUrl: '/statistic/data-update', pId: '2', name: '一河（湖）一档数据更新统计'},
+      // {id: '28', funcUrl: '/statistic/execution', pId: '2', name: '一河（湖）一策任务完成情况统计'},
+      // {id: '29', funcUrl: '/statistic/data-update', pId: '2', name: '一河（湖）一档数据更新统计'},
       {id: '2a', funcUrl: '/statistic/river-amount', pId: '2', name: '河流数量统计'},
       {id: '2b', funcUrl: '/statistic/river-chief-count', pId: '2', name: '河长人数统计'},
     ]
