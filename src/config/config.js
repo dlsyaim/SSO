@@ -96,6 +96,7 @@ export const menuList = [
       {id: '50', funcUrl: '/river-patrol/standing-book', icon: 'file', name: '河长巡河台账'},
       {id: '51', funcUrl: '/event/comprehensive-query', icon: 'file', name: '整改反馈查询'},
       {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
+      {id: '53', funcUrl: '/river-patrol/problem-feedback', icon: 'file', name: '问题反馈'},
     ]
   },
   {

@@ -23,8 +23,6 @@
 </template>
 
 <script>
-  import ARow from "ant-design-vue/es/grid/Row";
-  import ACol from "ant-design-vue/es/grid/Col";
   import {get, post} from "../../../util/axios";
   import {BASE_URL} from "../../../config/config";
 
@@ -34,7 +32,6 @@
   };
 
   export default {
-    components: {ACol, ARow},
     props:{
       regionList:{
         type:Array,

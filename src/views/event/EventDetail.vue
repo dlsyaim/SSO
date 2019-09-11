@@ -80,7 +80,7 @@
             <Delegate :user-id="userId" :event-id="id"></Delegate>
           </a-tab-pane>
           <a-tab-pane tab="派单" key="2" v-if="operationTypeList.lastIndexOf('delegate')!==-1" forceRender>
-            <SendOrder :region-list="regionList" :user-id="userId" event-id="id"></SendOrder>
+            <SendOrder :region-list="regionList" :user-id="userId" :event-id="id"></SendOrder>
           </a-tab-pane>
           <a-tab-pane tab="结案" key="3" v-if="operationTypeList.lastIndexOf('close')!==-1" forceRender>
             <Close :event-id="id" :user-id="userId"></Close>

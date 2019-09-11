@@ -140,6 +140,8 @@
       get(`${BASE_URL}/uip/common/checkUserNameExist?userName=${value}`).then(res=>{
         if(res.resCode!==1){
           callback(new Error());
+        }else {
+          callback();
         }
       })
     },message:'用户名已存在'};
@@ -148,6 +150,8 @@
       get(`${BASE_URL}/uip/common/checkCellphoneExist?cellphone=${value}`).then(res=>{
         if(res.resCode!==1){
           callback(new Error());
+        }else {
+          callback();
         }
       })
     },message:'手机号码已存在'};

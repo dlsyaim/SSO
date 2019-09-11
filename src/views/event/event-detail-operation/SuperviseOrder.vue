@@ -77,6 +77,10 @@
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
   import ATextarea from "ant-design-vue/es/input/TextArea";
+  import {post} from "../../../util/axios";
+  import {BASE_URL} from "../../../config/config";
+  import moment from 'moment';
+
   const formLayout = {
     labelCol: {span: 6},
     wrapperCol: {span: 17}
@@ -109,8 +113,22 @@
       submit(){
         this.form.validateFields((err, value) => {
           if (!err) {
-            const params=Object.assign({},value,{eventid:this.eventId});
+            this.isSaveLoading=true;
+            const params={
+              eventid:this.eventId,
+              title:value.title,
+              issuedtime:moment(value.issuedtime).format('YYYY-MM-DD'),
+              deadlinedate:moment(value.deadlinedate).format('YYYY-MM-DD'),
+              project:value.project,
+              objectid:value.objectid.join(','),
+              address:value.address,
+              type:value.type,
+              pdfTitle:value.pdfTitle,
+              reason:value.reason,
+              pdfContent:value.pdfContent
+            };
             post(`${BASE_URL}/eventMgr/v1/event/addEventDubandan`,params).then(res=>{
+              this.isSaveLoading=false;
               if(res.resCode===1){
                 this.$message.success('操作成功');
                 setTimeout(()=>{
