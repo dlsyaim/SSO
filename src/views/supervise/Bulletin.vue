@@ -146,6 +146,9 @@
           this.sortColumn = '';
         }
         this.getList();
+      },
+      deleteItem(){
+
       }
     }
   }

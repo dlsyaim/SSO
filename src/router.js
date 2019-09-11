@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import BasicLayout from './layout/BasicLayout'
 import {BASE_URL, SSO_CENTER_URl} from "./config/config";
 import {formatLocationSearch} from "./util/formatLocationSearch";
-import {post} from "./util/axios";
+import {get,post} from "./util/axios";
 
 Vue.use(Router);
 
@@ -250,6 +250,10 @@ const router = new Router({
           path: 'river-patrol/review',
           component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/Review')
         },
+        {
+          path: 'river-patrol/problem-feedback',
+          component: () => import(/* webpackChunkName: "river-patrol" */'./views/river-patrol/ProblemFeedback')
+        },
         /**
          * 监督督导
          */
@@ -408,10 +412,11 @@ router.beforeEach((to, from, next) => {
       // 有st，拿st换老系统token
       post(`${BASE_URL}/uip/login/loginWithSt?st=${query.ST}`).then(res=>{
         if(res.resCode===1){
+          getMenuList(res.data.userDTO.id);
           sessionStorage.setItem('userDTO',JSON.stringify(res.data.userDTO));
           const token=res.data.tokenInfo.token;
           sessionStorage.setItem('Access-Token',token);
-          // 登录成功除去遮罩层
+          // 登录成功,获取到菜单后除去遮罩层
           closeLayer();
           next();
         }else {
@@ -426,6 +431,14 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+function getMenuList(userId) {
+  get(`${BASE_URL}/uip/smAuthority/queryUserAuthorizedMenuTree?userId=${userId}`).then(res=>{
+    if(res.resCode===1){
+      sessionStorage.setItem('menuList',JSON.stringify(res.data));
+    }
+  })
+}
 
 function closeLayer(){
   const preloader = document.querySelector('.preloader');
