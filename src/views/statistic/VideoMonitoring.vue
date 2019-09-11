@@ -24,7 +24,7 @@
                  :pagination="false"
                  :loading="loading">
         <span slot="imageFile" slot-scope="item">
-          <image-preview :image-url="item.imageFile"></image-preview>
+          <image-preview :image-url="item.imageFile?item.imageFile:''"></image-preview>
         </span>
         </a-table>
       </div>
