@@ -105,7 +105,7 @@ export const menuList = [
     children: [
       {id: '60', funcUrl: '/supervise/supervise', icon: 'file', name: '督办'},
       {id: '61', funcUrl: '/supervise/bulletin', icon: 'file', name: '通报批评'},
-      {id: '62', funcUrl: '/supervise/interview-meeting', icon: 'file', name: '约谈会议'},
+      // {id: '62', funcUrl: '/supervise/interview-meeting', icon: 'file', name: '约谈会议'},
     ]
   },
   {id: '7', funcUrl: '/complaint', icon: 'file', name: '公众投诉', children: []},

@@ -24,7 +24,7 @@
           <a-button @click="resetSearchCondition">重置</a-button>
         </div>
         <div>
-          <a-button @click="showAddModal" style="margin-right: 20px">
+          <a-button @click="isModalVisible=true" style="margin-right: 20px">
             <a-icon type="plus" style="font-size: 16px;"/>
             发起通知通报
           </a-button>
@@ -37,22 +37,66 @@
       <div style="margin-top: 18px;" @click="handleTableClick">
         <a-table :columns="columns"
                  @change="handleTableChange"
-                 :rowKey="record => record.id"
+                 rowKey="id"
                  :dataSource="list"
                  :pagination="pagination"
                  :loading="loading">
           <span slot="action" slot-scope="item">
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
           <a-divider type="vertical"/>
-          <span data-method="modify" :data-id="item.id" class="table-operation">修改</span>
+            <span data-method="reply" :data-id="item.id" class="table-operation">答复</span>
           <a-divider type="vertical"/>
           <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
-          <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
+            <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
+          </a-popconfirm>
+          <a-divider type="vertical"/>
+          <a-popconfirm title="确定要撤回这条数据吗?" @confirm="recall" placement="topRight">
+            <span data-method="delete" :data-id="item.id" class="table-operation">撤回</span>
           </a-popconfirm>
           </span>
         </a-table>
       </div>
     </a-card>
+    <a-modal
+      title="发起通知报"
+      :visible="isModalVisible"
+      @ok="handleOk"
+      width="760px"
+      :confirmLoading="isSaveLoading"
+      @cancel="isModalVisible=false"
+    >
+      <a-form :form="form">
+        <a-row>
+          <a-col span="12">
+            <a-form-item label="类型" v-bind="formLayout">
+              <a-radio-group @change="onTypeChange" v-decorator="['informType',{initialValue:'600101'}]">
+                <a-radio value="600101">信息通知</a-radio>
+                <a-radio value="600102">信息通报</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+          <a-col span="12" v-if="showIsReplyFormItem">
+            <a-form-item v-bind="formLayout" label="需要答复">
+              <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['isreply', { valuePropName: 'checked' }]"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col span="12">
+            <a-form-item label="标题" v-bind="formLayout">
+              <a-input placeholder="请输入标题" v-decorator="['title',{rules:[{required:true,message:'请输入标题'}]}]"/>
+            </a-form-item>
+          </a-col>
+          <a-col span="12">
+            <a-form-item label="发起日期" v-bind="formLayout">
+              <a-date-picker  v-decorator="['createDate',{rules:[{required:true,message:'请选择发起日期'}]}]"/>
+            </a-form-item>
+          </a-col>
+          <a-col span="12"></a-col>
+          <a-col span="12"></a-col>
+        </a-row>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -60,6 +104,8 @@
   import {BASE_URL, tablePaginationConfig} from "../../config/config";
   import {get} from "../../util/axios";
   import moment from 'moment';
+  import ARow from "ant-design-vue/es/grid/Row";
+  import ACol from "ant-design-vue/es/grid/Col";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -68,10 +114,16 @@
     {title: '发起人', dataIndex: 'createPerson', sorter: true},
     {title: '发起日期', dataIndex: 'createDate', sorter: true},
     {title: '是否上报', key: 'weatherSent', sorter: true, scopedSlots: {customRender: 'weatherSent'}},
-    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'},width:200}
+    {title: '操作', key: 'action', scopedSlots: {customRender: 'action'}, width: 200}
   ];
 
+  const formLayout = {
+    labelCol: {span: 6},
+    wrapperCol: {span: 16}
+  };
+
   export default {
+    components: {ACol, ARow},
     data() {
       return {
         title: null,
@@ -83,11 +135,18 @@
         pagination: tablePaginationConfig,
         columns,
         sortColumn: '',
-        sortOrder: ''
+        sortOrder: '',
+        selected: {},
+        isModalVisible: false,
+        isSaveLoading: false,
+        form: null,
+        formLayout,
+        showIsReplyFormItem:false
       }
     },
     mounted() {
       this.getList();
+      this.form = this.$form.createForm(this);
     },
     methods: {
       getList() {
@@ -124,14 +183,30 @@
         this.sortColumn = '';
         this.sortOrder = '';
       },
-      showAddModal() {
+      onTypeChange(e) {
+        const value=e.target.value;
+        if (value === '600101') {
+         this.showIsReplyFormItem=false;
+        } else if (value === '600102') {
+         this.showIsReplyFormItem=true;
+        }
+      },
+      handleOk() {
 
       },
       exportFile() {
-
+        const project = this.project ? this.project : '';
+        const statTime = this.startTime ? moment(this.startTime).format('YYYY-MM-DD') : '';
+        const endTime = this.endTime ? moment(this.endTime).format('YYYY-MM-DD') : '';
+        window.location.href = `${BASE_URL}/duban/v1/DubanSupervision/createExcel?project=${project}&statTime=${statTime}&endTime=${endTime}`;
       },
       handleTableClick(e) {
+        const id = e.target.dataset.id;
+        const method = e.target.dataset.method;
+        if (id && method) {
+          this.selected = this.list.filter(item => item.id === id);
 
+        }
       },
       handleTableChange(pagination, filters, sorter) {
         this.pagination = pagination;
@@ -147,7 +222,10 @@
         }
         this.getList();
       },
-      deleteItem(){
+      deleteItem() {
+
+      },
+      recall() {
 
       }
     }
