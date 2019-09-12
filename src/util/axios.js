@@ -22,11 +22,11 @@ export const get = (url, params) => {
           resolve(res.data);
         }
       }else {
-        handleHttpError(res);
+        // handleHttpError(res);
         resolve(res.data);
       }
     }).catch(err => {
-      handleHttpError(err);
+      // handleHttpError(err);
       resolve(err);
     })
   });

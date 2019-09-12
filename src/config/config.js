@@ -10,7 +10,9 @@ export const BASE_URL='http://122.224.129.35:9080';
  */
 export const UPLOAD_URL='http://122.224.129.35/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://122.224.129.35:9085/files';
+export const FILE_URL_PREFIX='http://122.224.129.35:9085/api/download';
+
+export const PDF_FILE_URL='http://122.224.129.35:9085';
 
 /**
  * SSO登录中心地址
@@ -94,8 +96,8 @@ export const menuList = [
     name: '河长巡河',
     children: [
       {id: '50', funcUrl: '/river-patrol/standing-book', icon: 'file', name: '河长巡河台账'},
-      {id: '51', funcUrl: '/event/comprehensive-query', icon: 'file', name: '整改反馈查询'},
-      {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
+      {id: '51', funcUrl: '/river-patrol/rectification-feedback', icon: 'file', name: '整改反馈查询'},
+      // {id: '52', funcUrl: '/river-patrol/review', icon: 'file', name: '巡河复查'},
       {id: '53', funcUrl: '/river-patrol/problem-feedback', icon: 'file', name: '问题反馈'},
     ]
   },

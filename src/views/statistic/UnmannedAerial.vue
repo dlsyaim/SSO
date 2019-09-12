@@ -48,8 +48,8 @@
 
   const columns=[
     {title:'序号',dataIndex:'index'},
-    {title:'预警内容',dataIndex:'warnContentName'},
-    {title:'预警无人机名称',dataIndex:'videoName'},
+    {title:'预警内容',dataIndex:'warningContent'},
+    {title:'预警无人机名称',dataIndex:'uavName'},
     {title:'预警状态',dataIndex:'warningTypeName'},
     {title: '预警图片', key: 'imageFile', scopedSlots: {customRender: 'imageFile'},width:120}
   ];
@@ -85,7 +85,7 @@
         };
         axios({
           method: 'post',
-          url: 'http://122.224.129.35:9090/v4/forewarningManagement/getFmTypeList',
+          url: 'http://122.224.129.35:9090/v4/forewarningManagement/list',
           headers: {
             'Access-Token': sessionStorage.getItem('Access-Token')
           },
@@ -94,21 +94,18 @@
           this.loading=false;
           if (res.status === 200) {
             if(res.data.code===200){
-              this.handleData(res.data.results);
+              this.handleData(res.data.results.messageList);
             } else {
               this.$message.error(res.data.msg);
             }
           }else {
             this.$message.error('服务器出错')
           }
-        }).catch(err => {
-          this.$message.error('请求出错')
         })
       },
       handleData(list){
         list.forEach((item,index)=>{
           item.index=index+1;
-          item.warnContentName=this.warnContentEnum[item.warningContent];
           item.warningTypeName=this.warnTypeEnum[item.warningType];
         });
         this.list=list;

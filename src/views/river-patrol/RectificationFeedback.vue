@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="整改统计" :bordered="false" style="min-height: 100%">
+    <a-card title="整改反馈查询" :bordered="false" style="min-height: 100%">
       <div style="display: flex;align-items: center;justify-content: space-between">
         <div style="display: flex;align-items: center">
           <span>行政区域：</span>
@@ -135,7 +135,7 @@
 
 <script>
   import {get, post, put} from "../../util/axios";
-  import {BASE_URL, tablePaginationConfig} from "../../config/config";
+  import {BASE_URL, REGION_ID, tablePaginationConfig} from "../../config/config";
   import moment from 'moment';
   import ARow from "ant-design-vue/es/grid/Row";
   import ATextarea from "ant-design-vue/es/input/TextArea";
@@ -213,7 +213,7 @@
         this.list=list;
       },
       getRegionList(){
-        get(`${BASE_URL}/information/v1/administrativeRegion/list?grade=3&pageNum=-1&pageSize=-1`).then(res=>{
+        get(`${BASE_URL}/information/v1/administrativeRegion/list?pageNum=-1&pageSize=-1&parentCode=${REGION_ID}`).then(res=>{
           if(res.resCode===1){
             this.regionList=res.data.list;
           }

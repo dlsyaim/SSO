@@ -96,7 +96,7 @@
 <script>
   import {get} from "../../util/axios";
   import {GET_PUBLISH_DETAIL, GET_PUBLISH_LIST} from "../../api/home";
-  import {FILE_URL_PREFIX} from "../../config/config";
+  import {FILE_URL_PREFIX, PDF_FILE_URL} from "../../config/config";
   import PDF from "../../components/PDF";
   export default {
     components:{PDF},
@@ -214,7 +214,7 @@
         }
         if(detail.detail_url&&afterFix==='pdf'){
           detail.showPDF=true;
-          detail.pdfUrl=FILE_URL_PREFIX+detail.detail_url;
+          detail.pdfUrl=PDF_FILE_URL+detail.detail_url;
         }else {
           detail.showPDF=false;
         }
