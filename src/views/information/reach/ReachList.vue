@@ -86,8 +86,8 @@
         const params = {
           reachName: this.reachName,
           regionName: this.region.name,
-          pageSize: this.pagination.pageSize,
-          pageNumber: this.pagination.current
+          size: this.pagination.pageSize,
+          page: this.pagination.current
         };
         get(`${BASE_URL}/watersource/v1/reach/list`, params).then(res => {
           this.loading = false;

@@ -81,8 +81,8 @@
         const params = {
           waterName: this.riverName,
           basinCode:this.basinCode,
-          pageSize: this.pagination.pageSize,
-          pageNumber: this.pagination.current
+          size: this.pagination.pageSize,
+          page: this.pagination.current
         };
         get(`${BASE_URL}/watersource/v1/waterSystem/list`, params).then(res => {
           this.loading = false;

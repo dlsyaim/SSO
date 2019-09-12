@@ -93,8 +93,8 @@
           lakeName: this.lakeName,
           riverType:this.riverType,
           regionName: this.region.name,
-          pageSize: this.pagination.pageSize,
-          pageNumber: this.pagination.current
+          size: this.pagination.pageSize,
+          page: this.pagination.current
         };
         get(`${BASE_URL}/watersource/v1/lakes/list`, params).then(res => {
           this.loading = false;
