@@ -420,12 +420,12 @@ router.beforeEach((to, from, next) => {
           closeLayer();
           next();
         }else {
-          window.location.href=`${SSO_CENTER_URl}?from=${window.location.host}${window.location.pathname}&info=v3`;
+          window.location.href=`${SSO_CENTER_URl}?from=${window.location.origin}${window.location.pathname}&info=v3`;
         }
       });
     }else {
       //没有st，去登录中心获取st
-      window.location.href=`${SSO_CENTER_URl}?from=${window.location.href}&info=v3`;
+      window.location.href=`${SSO_CENTER_URl}?from=${window.location.origin}${window.location.pathname}&info=v3`;
     }
   }else {
     next();
