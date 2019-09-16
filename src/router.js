@@ -420,7 +420,7 @@ router.beforeEach((to, from, next) => {
           closeLayer();
           next();
         }else {
-          window.location.href=`${SSO_CENTER_URl}?from=${window.location.host}${window.location.path?window.location.path:''}&info=v3`;
+          window.location.href=`${SSO_CENTER_URl}?from=${window.location.host}${window.location.pathname}&info=v3`;
         }
       });
     }else {
