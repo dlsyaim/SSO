@@ -10,9 +10,7 @@ export const BASE_URL='http://122.224.129.35:9080';
  */
 export const UPLOAD_URL='http://122.224.129.35/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://122.224.129.35:9085/api/download';
-
-export const PDF_FILE_URL='http://122.224.129.35:9085';
+export const FILE_URL_PREFIX='http://122.224.129.35:9080/file/';
 
 /**
  * SSO登录中心地址
