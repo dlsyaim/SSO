@@ -10,7 +10,7 @@
       </a-col>
       <a-col span="8">
         <a-form-item v-bind="formLayout" label="履职级别">
-          <a-select placeholder="请选择履职级别" v-decorator="['chairmanlevel',{rules:[{required:true,message:'请选择履职级别'}],initialValue:initialValue.chairmanlevel}]">
+          <a-select placeholder="请选择履职级别" v-decorator="['chairmanlevel',{rules:[{required:true,message:'请选择履职级别'}],initialValue:initialValue.chairmanlevel?initialValue.chairmanlevel.toString():undefined}]">
             <a-select-option v-for="item in dutyGradeList" :key="item.id" :value="item.typeValue">{{item.typeName}}</a-select-option>
           </a-select>
         </a-form-item>

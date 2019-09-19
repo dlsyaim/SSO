@@ -89,7 +89,7 @@
           </a-col>
           <a-col span="12">
             <a-form-item label="发起日期" v-bind="formLayout">
-              <a-date-picker  v-decorator="['createDate',{rules:[{required:true,message:'请选择发起日期'}]}]"/>
+              <a-date-picker style="width: 100%"  v-decorator="['createDate',{rules:[{required:true,message:'请选择发起日期'}]}]"/>
             </a-form-item>
           </a-col>
           <a-col span="12"></a-col>
