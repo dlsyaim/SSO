@@ -43,16 +43,20 @@
                  :loading="loading">
           <span slot="action" slot-scope="item">
           <span data-method="detail" :data-id="item.id" class="table-operation">详情</span>
-          <a-divider type="vertical"/>
+          <template  v-if="item.isStart==2">
+            <a-divider type="vertical"/>
             <span data-method="reply" :data-id="item.id" class="table-operation">答复</span>
+          </template>
           <a-divider type="vertical"/>
           <a-popconfirm title="确定要删除这条数据吗?" @confirm="deleteItem" placement="topRight">
             <span data-method="delete" :data-id="item.id" class="table-operation">删除</span>
           </a-popconfirm>
-          <a-divider type="vertical"/>
-          <a-popconfirm title="确定要撤回这条数据吗?" @confirm="recall" placement="topRight">
-            <span data-method="delete" :data-id="item.id" class="table-operation">撤回</span>
-          </a-popconfirm>
+            <template  v-if="item.isStart == 1 && item.state != 2 && item.readStatus == 0">
+              <a-divider type="vertical"/>
+              <a-popconfirm title="确定要撤回这条数据吗?" @confirm="recall" placement="topRight">
+                <span data-method="delete" :data-id="item.id" class="table-operation">撤回</span>
+              </a-popconfirm>
+            </template>
           </span>
         </a-table>
       </div>
@@ -131,7 +135,7 @@
 
 <script>
   import {BASE_URL, REGION_ID, tablePaginationConfig} from "../../config/config";
-  import {get, post} from "../../util/axios";
+  import {deleteRequest, get, post} from "../../util/axios";
   import moment from 'moment';
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
@@ -293,8 +297,10 @@
         const id = e.target.dataset.id;
         const method = e.target.dataset.method;
         if (id && method) {
-          this.selected = this.list.filter(item => item.id === id);
-
+          this.selected = this.list.find(item => item.id === id);
+          if(method==='detail'){
+            this.$router.push({path:'/supervise/bulletin/detail',query:{id:id}});
+          }
         }
       },
       handleTableChange(pagination, filters, sorter) {
@@ -312,10 +318,24 @@
         this.getList();
       },
       deleteItem() {
-
+        this.loading=true;
+        deleteRequest(`${BASE_URL}/inform/v1/informReport/delete?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('删除成功');
+            this.getList();
+          }
+        })
       },
       recall() {
-
+        this.loading=true;
+        post(`${BASE_URL}/inform/v1/informReport/callback?id=${this.selected.id}`).then(res=>{
+          this.loading=false;
+          if(res.resCode===1){
+            this.$message.success('撤回成功');
+            this.getList();
+          }
+        })
       },
       uploadFile({file, fileList}) {
         this.fileList = fileList;

@@ -263,7 +263,14 @@ const router = new Router({
         },
         {
           path: 'supervise/bulletin',
-          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Bulletin')
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/Bulletin'),
+          meta:{
+            keepAlive:true
+          }
+        },
+        {
+          path: 'supervise/bulletin/detail',
+          component: () => import(/* webpackChunkName: "supervise" */'./views/supervise/BulletinDetail'),
         },
         {
           path: 'supervise/interview-meeting',
