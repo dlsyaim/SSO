@@ -92,20 +92,50 @@
               <a-date-picker style="width: 100%"  v-decorator="['createDate',{rules:[{required:true,message:'请选择发起日期'}]}]"/>
             </a-form-item>
           </a-col>
-          <a-col span="12"></a-col>
-          <a-col span="12"></a-col>
+          <a-col span="12">
+            <a-form-item label="接收区域" v-bind="formLayout">
+              <a-select placeholder="请选择接收区域" v-decorator="['acceptArea',{rules:[{required:true,message:'请选择接收区域'}]}]" mode="multiple">
+                <a-select-option v-for="item in regionList" :value="item.areaCode" :key="item.areaCode">{{item.areaName}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col span="12">
+            <a-form-item label="成员单位" v-bind="formLayout">
+              <a-select placeholder="请选择成员单位" v-decorator="['units',{rules:[{required:true,message:'请选择成员单位'}]}]" mode="multiple">
+                <a-select-option v-for="item in unitList" :value="item.name" :key="item.name">{{item.name}}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
         </a-row>
+        <a-form-item label="内容" v-bind="{labelCol: {span: 3},wrapperCol: {span: 20}}">
+          <a-textarea placeholder="请输入内容" rows="3" v-decorator="['content']"></a-textarea>
+        </a-form-item>
+        <a-form-item label="附件" v-bind="{labelCol: {span: 3},wrapperCol: {span: 20}}">
+          <a-upload @change="uploadFile"
+                    name="files"
+                    :fileList="fileList"
+                    :action="BASE_URL+'/inform/v1/informReport/upload'"
+                    :remove="handleFileRemove">
+            <div style="display: flex;align-items: center;justify-content: space-between;width: 144px">
+              <a-button>
+                <a-icon type="upload"/>
+                文件上传
+              </a-button>
+            </div>
+          </a-upload>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
 </template>
 
 <script>
-  import {BASE_URL, tablePaginationConfig} from "../../config/config";
-  import {get} from "../../util/axios";
+  import {BASE_URL, REGION_ID, tablePaginationConfig} from "../../config/config";
+  import {get, post} from "../../util/axios";
   import moment from 'moment';
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
+  import ATextarea from "ant-design-vue/es/input/TextArea";
 
   const columns = [
     {title: '序号', dataIndex: 'index'},
@@ -123,7 +153,7 @@
   };
 
   export default {
-    components: {ACol, ARow},
+    components: {ATextarea, ACol, ARow},
     data() {
       return {
         title: null,
@@ -139,6 +169,10 @@
         selected: {},
         isModalVisible: false,
         isSaveLoading: false,
+        regionList:[],
+        unitList:[],
+        fileList:[],
+        BASE_URL,
         form: null,
         formLayout,
         showIsReplyFormItem:false
@@ -146,6 +180,8 @@
     },
     mounted() {
       this.getList();
+      this.getRegionList();
+      this.getUnitList();
       this.form = this.$form.createForm(this);
     },
     methods: {
@@ -175,6 +211,29 @@
         });
         this.list = list;
       },
+      getRegionList(){
+        const params={
+          pageNum:-1,
+          pageSize:-1,
+          parentCode:REGION_ID,
+        };
+        get(`${BASE_URL}/information/v1/administrativeRegion/list`,params).then(res=>{
+          if(res.resCode===1){
+            this.regionList=res.data.list;
+          }
+        });
+      },
+      getUnitList(){
+        const params={
+          roleIds:'cb0a5c20b4b811e88338fa163e29a9e1',// TODO
+          regionIds:REGION_ID
+        };
+        get(`${BASE_URL}/eventMgr/v1/event/loadUser`,params).then(res=>{
+          if(res.resCode===1){
+            this.unitList=res.data;
+          }
+        })
+      },
       resetSearchCondition() {
         this.title = null;
         this.startTime = null;
@@ -192,7 +251,37 @@
         }
       },
       handleOk() {
-
+        this.form.validateFields((err,value)=>{
+          if(!err){
+            this.isSaveLoading=true;
+            const data=new FormData();
+            data.append('informType',value.informType);
+            data.append('title',value.title);
+            data.append('createDate',value.createDate?moment(value.createDate).format('YYYY-MM-DD'):'');
+            data.append('createPerson',JSON.parse(sessionStorage.getItem('userDTO')).name);
+            data.append('content',value.content);
+            data.append('acceptArea',value.acceptArea.join(','));
+            data.append('units',value.units.join(','));
+            const file = this.fileList.filter(item => !!item.responseUrl).map(item => item.responseUrl);
+            data.append('accessoryURL',file.join(','));
+            if(value.informType==='600102'){
+              data.append('isreply',value.isreply?'1':'2');
+            }
+            post(`${BASE_URL}/inform/v1/informReport/add`,null,data).then(res=>{
+              this.isSaveLoading=false;
+              if(res.resCode===1){
+                this.$message.success('新增成功');
+                this.getList();
+                setTimeout(()=>{
+                  this.isModalVisible=false;
+                  this.form.resetFields();
+                  this.fileList=[];
+                  this.showIsReplyFormItem=false;
+                },1500);
+              }
+            })
+          }
+        })
       },
       exportFile() {
         const project = this.project ? this.project : '';
@@ -227,6 +316,22 @@
       },
       recall() {
 
+      },
+      uploadFile({file, fileList}) {
+        this.fileList = fileList;
+        if (file.status === 'done') {
+          this.$message.success('上传成功');
+          this.fileList.forEach(item => {
+            if (item.uid === file.uid) {
+              item.responseUrl = file.response.data[0];
+            }
+          });
+        } else if (file.status === 'error') {
+          this.$message.error('上传失败');
+        }
+      },
+      handleFileRemove(file) {
+        this.fileList = this.fileList.filter(item => item.uid !== file.uid);
       }
     }
   }
