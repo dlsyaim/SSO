@@ -1,6 +1,6 @@
 <template>
   <div class="card-container">
-    <a-card title="新增湖泊" :bordered="false" style="min-height: 100%">
+    <a-card title="编辑湖泊" :bordered="false" style="min-height: 100%">
       <a-button type="primary" slot="extra" @click="$router.go(-1)">返回</a-button>
       <div style="display: flex;justify-content: space-between;">
         <div style="width: 70%;" :style="{display:isMapMax?'none':'block'}">

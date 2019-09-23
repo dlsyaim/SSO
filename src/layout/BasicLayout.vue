@@ -6,7 +6,7 @@
                 :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="collapsed=!collapsed"/>
         <img src="../assets/logo.png" width="50"/>
         <h1 style="margin: 0 0 0 10px;white-space: nowrap;color: #fff;cursor: pointer" @click="getMenuList">
-          西青区河长制信息管理系统</h1>
+          河长制信息管理系统</h1>
       </div>
       <div style="display:flex;justify-content: center;align-items: center">
         <a-icon type="setting" style="font-size: 22px;margin-right: 10px;cursor: pointer" @click="getSettingMenuList"

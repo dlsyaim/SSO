@@ -234,7 +234,7 @@
             title: data.title,
             issuer: data.issuer,
             post_time: moment(data.post_time),
-            type: data.type,
+            type: data.type.toString(),
           });
         });
       },
