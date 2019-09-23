@@ -128,11 +128,15 @@ const router = new Router({
         },
         {
           path: 'information/pond',
-          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondList')
+          component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondList'),
+          meta: {
+            keepAlive:true
+          }
         },
         {
           path: 'information/pond/add',
           component: () => import(/* webpackChunkName: "information" */'./views/information/pond/PondAdd')
+
         },
         {
           path: 'information/pond/edit',
