@@ -2,18 +2,19 @@
  * api根路径
  * @type {string}http://10.0.0.96:7244
  */
-export const BASE_URL='http://10.0.0.96:7244';
 
+export const BASE_URL='http://61.240.12.212:9081';
+export const BASE_URLimg='http://61.240.12.212:9084/';
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://60.28.163.75/inform/v1/informReport/upload';
+export const UPLOAD_URL='http://61.240.12.212/inform/v1/informReport/upload';
 
 export const FILE_URL_PREFIX='http://47.93.191.69:8080';
 
 /**
- * 表格常用默认分页配置
+ * 表格常用默认分页配
  */
 export const tablePaginationConfig = {
   current: 1,
@@ -68,3 +69,6 @@ export const GetQueryString = (name) => {
   var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
   if(r!=null)return  unescape(r[2]); return null;
 };
+export  function getUrlKey(name){
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+}

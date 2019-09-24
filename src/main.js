@@ -6,6 +6,8 @@ import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import "babel-polyfill"
+import "url-search-params-polyfill"
 Vue.use(Antd);
 
 //引入ztree和jquery

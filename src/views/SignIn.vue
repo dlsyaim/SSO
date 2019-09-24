@@ -1,12 +1,10 @@
 <template>
   <div>
-    <Header header="西青区河长制平台单点登录服务"></Header>
+    <Header header="西青区河长制信息管理平台"></Header>
     <a-row type="flex" justify="space-around" align="middle">
       <a-form style="width: 500px"
               id="components-form-demo-normal-login"
-              :form="form"
               class="login-form"
-              @submit="handleSubmit"
       >
         <a-col align="middle" style="margin-top: 70px;margin-bottom: 70px"><img src="../assets/logo.png" width="150"/>
         </a-col>
@@ -100,7 +98,8 @@
 <script>
   import {get, post} from "../util/axios";
   import {BASE_URL} from "../config/config";
-  import {GetQueryString} from "../config/config";
+  import {getUrlKey} from "../config/config";
+  import {BASE_URLimg} from "../config/config";
 
   export default {
     data() {
@@ -122,13 +121,13 @@
         callback_workno: '',
       }
     },
-
     created() {
       // this.getImageCode();
       this.getVcode();
+      this.indexif();
     },
     beforeCreate() {
-      this.form = this.$form.createForm(this);
+      // this.form = this.$form.createForm(this);
     },
     methods: {
       showModal() {
@@ -146,56 +145,51 @@
         console.log('Clicked cancel button');
         this.visible = false
       },
-      handleSubmit(e) {
-        e.preventDefault();
-        this.form.validateFields((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-          }
-        });
-      },
-      getUUID() {
-        const len = 32;//32长度
-        let radix = 16;//16进制
-        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
-        let uuid = [], i;
-        radix = radix || chars.length;
-        if (len) {
-          for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
-        } else {
-          let r;
-          uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-          uuid[14] = '4';
-          for (i = 0; i < 36; i++) {
-            if (!uuid[i]) {
-              r = 0 | Math.random() * 16;
-              uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+      indexif(){
+        if (localStorage.getItem('Token')) {
+          post(`${BASE_URL}/v1/auth/getSt`, null, null).then(res => {
+            if (res.code === 200) {
+              localStorage.setItem('ST', res.results.st);
+              const bburl = getUrlKey('from');
+              console.log('延时跳转');
+              if (getUrlKey('info') === 'v2') {
+                window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              }
+              else if (getUrlKey('info') === 'v3') {
+                window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v4') {
+                window.location.href = "http://61.240.12.212:9090?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v5') {
+                window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v6') {
+                window.location.href = "http://61.240.12.212:9092?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v7') {
+                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v8') {
+                window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else {
+                window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
+              }
             }
-          }
+          });
+        } else {
         }
-        return uuid.join('');
-      },
-      getImageCode() {
-        const uuid = this.getUUID();
-        this.uuid = uuid;
-        this.imageCodeStyle = {
-          background: 'url(' + 'http://39.106.76.142/uip/randImage/imageCode?imageCodeId=' + uuid + '&date=' + new Date().getSeconds() + ') no-repeat'
-        }
-      },
-      refreshImageCode() {
-        this.getImageCode();
       },
       login() {
-        const params = {
-          userName: this.username,
-          password: this.password,
-          sessionId: localStorage.getItem('systemtype'),
-          captcha: this.captcha
-        };
-        post(`${BASE_URL}/v1/auth/login`, params).then(res => {
-          // sessionStorage.setItem('userDTO', JSON.stringify(res.data.userDTO));
-          // const token = res.data.tokenInfo.token.substring(1, res.data.tokenInfo.token.length);
-          // sessionStorage.setItem('Access-Token', token);
+        console.log(getUrlKey('info'));
+        const params = new URLSearchParams();
+        params.append('userName', this.username);
+        params.append('password', this.password);
+        params.append('captcha', this.captcha);
+        post(`${BASE_URL}/v1/auth/login`, null, params).then(res => {
           if (res.code === 200) {
             localStorage.setItem('ST', res.results.st);
             localStorage.setItem('Token', res.results.token);
@@ -207,16 +201,35 @@
             localStorage.setItem('callback_company', res.results.user.company);
             localStorage.setItem('callback_department', res.results.user.dept);
             localStorage.setItem('callback_workno', res.results.user.workNo);
+            const bburl = getUrlKey('from');
             this.showModal();
-            setTimeout( ()=> {
+            setTimeout(() => {
               console.log('延时跳转');
-              if (localStorage.getItem('systemtype')) {
-                window.location.href="http://localhost:8080/#/"+localStorage.getItem('systemtype')+"_index";
-                console.log("http://localhost:8080/#/" + localStorage.getItem('systemtype') + '_index');
+              if (getUrlKey('info') === 'v2') {
+                window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               }
-              else {
-                console.log(this.$router);
-                window.location.href="http://localhost:8080/#/Shome";
+              else if (getUrlKey('info') === 'v3') {
+                window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v4') {
+                window.location.href = "http://61.240.12.212:9090?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v5') {
+                window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v6') {
+                window.location.href = "http://61.240.12.212:9092?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v7') {
+                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else if (getUrlKey('info') === 'v8') {
+                window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+              } else {
+                window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
+                // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
             }, "3000");
           }
@@ -227,7 +240,7 @@
           this.imageCodeStyle = {
             background: 'url(' + res.results.captcha.image_base64 + ') no-repeat   '
           }
-        })
+        });
       }
     },
   };

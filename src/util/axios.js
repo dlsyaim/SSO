@@ -3,20 +3,21 @@ import Vue from 'vue';
 
 axios.defaults.validateStatus = () => true;
 
-const accessToken = sessionStorage.getItem('Access-Token') ? sessionStorage.getItem('Access-Token') : '';
+const accessToken = localStorage.getItem('Token');
 
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'get',
       url: url,
-      headers: {
-        'Access-Token': accessToken
+       headers: {
+        'token': accessToken
       },
       params: params
     }).then(res => {
+      console.log(res);
       if (res.status === 200) {
-        if(res.data.resCode===1){
+        if(res.data.code===200){
           resolve(res.data);
         } else {
           handleBusinessError(res.data);
@@ -24,6 +25,7 @@ export const get = (url, params) => {
         }
       }
     }).catch(err => {
+      console.log(err);
       handleHttpError(err);
       resolve(err.data)
     })
@@ -35,14 +37,15 @@ export const post = (url,params, data) => {
     axios({
       method: 'post',
       url: url,
-      headers: {
-        "Access-Token": accessToken
+       headers: {
+        'token': accessToken
       },
       params:params,
       data: data
     }).then(res => {
+      console.log(res);
       if (res.status === 200) {
-        if(res.data.resCode===1){
+        if(res.data.code===200){
           resolve(res.data);
         } else {
           handleBusinessError(res.data);
@@ -50,6 +53,7 @@ export const post = (url,params, data) => {
         }
       }
     }).catch(err => {
+      console.log(err);
       handleHttpError(err);
       resolve(err.data)
     })
@@ -62,12 +66,12 @@ export const put = (url, data) => {
       method: 'put',
       url: url,
       headers: {
-        "Access-Token": accessToken
+        'token': accessToken
       },
       data: data
     }).then(res => {
       if (res.status === 200) {
-        if(res.data.resCode===1){
+        if(res.data.code===200){
           resolve(res.data);
         } else {
           handleBusinessError(res.data);
@@ -87,11 +91,11 @@ export const deleteRequest = (url) => {
       method: 'delete',
       url: url,
       headers: {
-        "Access-Token": accessToken
+        'token': accessToken
       }
     }).then(res => {
       if (res.status === 200) {
-        if(res.data.resCode===1){
+        if(res.data.code===200){
           resolve(res.data);
         } else {
           handleBusinessError(res.data);
@@ -119,5 +123,5 @@ const handleHttpError = (err) => {
  * @param err
  */
 const handleBusinessError = (err) => {
-  Vue.prototype.$message.error(err.resMsg);
+  Vue.prototype.$message.error(err.msg);
 };
