@@ -3,11 +3,11 @@
     <a-card title="未及时处理问题" :bordered="false" style="min-height: 100%">
       <div style="display: flex;align-items: center">
         <span>开始日期：</span>
-        <a-date-picker @change="onStartChange" :value="startTime" style="margin-right: 40px"/>
+        <a-date-picker @change="onStartChange" :value="startTime" style="margin-right: 40px;width: 200px"/>
         <span>结束日期：</span>
-        <a-date-picker @change="onEndChange" :value="endTime" style="margin-right: 40px"/>
+        <a-date-picker @change="onEndChange" :value="endTime" style="margin-right: 40px;width: 200px"/>
         <span>委办单位：</span>
-        <a-input placeholder="请输入委办单位" v-model="acceptPerson" style="margin-right: 40px;width: 240px"></a-input>
+        <a-input placeholder="请输入委办单位" v-model="acceptPerson" style="margin-right: 40px;width: 200px"></a-input>
         <a-button type="primary" @click="getList" style="margin-right: 20px">查询</a-button>
         <a-button @click="resetSearchCondition">重置</a-button>
       </div>
@@ -35,7 +35,7 @@
     {title: '委办单位', dataIndex: 'acceptPerson'},
     {title: '问题点位', dataIndex: 'address'},
     {title: '问题描述', dataIndex: 'typename'},
-    {title: '是否办结', dataIndex: 'resule'},
+    {title: '是否办结', dataIndex: 'statusName'},
     {title: '延迟时长', dataIndex: 'delayCout'}
   ];
   export default {
@@ -75,7 +75,8 @@
       },
       handleList(list) {
         list.forEach((item, index) => {
-          item.index = index + 1 + this.pagination.current * this.pagination.pageSize
+          item.index = index + 1 + this.pagination.current * this.pagination.pageSize;
+          item.statusName=item.resule==='Z'?'办结':'未办结'
         });
         this.list = list;
       },

@@ -1,6 +1,6 @@
 <template>
 
-  <div style="position: relative">
+  <div style="position: relative;z-index: 0">
     <a-spin :spinning="isUploadingPicture">
       <div :id="tagId"></div>
     </a-spin>
@@ -34,11 +34,14 @@
     data() {
       return {
         subscription: null,
-        isUploadingPicture:false
+        isUploadingPicture:false,
+        editorInstance:null,
+        idEditorInit:false
       }
     },
     mounted() {
       const editor = new E(document.getElementById(this.tagId));
+      this.editorInstance=editor;
       // 最大同时上传数量为1张，下面上传逻辑写死
       editor.customConfig.uploadImgMaxLength = 1;
 
@@ -74,6 +77,14 @@
     },
     beforeDestroy() {
       this.subscription.unsubscribe();
+    },
+    watch:{
+      initialContent(newValue,oldValue){
+        if(!this.idEditorInit&&newValue&&oldValue===''){
+          this.editorInstance.txt.html(newValue);
+          this.idEditorInit=true;
+        }
+      }
     }
   };
 </script>
