@@ -160,7 +160,7 @@
                 window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v4') {
-                window.location.href = "http://61.240.12.212:9090?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v5') {
                 window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
@@ -213,7 +213,7 @@
                 window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v4') {
-                window.location.href = "http://61.240.12.212:9090?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v5') {
                 window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
@@ -222,7 +222,7 @@
                 window.location.href = "http://61.240.12.212:9092?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v7') {
-                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v8') {
                 window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
@@ -231,7 +231,7 @@
                 window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
-            }, "3000");
+            },2000);
           }
         });
       },

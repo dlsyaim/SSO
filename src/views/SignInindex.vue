@@ -8,14 +8,13 @@
           collapsedWidth="0"
           @collapse="onCollapse"
           @breakpoint="onBreakpoint"
-          style="text-align: center;background: white;border-radius: 15px;height: 600px"
+          style="text-align: center;background: white;border-radius: 15px;height: 600px;width: 300px;flex:0 0 300px;max-width: 300px"
         >
           <img style="margin-top: 20px;margin-bottom: 20px" src="../assets/logo.png" width="100"/>
           <h1 id="c_user_name">{{callback_username}}</h1>
           <div id="c_user_info">
             <p>单位：{{callback_company}}</p>
             <p>部门：{{callback_department}}</p>
-            <p>工号：{{callback_workno}}</p>
           </div>
           <a-button id="logout" @click="logout">退出</a-button>
         </a-layout-sider>
@@ -35,7 +34,6 @@
             <a-col align="middle" :span="10" :offset="2" style="background: rgb(238,156,50)"><a target="_blank" href="http://61.240.12.212:9096/">河长制内部信息网</a></a-col>
           </a-row>
         </a-layout>
-
       </a-layout>
     </a-row>
   </div>
@@ -77,8 +75,8 @@
         } else {
           this.$message.error(`请先登录`);
           setTimeout(() => {
-            window.location.href = "http://61.240.12.212";
-          }, "3000");
+            window.location.href = "http://61.240.12.212:9081";
+          }, 1000);
         }
       },
       login(e){
@@ -112,6 +110,9 @@
                 window.open("http://61.240.12.212:9081?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
+            }
+            else {
+               this.logout();
             }
           });
         } else {
