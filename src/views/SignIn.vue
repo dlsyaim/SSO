@@ -152,6 +152,15 @@
               localStorage.setItem('ST', res.results.st);
               const bburl = getUrlKey('from');
               console.log('延时跳转');
+              /*
+              v2:外部官网后台管理
+              v3:河长制管理系统
+              v4:无人机巡河系统
+              v5:水系末端
+              v6:水质监测
+              v7:视频监控
+              v8:水系大数据
+              */
               if (getUrlKey('info') === 'v2') {
                 window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
@@ -163,13 +172,13 @@
                 window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v5') {
-                window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v6') {
-                window.location.href = "http://61.240.12.212:9092?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v7') {
-                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
+                window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v8') {
                 window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');

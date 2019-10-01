@@ -84,6 +84,15 @@
           post(`${BASE_URL}/v1/auth/getSt`, null, null).then(res => {
             if (res.code === 200) {
               localStorage.setItem('ST', res.results.st);
+              /*
+              v2:外部官网后台管理
+              v3:河长制管理系统
+              v4:无人机巡河系统
+              v5:水系末端
+              v6:水质监测
+              v7:视频监控
+              v8:水系大数据
+              */
               if (e === 'v2') {
                 window.open("http://61.240.12.212:9084?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
