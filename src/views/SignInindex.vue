@@ -110,7 +110,7 @@
                 window.open("http://61.240.12.212:9086?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v7') {
-                  window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
+                window.open("http://61.240.12.212:9085?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v8') {
                 window.open("http://61.240.12.212:9089?ST=" + localStorage.getItem('ST'));
