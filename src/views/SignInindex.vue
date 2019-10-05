@@ -75,7 +75,7 @@
         } else {
           this.$message.error(`请先登录`);
           setTimeout(() => {
-            window.location.href = "http://61.240.12.212:9081";
+            window.location.href = "/";
           }, 1000);
         }
       },
@@ -110,13 +110,17 @@
                 window.open("http://61.240.12.212:9086?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v7') {
-                window.open("http://61.240.12.212:9085?ST=" + localStorage.getItem('ST'));
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v8') {
                 window.open("http://61.240.12.212:9089?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else {
-                window.open("http://61.240.12.212:9081?ST=" + localStorage.getItem('ST'));
+                window.open("/?ST=" + localStorage.getItem('ST'));
                 // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
             }
@@ -130,7 +134,7 @@
       },
       logout() {
         localStorage.clear();
-        window.location.href="http://61.240.12.212:9081/#/";
+        window.location.href="/";
       }
     },
   };
