@@ -95,29 +95,21 @@
               */
               if (e === 'v2') {
                 window.open("http://61.240.12.212:9084?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               }
               else if (e === 'v3') {
                 window.open("http://61.240.12.212:9080/hzz/home?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
               } else if (e === 'v4') {
                 window.open("http://61.240.12.212:9087?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
               } else if (e === 'v5') {
                 window.open("http://61.240.12.212:9088?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
               } else if (e === 'v6') {
                 window.open("http://61.240.12.212:9086?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v7') {
                 window.open("http://61.240.12.212:9085?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (e === 'v8') {
                 window.open("http://61.240.12.212:9089?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else {
                 window.open("/?ST=" + localStorage.getItem('ST'));
-                // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
             }
             else {
