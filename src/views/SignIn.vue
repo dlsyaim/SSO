@@ -162,34 +162,45 @@
               v8:水系大数据
               */
               if (getUrlKey('info') === 'v2') {
-                window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
-              }
-              else if (getUrlKey('info') === 'v3') {
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }
+              } else if (getUrlKey('info') === 'v3') {
                 window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9080/hzz/?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v4') {
-                window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }
               } else if (getUrlKey('info') === 'v5') {
-                window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }
               } else if (getUrlKey('info') === 'v6') {
-                window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }   
               } else if (getUrlKey('info') === 'v7') {
                 if (bburl == undefined) {
                   window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
                 } else {
                   window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                 }
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
               } else if (getUrlKey('info') === 'v8') {
-                window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9082?ST=" + localStorage.getItem('ST');
+                if (bburl == undefined) {
+                  window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
+                } else {
+                  window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
+                }
               } else {
                 window.location.href = "/Shome?ST" + localStorage.getItem('ST');
-                // window.location.href = "http://61.240.12.212:9081/Shome?ST" + localStorage.getItem('ST');
               }
             }
           });
