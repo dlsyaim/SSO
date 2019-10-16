@@ -5,7 +5,7 @@
               id="components-form-demo-normal-login"
               class="login-form"
       >
-        <a-col align="middle" style="margin-bottom: 10px">
+        <a-col align="middle" style="margin-bottom: 10px;text-align: center">
           <img src="../assets/logo.png" width="70"/>
         </a-col>
         <a-col align="middle" class="SignIn_div_title">
