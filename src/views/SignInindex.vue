@@ -29,7 +29,7 @@
             <a-col align="middle" :span="6" >
               <div v-on:click="login('v3')" class="c_content_model_div" style="background: rgba(228, 76, 39, 1);">
                 <img src="../assets/signInindex_v3.png">
-                <div >河长制综合管理系统</div>
+                <div >河（湖）长制综合管理系统</div>
               </div>
             </a-col>
             <a-col align="middle" :span="6" >
@@ -65,13 +65,13 @@
             <a-col align="middle" :span="6" >
               <div v-on:click="login('v2')" class="c_content_model_div" style="background: rgba(51, 153, 102, 1);">
                 <img src="../assets/signInindex_v2.png">
-                <div >河长制内部信息网管理后台</div>
+                <div >河（湖）长制内部信息网管理后台</div>
               </div>
             </a-col>
             <a-col align="middle" :span="6" >
               <div v-on:click="login('v9')" class="c_content_model_div" style="background: rgb(238,156,50);">
                 <img src="../assets/signInindex_v9.png">
-                <div >河长制内部信息网</div>
+                <div >河（湖）长制内部信息网</div>
               </div>
             </a-col>
           </a-row>
