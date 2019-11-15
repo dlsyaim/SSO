@@ -9,7 +9,7 @@
           <img src="../assets/logo.png" width="70"/>
         </a-col>
         <a-col align="middle" class="SignIn_div_title">
-          西青区河长制信息管理平台
+          西青区河(湖)长制信息管理平台
         </a-col>
         <a-form-item style="margin-bottom: 10px">
           <a-input
