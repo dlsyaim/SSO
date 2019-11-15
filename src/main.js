@@ -8,7 +8,10 @@ import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import "babel-polyfill"
 import "url-search-params-polyfill"
+import Cookies from 'js-cookie'
+import VueCookies from 'vue-cookies'
 Vue.use(Antd);
+Vue.use(VueCookies);
 
 //引入ztree和jquery
 import $ from 'jquery';
@@ -28,3 +31,5 @@ new Vue({
   render: h => h(App),
   components: {Header, Footer},
 }).$mount('#app');
+
+

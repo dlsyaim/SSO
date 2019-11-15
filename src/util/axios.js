@@ -1,9 +1,12 @@
 import axios from 'axios';
 import Vue from 'vue';
+import VueCookies from 'vue-cookies'
+import {getCookie} from "./util";
 
 axios.defaults.validateStatus = () => true;
 
-const accessToken = localStorage.getItem('Token');
+// const accessToken = localStorage.getItem('Token');
+const accessToken = getCookie('Token')
 
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {
@@ -125,3 +128,5 @@ const handleHttpError = (err) => {
 const handleBusinessError = (err) => {
   Vue.prototype.$message.error(err.msg);
 };
+
+

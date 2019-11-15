@@ -4858,6 +4858,11 @@ jquery@>=1.4.4:
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
+js-cookie@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
+  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.npm.taobao.org/js-levenshtein/download/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
@@ -8287,6 +8292,11 @@ vm-browserify@^1.0.1:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.0.tgz#bd76d6a23323e2ca8ffa12028dc04559c75f9019"
   integrity sha1-vXbWojMj4sqP+hICjcBFWcdfkBk=
+
+vue-cookies@^1.5.13:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/vue-cookies/-/vue-cookies-1.5.13.tgz#b1ca79a2663bf9a4f36982557011cab5ee2196c0"
+  integrity sha512-8pjpXnvbNWx1Lft0t3MJnW+ylv0Wa2Tb6Ch617u/pQah3+SfXUZZdkh3EL3bSpe/Sw2Wdw3+DhycgQsKANSxXg==
 
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
