@@ -3,15 +3,51 @@
  * @type {string}http://10.0.0.96:7244
  */
 
-export const BASE_URL='http://61.240.12.212:9081';
-export const BASE_URLimg='http://61.240.12.212:9084/';
+
+const BASE = (function () {//获取用户URL信息（自调用函数）
+  console.log(window.location.href,'函数内部打印，测试文件优先级，即执行顺序');
+  const userImportURL = window.location.href;
+  if (userImportURL.indexOf('192.168.2.109') != -1) {
+    return '//192.168.2.109';
+  }else {
+    return '//61.240.12.212';
+  }
+})();
+
+console.log(BASE, '修改后的ip,仅供测试用');
+
+export const BASE_URL='http:'+BASE+':9081';
+
+export const BASE_URL_IMG='http:'+BASE+'9084';
+
+/**
+ * 基础URL地址
+ */
+
+export const BASE_9080 = 'http:' + BASE + ':9080';
+
+export const BASE_9084 = 'http:' + BASE + ':9084';
+
+export const BASE_9085 = 'http:' + BASE + ':9085';
+
+export const BASE_9086 = 'http:' + BASE + ':9086';
+
+export const BASE_9087 = 'http:' + BASE + ':9087';
+
+export const BASE_9088 = 'http:' + BASE + ':9088';
+
+export const BASE_9089 = 'http:' + BASE + ':9089';
+
+export const BASE_9096 = 'http:' + BASE + ':9096';
+
 /**
  * 上传文件接口
  * @type {string}
  */
-export const UPLOAD_URL='http://61.240.12.212/inform/v1/informReport/upload';
+export const UPLOAD_URL='http:'+BASE+'/inform/v1/informReport/upload';
+// export const UPLOAD_URL='http:'+BASE+'/inform/v1/informReport/upload';
 
-export const FILE_URL_PREFIX='http://47.93.191.69:8080';
+export const FILE_URL_PREFIX='http://47.93.191.69:8080/';
 
 /**
  * 表格常用默认分页配
@@ -24,7 +60,6 @@ export const tablePaginationConfig = {
   showQuickJumper: true,
   showTotal:total => `共 ${total} 条`
 };
-
 /**
  * 菜单列表
  * @type {*[]}

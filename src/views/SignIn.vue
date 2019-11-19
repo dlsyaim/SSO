@@ -100,9 +100,8 @@
 
 <script>
     import {get, post} from "../util/axios";
-    import {BASE_URL} from "../config/config";
+    import {BASE_URL,BASE_9084,BASE_9086,BASE_9087,BASE_9088,BASE_9085,BASE_9089} from "../config/config";
     import {getUrlKey} from "../config/config";
-    import {BASE_URLimg} from "../config/config";
     import {setCookie,getCookie} from "../util/util";
 
     export default {
@@ -126,12 +125,21 @@
             }
         },
         created() {
-            // this.getImageCode();
             this.getVcode();
             this.indexif();
+
         },
         beforeCreate() {
             // this.form = this.$form.createForm(this);
+            // this.userURL = (function () {//获取用户URL信息（自调用函数）
+            //     console.log(window.location.href);
+            //     const userURL = window.location.href;
+            //     if (userURL.indexOf('61.240.12.212') != -1) {
+            //         this.baseUr = '//61.240.12.212';
+            //     }else if (userURL.indexOf('192.168.2.109') != -1) {
+            //         this.baseUr = '//192.168.2.109';
+            //     }
+            // })();
         },
         methods: {
             showModal() {
@@ -150,6 +158,7 @@
                 this.visible = false
             },
             indexif() {
+                console.log(this.baseUr, '111');
                 let expireDays = 1000 * 60 * 60 * 24;
                 if (setCookie('Token')) {
                     post(`${BASE_URL}/v1/auth/getSt`, null, null).then(res => {
@@ -169,8 +178,8 @@
                             */
                             if (getUrlKey('info') === 'v2') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9084?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9084 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9084 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
@@ -180,40 +189,40 @@
                                 window.location.href = bburl + "?ST=" + getCookie('ST');
                             } else if (getUrlKey('info') === 'v4') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9087?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9087 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9087 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v5') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
-                                  window.location.href = "http://61.240.12.212:9088?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9088 + "?ST=" + localStorage.getItem('ST');
+                                  window.location.href = BASE_9088 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                   window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v6') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9086?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9086 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9086 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v7') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9085?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9085 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9085 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v8') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9089?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9089 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9089 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
@@ -252,8 +261,8 @@
                             console.log('延时跳转');
                             if (getUrlKey('info') === 'v2') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9084?ST=" + localStorage.getItem('ST');
-                                  window.location.href = "http://61.240.12.212:9084?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9084 + "?ST=" + localStorage.getItem('ST');
+                                  window.location.href = BASE_9084 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
@@ -263,40 +272,40 @@
                                 window.location.href = bburl + "?ST=" + getCookie('ST');
                             } else if (getUrlKey('info') === 'v4') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9087?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9087?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9087 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9087 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v5') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9088?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9088?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9088 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9088 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v6') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9086?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9086?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9086 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9086 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v7') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9085?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9085?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9085 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9085 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');
                                 }
                             } else if (getUrlKey('info') === 'v8') {
                                 if (bburl == undefined) {
-                                    // window.location.href = "http://61.240.12.212:9089?ST=" + localStorage.getItem('ST');
-                                    window.location.href = "http://61.240.12.212:9089?ST=" + getCookie('ST');
+                                    // window.location.href = BASE_9089 + "?ST=" + localStorage.getItem('ST');
+                                    window.location.href = BASE_9089 + "?ST=" + getCookie('ST');
                                 } else {
                                     // window.location.href = bburl + "?ST=" + localStorage.getItem('ST');
                                     window.location.href = bburl + "?ST=" + getCookie('ST');

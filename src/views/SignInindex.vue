@@ -82,9 +82,8 @@
 </template>
 <script>
   import {get, post} from "../util/axios";
-  import {BASE_URL} from "../config/config";
+  import {BASE_URL,BASE_9080,BASE_9084,BASE_9085,BASE_9086,BASE_9087,BASE_9088,BASE_9089,BASE_9096} from "../config/config";
   import {GetQueryString} from "../config/config";
-  import {BASE_URLimg} from "../config/config";
   import {setCookie,getCookie,delCookie} from "../util/util";
 
   export default {
@@ -112,6 +111,7 @@
       this.indexif();
     },
     beforeCreate() {
+        // console.log(window.location.href);
     },
     methods: {
       onCollapse(collapsed, type) {
@@ -146,29 +146,29 @@
               v8:水系大数据
               */
               if (e === 'v2') {
-                // window.open("http://61.240.12.212:9084?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9084?ST=" + getCookie('ST'));
+                // window.open(BASE_9084 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9084 + "?ST=" + getCookie('ST'));
               }
               else if (e === 'v3') {
-                // window.open("http://61.240.12.212:9080/hzz/home?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9080/hzz/home?ST=" + getCookie('ST'));
+                // window.open(BASE_9080 + "/hzz/home?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9080 + "/hzz/home?ST=" + getCookie('ST'));
               } else if (e === 'v4') {
-                // window.open("http://61.240.12.212:9087?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9087?ST=" + getCookie('ST'));
+                // window.open(BASE_9087 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9087 + "?ST=" + getCookie('ST'));
               } else if (e === 'v5') {
-                // window.open("http://61.240.12.212:9088?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9088?ST=" + getCookie('ST'));
+                // window.open(BASE_9088 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9088 + "?ST=" + getCookie('ST'));
               } else if (e === 'v6') {
-                // window.open("http://61.240.12.212:9086?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9086?ST=" + getCookie('ST'));
+                // window.open(BASE_9086 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9086 + "?ST=" + getCookie('ST'));
               } else if (e === 'v7') {
-                // window.open("http://61.240.12.212:9085?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9085?ST=" + getCookie('ST'));
+                // window.open(BASE_9085 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9085 + "?ST=" + getCookie('ST'));
               } else if (e === 'v8') {
-                // window.open("http://61.240.12.212:9089?ST=" + localStorage.getItem('ST'));
-                window.open("http://61.240.12.212:9089?ST=" + getCookie('ST'));
+                // window.open(BASE_9089 + "?ST=" + localStorage.getItem('ST'));
+                window.open(BASE_9089 + "?ST=" + getCookie('ST'));
               }else if (e === 'v9') {
-                  window.open("http://61.240.12.212:9096/");
+                  window.open(BASE_9096);
               } else {
                 // window.open("/?ST=" + localStorage.getItem('ST'));
                 window.open("/?ST=" + getCookie('ST'));
