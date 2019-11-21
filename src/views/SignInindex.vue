@@ -183,8 +183,14 @@
         }
       },
       logout() {
-        localStorage.clear();
-        // delCookie();
+        // localStorage.clear();
+          delCookie();
+          delCookie('ST');
+          delCookie('Token');
+          delCookie('callback_username');
+          delCookie('callback_company');
+          delCookie('callback_department');
+          delCookie('callback_workno');
         window.location.href="/";
       }
     },
